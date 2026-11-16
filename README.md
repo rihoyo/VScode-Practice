@@ -15,10 +15,15 @@ VScode-Practice/
 ├─ AGENTS.md        AI 공통 작업 규칙 (Claude, Codex가 함께 읽는다)
 ├─ CLAUDE.md        AGENTS.md를 불러오는 한 줄
 ├─ index.html       홈페이지 진입점
-├─ guide/           홈페이지 원문 (HTML, CSS, JS, vendor)
-├─ docs/blog/       티스토리용 마크다운과 변환 규칙
+├─ projects/        에이전트 목록(README.md)과 새 에이전트 템플릿
+├─ guide/           홈페이지 원문 + guide 에이전트 규칙(AGENTS.md, STATUS.md, TASKS.md)
+├─ docs/blog/       티스토리용 마크다운과 변환 규칙 (blog 에이전트)
 └─ tools/           Node.js 도구 (검사, 라이브러리 복사)
 ```
+
+## 에이전트 구조
+
+이 저장소 하나가 메인(허브)이고, 폴더 하나가 에이전트 하나다. 마스터가 AI에게 `guide: 지도에 노드 추가해줘`처럼 `이름: 지시` 형식으로 말하면, AI는 [projects/README.md](projects/README.md)에서 해당 폴더를 찾아 그 폴더의 규칙, 현황, 지시 대기열만 읽고 작업한다.
 
 ## 가이드를 고친 뒤
 

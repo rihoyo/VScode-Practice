@@ -78,6 +78,22 @@ for (const f of fs.readdirSync(guide).filter((x) => x.endsWith('.css'))) {
     errors.push(`${f}: 바탕·명조(serif) 계열 폰트가 보인다. 고딕만 쓴다`);
 }
 
+// ── 5) 에이전트 목록(projects/README.md)의 폴더와 규칙 파일이 실제로 있는지 ──
+const registry = path.join(root, 'projects', 'README.md');
+if (fs.existsSync(registry)) {
+  for (const line of fs.readFileSync(registry, 'utf8').split('\n')) {
+    if (!line.startsWith('|') || /^\|\s*(-|이름)/.test(line)) continue;
+    const cols = line.split('|');
+    for (const i of [2, 4]) {
+      for (const m of (cols[i] || '').matchAll(/`([^`]+)`/g)) {
+        if (!fs.existsSync(path.join(root, m[1]))) errors.push(`projects/README.md: ${cols[1].trim()} 에이전트의 경로 ${m[1]}가 없다`);
+      }
+    }
+  }
+} else {
+  errors.push('projects/README.md가 없다');
+}
+
 if (errors.length) {
   console.error(`검사 실패 (${errors.length}건)\n- ` + errors.join('\n- '));
   process.exit(1);
