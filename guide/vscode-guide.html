@@ -5,12 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>개요 · 나의 개발 스텝</title>
 <link rel="stylesheet" href="guide.css">
+<script src="vendor/d3.min.js" defer></script>
+<script src="map-data.js" defer></script>
 <script src="guide.js" defer></script>
+<script src="guide-map.js" defer></script>
 </head>
 <body>
 <header>
 <h1>나의 개발 스텝</h1>
-<p>회사 VS Code에서 저장소 복제 완료 · 다음은 <a href="vscode.html#push">첫 커밋과 푸시</a></p>
+<p>Node.js 설치 완료 · 다음은 <a href="vscode.html#claude-code">VS Code에서 Claude Code 연결하기</a></p>
 <nav aria-label="공통 메뉴">
 <a href="vscode-guide.html" aria-current="page">개요</a>
 <a href="git.html">Git</a>
@@ -18,21 +21,47 @@
 <a href="vscode.html">VS Code</a>
 </nav>
 </header>
+<section id="map" class="mapwrap">
+<div class="map-bar">
+<h2>기술 연결 지도</h2>
+<p class="hint">네모를 끌어 보고, 빈 곳을 끌어 이동하고, 휠로 확대한다. 선 위의 ◆를 누르면 무엇이 오가는지 움직이며 보여 준다.</p>
+<div class="map-tools">
+<button type="button" class="btn" id="t-fit">⌖ 전체 보기</button>
+<button type="button" class="btn" id="t-panel">▤ 설명 패널</button>
+<button type="button" class="btn" id="t-play">⏸ 움직임 멈추기</button>
+<button type="button" class="btn" id="t-full">⛶ 전체 화면</button>
+</div>
+</div>
+<div class="map-canvas" id="map-canvas">
+<svg id="map-svg" role="group" aria-label="기술 연결 지도"></svg>
+<div class="map-help">끌기 · 이동 / 휠 · 확대 / 네모 · 선택</div>
+<div class="panel" id="panel" aria-live="polite"><p class="hint"><b>$ loading</b>지도를 불러오는 중이다. 이 화면이 계속 보이면 JavaScript가 꺼져 있거나 vendor/d3.min.js가 없는 것이다.</p></div>
+</div>
+<div class="map-foot">
+<ul class="legend" aria-label="범례">
+<li style="--c:#4ade80"><i></i>실습 완료</li>
+<li style="--c:#fbbf24"><i></i>진행 중</li>
+<li style="--c:#7c8da1"><i class="plan"></i>예정</li>
+</ul>
+<div class="chips" id="map-chips" aria-label="연결 목록"></div>
+</div>
+</section>
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
-<a href="#flow">세 도구는 이렇게 연결돼</a>
+<a href="#map">기술 연결 지도</a>
+<a href="#flow">세 도구는 이렇게 연결된다</a>
 <a href="#roadmap">이후에 다룰 수업</a>
 </nav></aside>
 <main>
 <section id="flow">
-<h2>세 도구는 이렇게 연결돼</h2>
+<h2>세 도구는 이렇게 연결된다</h2>
 <dl class="flow">
 <dt><a href="vscode.html#clone-steps">Clone</a> · GitHub → 회사 PC</dt>
-<dd>VS Code에서 복제를 누르면 Git이 GitHub 저장소의 파일과 이력을 가져와.</dd>
+<dd>VS Code에서 복제를 누르면 Git이 GitHub 저장소의 파일과 이력을 가져온다.</dd>
 <dt><a href="vscode.html#push">저장 → Commit → Push</a> · 회사 PC → GitHub</dt>
-<dd>VS Code로 파일을 저장해. Git으로 버전을 기록하고, 그 버전을 GitHub에 올려.</dd>
+<dd>VS Code로 파일을 저장한다. Git으로 버전을 기록하고, 그 버전을 GitHub에 올린다.</dd>
 <dt><a href="github.html#home">Pull</a> · GitHub → 집 PC</dt>
-<dd>집 PC에 이미 복제해 둔 저장소를 열고, GitHub의 새 커밋을 받아 이어서 작업해.</dd>
+<dd>집 PC에 이미 복제해 둔 저장소를 열고, GitHub의 새 커밋을 받아 이어서 작업한다.</dd>
 </dl>
 </section><section id="roadmap">
 <h2>이후에 다룰 수업</h2>
@@ -40,10 +69,21 @@
 <li><b>Git</b> · 변경 내용 비교, 브랜치로 실험하기, 충돌 읽기, 워크트리로 동시 작업하기</li>
 <li><b>GitHub</b> · 커밋 기록 찾기, 다른 PC에서 동기화하기, 변경 검토하기</li>
 <li><b>VS Code</b> · 프로젝트 폴더와 프로필, Codex·Claude 인계, Figma MCP 연결</li>
+<li><b>Claude Code</b> · <a href="vscode.html#claude-code">확장과 터미널 방식 비교</a>, 네이티브 설치와 npm 설치의 차이</li>
+<li><b>Node.js</b> · npm으로 도구 설치하기, 이 지도처럼 npm 패키지를 가져다 쓰는 법</li>
 </ul>
 <details>
 <summary>이 기록을 직접 갱신하는 법</summary>
-<p>새 실습을 추가할 때는 제목과 함께 <b>어느 도구에서 누르는지, 파일이 어디로 움직이는지, 성공하면 무엇이 보이는지</b>를 기록해. 해당 도구의 목차에서 실습으로 링크하고, 확인한 단계만 완료로 표시해. 브라우저에서 새로고침해 본 뒤 커밋과 푸시를 하면 집에서도 갱신된 기록을 받을 수 있어.</p>
+<p>새 실습을 추가할 때는 제목과 함께 <b>어느 도구에서 누르는지, 파일이 어디로 움직이는지, 성공하면 무엇이 보이는지</b>를 기록한다. 해당 도구의 목차에서 실습으로 링크하고, 확인한 단계만 완료로 표시한다. 브라우저에서 새로고침해 본 뒤 커밋과 푸시를 하면 집에서도 갱신된 기록을 받을 수 있다.</p>
+</details>
+<details>
+<summary>지도에 새 기술을 추가하는 법</summary>
+<p><code>guide/map-data.js</code>의 <code>NODES</code>에 기술(처음 위치·색·설명)을, <code>EDGES</code>에 연결(오가는 것·이유·방법·성공 신호·애니메이션 단계)을 한 덩어리씩 추가한다. 위치는 대략만 주어도 물리 엔진이 알아서 정리한다. 직접 확인한 연결만 <code>status: 'done'</code>으로 바꾼다.</p>
+<p>VS Code 터미널에서 <code>cd tools</code>로 이동한 뒤 <code>npm run check</code>를 실행하면 오타, 빠진 항목, 깨진 링크, 문체 오류를 찾아 준다. <code>검사 통과</code>가 나오면 브라우저를 새로고침한다.</p>
+</details>
+<details>
+<summary>집 PC에서 지도가 움직이지 않으면</summary>
+<p>지도는 <code>guide/vendor/d3.min.js</code>를 읽는다. 이 파일은 저장소에 함께 올라가므로 보통 Pull만 하면 된다. 파일이 없다는 메시지가 나오면 <code>tools</code> 폴더에서 <code>npm install</code> 다음 <code>npm run build</code>를 실행한다.</p>
 </details>
 </section>
 </main>

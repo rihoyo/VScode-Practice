@@ -20,40 +20,60 @@
 </header>
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
-<a href="#vscode-basics">편집기와 소스 제어</a>
-<a href="#clone-steps">다음 실습 · GitHub 저장소 복제</a>
-<a href="#push">3. 이 페이지를 첫 커밋으로 올리기</a>
-<a href="#next">다음 수업 · 두 AI에게 같은 파일 읽히기</a>
+<a href="#vscode-basics">1. 편집기와 소스 제어</a>
+<a href="#clone-steps">2. GitHub 저장소 복제</a>
+<a href="#push">3. 첫 커밋과 푸시</a>
+<a href="#next">4. 두 AI에게 같은 파일 읽히기</a>
+<a href="#claude-code">5. Claude Code 설치 방식</a>
 </nav></aside>
 <main>
-<section id="vscode-basics"><h2>편집기와 소스 제어</h2><p>VS Code로 프로젝트 파일을 편집해. 왼쪽 소스 제어에서 <a href="git.html#git-install">PC에 설치된 Git</a>을 조작하고 <a href="github.html#transfer">GitHub 저장소와 변경을 주고받을 수 있어.</a></p></section><section><h2 id="clone-steps">다음 실습 · GitHub 저장소 복제</h2>
-<p class="note"><b>복제 완료</b> · VS Code 터미널에서 <code>git --version</code>을 확인했어. <b>Git: 클론</b>에서 GitHub 계정으로 로그인하고 저장소를 선택한 뒤, 상위 폴더로 <code>문서\GitHub</code>를 지정했어. 복제한 폴더를 열어 GitHub에서 편집했던 <code>README.md</code>도 확인했어.</p>
+<section id="vscode-basics"><h2>1. 편집기와 소스 제어</h2><p>VS Code로 프로젝트 파일을 편집한다. 왼쪽 소스 제어에서 <a href="git.html#git-install">PC에 설치된 Git</a>을 조작하고 <a href="github.html#transfer">GitHub 저장소와 변경을 주고받을 수 있다.</a></p></section><section id="clone-steps"><h2>2. GitHub 저장소 복제</h2>
+<p class="note"><b>복제 완료</b> · VS Code 터미널에서 <code>git --version</code>을 확인했다. <b>Git: 클론</b>에서 GitHub 계정으로 로그인하고 저장소를 선택한 뒤, 상위 폴더로 <code>문서\GitHub</code>를 지정했다. 복제한 폴더를 열어 GitHub에서 편집했던 <code>README.md</code>도 확인했다.</p>
 <ol>
-<li>GitHub에서 <code>vscode-practice</code> 저장소를 열고 <b>Code → HTTPS → 복사 아이콘</b>을 눌러. VS Code에서 GitHub 계정으로 로그인해 목록에서 저장소를 고르는 방법도 있어.</li>
-<li><b>확인 완료</b> · Git 설치 후 VS Code의 명령 검색에 <b>Git: 클론 (Git: Clone)</b>이 표시됐어. 검색할 때는 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>를 눌러 <code>git clone</code>을 입력해.</li>
-<li><b>Git: 클론 (Git: Clone)</b>을 선택해. 위에 보이는 <b>Git: 복제(재귀)</b>는 하위 저장소까지 복제할 때 쓰는 옵션이야. 복사한 HTTPS 주소를 붙여넣고 Enter. 로그인 화면이 뜨면 저장소를 만든 GitHub 계정으로 로그인해.</li>
-<li>폴더 선택 창에서는 <code>vscode-practice</code> 폴더를 만들 <b>상위 폴더</b>를 골라. 완료 메시지가 뜨면 <b>Open</b>을 눌러. 왼쪽 파일 목록에 <code>README.md</code>가 보이면 연결 성공이야.</li>
+<li>GitHub에서 <code>vscode-practice</code> 저장소를 열고 <b>Code → HTTPS → 복사 아이콘</b>을 누른다. VS Code에서 GitHub 계정으로 로그인해 목록에서 저장소를 고르는 방법도 있다.</li>
+<li><b>확인 완료</b> · Git 설치 후 VS Code의 명령 검색에 <b>Git: 클론 (Git: Clone)</b>이 표시됐다. 검색할 때는 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>를 누르고 <code>git clone</code>을 입력한다.</li>
+<li><b>Git: 클론 (Git: Clone)</b>을 선택한다. 위에 보이는 <b>Git: 복제(재귀)</b>는 하위 저장소까지 복제할 때 쓰는 옵션이다. 복사한 HTTPS 주소를 붙여넣고 Enter를 누른다. 로그인 화면이 뜨면 저장소를 만든 GitHub 계정으로 로그인한다.</li>
+<li>폴더 선택 창에서는 <code>vscode-practice</code> 폴더를 만들 <b>상위 폴더</b>를 고른다. 완료 메시지가 뜨면 <b>Open</b>을 누른다. 왼쪽 파일 목록에 <code>README.md</code>가 보이면 연결에 성공한 것이다.</li>
 </ol>
-<p class="note">Clone은 GitHub의 파일을 PC로 가져오면서 연결 정보도 설정하는 기능이야. 이미 이 저장소를 복제한 폴더가 있다면 VS Code의 <b>파일 → 폴더 열기</b>로 그 폴더를 열어.</p>
+<p class="note">Clone은 GitHub의 파일을 PC로 가져오면서 연결 정보도 설정하는 기능이다. 이미 이 저장소를 복제한 폴더가 있다면 VS Code의 <b>파일 → 폴더 열기</b>로 그 폴더를 연다.</p>
 </section><section id="push">
-<h2>3. 이 페이지를 첫 커밋으로 올리기</h2>
+<h2>3. 첫 커밋과 푸시</h2>
 <p><a href="git.html#commit-example">대본으로 이해하는 커밋</a></p>
 <ol>
-<li>Windows 파일 탐색기에서 최상단의 <code>vscode-guide.html</code>과 <code>guide</code> 폴더를 함께 복사해. 복제한 <code>vscode-practice</code> 폴더에서 <code>README.md</code>와 같은 위치에 붙여넣어.</li>
-<li>VS Code 왼쪽의 <b>소스 제어(Source Control)</b>를 눌러. <b>변경 사항(Changes)</b>에 뜬 추가할 가이드 파일 옆 <b>+</b>를 눌러 이번 커밋에 넣을 파일로 골라.</li>
-<li>메시지 칸에 <code>VS Code 실습 기록 추가</code>를 쓰고 <b>커밋(Commit)</b>을 눌러. 커밋은 변경 내역을 현재 PC에 기록해.</li>
-<li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> → <code>Git: Push</code>를 실행해. GitHub 저장소 페이지를 새로고침했을 때 진입 파일과 guide 폴더가 보이면 집에서도 받을 수 있어.</li>
+<li>Windows 파일 탐색기에서 최상단의 <code>index.html</code>과 <code>guide</code> 폴더를 함께 복사한다. 복제한 <code>vscode-practice</code> 폴더에서 <code>README.md</code>와 같은 위치에 붙여넣는다.</li>
+<li>VS Code 왼쪽의 <b>소스 제어(Source Control)</b>를 누른다. <b>변경 사항(Changes)</b>에 뜬 추가할 가이드 파일 옆 <b>+</b>를 눌러 이번 커밋에 넣을 파일로 고른다.</li>
+<li>메시지 칸에 <code>VS Code 실습 기록 추가</code>를 쓰고 <b>커밋(Commit)</b>을 누른다. 커밋은 변경 내역을 현재 PC에 기록한다.</li>
+<li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>를 누르고 <code>Git: Push</code>를 실행한다. GitHub 저장소 페이지를 새로고침했을 때 진입 파일과 guide 폴더가 보이면 집에서도 받을 수 있다.</li>
 </ol>
 <details>
 <summary>커밋이나 푸시에서 막히면</summary>
-<p>Git이 이름과 이메일을 요구하면 VS Code의 <b>터미널 → 새 터미널</b>에서 아래 두 줄의 예시를 자신의 값으로 바꿔 한 줄씩 실행한 뒤 커밋을 다시 눌러. 이메일은 GitHub 계정 설정에 표시되는 본인의 비공개 커밋 이메일을 써도 돼.</p>
+<p>Git이 이름과 이메일을 요구하면 VS Code의 <b>터미널 → 새 터미널</b>에서 아래 두 줄의 예시를 자신의 값으로 바꿔 한 줄씩 실행한 뒤 커밋을 다시 누른다. 이메일은 GitHub 계정 설정에 표시되는 본인의 비공개 커밋 이메일을 써도 된다.</p>
 <p><code>git config user.name "내 이름"</code><br><code>git config user.email "내 커밋 이메일"</code></p>
-<p>GitHub에 새 변경분이 있어 푸시가 거절되면 <code>Git: Pull</code>로 먼저 가져와. 충돌이 표시되면 내용을 확인하고 해결한 뒤 푸시해. VS Code와 GitHub Desktop은 같은 Git 기록을 사용하므로, 충돌을 줄이는 습관은 <b>작업 시작 전에 Pull, 작업을 마칠 때 Commit과 Push</b>야.</p>
+<p>GitHub에 새 변경분이 있어 푸시가 거절되면 <code>Git: Pull</code>로 먼저 가져온다. 충돌이 표시되면 내용을 확인하고 해결한 뒤 푸시한다. VS Code와 GitHub Desktop은 같은 Git 기록을 사용하므로, 충돌을 줄이는 습관은 <b>작업 시작 전에 Pull, 작업을 마칠 때 Commit과 Push</b>다.</p>
 </details>
 </section><section id="next">
-<h2>다음 수업 · 두 AI에게 같은 파일 읽히기</h2>
-<p>VS Code에서 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>로 확장 검색을 열어. <code>@id:openai.chatgpt</code>와 <code>@id:anthropic.claude-code</code>를 각각 검색하고, OpenAI와 Anthropic이 게시한 확장을 설치해. 각 채팅을 열어 로그인한 뒤 같은 저장소의 <code>README.md</code>를 읽혀봐.</p>
-<p>두 AI가 공통 작업 규칙을 읽게 할 때는 <code>AGENTS.md</code>를 만들고 <code>CLAUDE.md</code>에 <code>@AGENTS.md</code>를 적어. Figma MCP와 워크트리는 이후 실습에서 다룰 항목이야.</p>
+<h2>4. 두 AI에게 같은 파일 읽히기</h2>
+<p>VS Code에서 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>로 확장 검색을 연다. <code>@id:openai.chatgpt</code>와 <code>@id:anthropic.claude-code</code>를 각각 검색하고, OpenAI와 Anthropic이 게시한 확장을 설치한다. 각 채팅을 열어 로그인한 뒤 같은 저장소의 <code>README.md</code>를 읽힌다.</p>
+<p>두 AI가 공통 작업 규칙을 읽게 할 때는 <code>AGENTS.md</code>를 만들고 <code>CLAUDE.md</code>에 <code>@AGENTS.md</code>를 적는다. Figma MCP와 워크트리는 이후 실습에서 다룰 항목이다.</p>
+</section><section id="claude-code">
+<h2>5. Claude Code 설치 방식</h2>
+<p class="note"><b>진행 중</b> · 아래 내용은 안내이며, 직접 확인한 단계가 아니다. 확인하면 완료로 바꾼다.</p>
+<p>Claude Code는 확장(채팅창)과 터미널 명령(<code>claude</code>) 두 방식으로 쓸 수 있다. 두 방식의 능력은 같고 화면만 다르다. 대화 모델은 클라우드에서 동작하고, 파일 읽기와 수정은 이 PC에서 일어난다.</p>
+<table>
+<thead><tr><th>구분</th><th>확장 (채팅창)</th><th>터미널 (<code>claude</code>)</th></tr></thead>
+<tbody>
+<tr><td>설치</td><td>확장 설치 한 번</td><td>명령어 설치가 따로 필요하다</td></tr>
+<tr><td>화면</td><td>버튼, 클릭, 변경 내용 미리보기</td><td>글자만 표시된다</td></tr>
+<tr><td>코드 전달</td><td>편집기에서 선택하면 자동으로 전달된다</td><td>파일 경로를 직접 적는다</td></tr>
+<tr><td>적합한 경우</td><td>처음 쓰는 사람, 변경을 눈으로 확인할 때</td><td>명령어 연습, 가볍고 빠른 작업</td></tr>
+</tbody>
+</table>
+<h3 id="claude-cli">터미널 설치 두 가지</h3>
+<p>PowerShell에서 아래 네이티브 설치 명령을 실행하면 Node.js 없이 설치된다.</p>
+<p><code>irm https://claude.ai/install.ps1 | iex</code></p>
+<p>Node.js를 설치한 상태라면 npm으로도 설치할 수 있다. <a href="vscode-guide.html#map">기술 연결 지도</a>에서 Node.js와 Claude의 연결을 볼 수 있다.</p>
+<p><code>npm install -g @anthropic-ai/claude-code</code></p>
+<p>설치 후 터미널을 새로 열고 <code>claude --version</code>을 실행한다. 버전 숫자가 나오면 성공이다. 작업 폴더에서 <code>claude</code>를 입력하면 첫 실행 때 로그인 안내가 나온다.</p>
 </section>
 </main>
 <aside class="quick"><b>공통 메뉴</b><nav aria-label="스크롤 공통 메뉴">
