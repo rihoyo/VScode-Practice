@@ -23,6 +23,11 @@
 <a href="#done">1. GitHub에서 시작</a>
 <a href="#transfer">2. Clone · Push · Pull</a>
 <a href="#home">3. 집에서 열고 이어가기</a>
+<a href="#publish">4. 홈페이지 공개하기</a>
+<a class="sub" href="#publish-steps">공개 순서</a>
+<a class="sub" href="#publish-source">/ (root)와 /docs</a>
+<a class="sub" href="#publish-stuck">공개 전환이 안 될 때</a>
+<a class="sub" href="#publish-after">공개 후 알아둘 것</a>
 </nav></aside>
 <main>
 <section id="done">
@@ -32,6 +37,51 @@
 <h2>3. 집에서 열고 이어가기</h2>
 <p>집 PC의 VS Code에서는 처음 한 번 <a href="vscode.html#clone-steps">복제 단계</a>대로 같은 저장소를 복제한다. 이미 복제했다면 그 폴더를 열고 <code>Git: Pull</code>을 실행한다. Windows 파일 탐색기에서 저장소 최상단의 <code>index.html</code>을 더블클릭하면 브라우저에서 이 가이드가 열린다.</p>
 <p class="note"><kbd>Ctrl</kbd> + <kbd>S</kbd>는 파일 저장, Commit은 버전 기록, Push는 GitHub에 올리기, Pull은 GitHub의 변경 가져오기다.</p>
+</section><section id="publish">
+<h2>4. 홈페이지 공개하기</h2>
+<p class="note"><b>진행 중</b> · 공개 전환과 Pages 설정까지 안내한 단계이며, 공개 주소로 접속해 확인하면 완료로 바꾼다.</p>
+<p>GitHub Pages는 저장소의 HTML 파일을 누구나 열 수 있는 웹 주소로 공개하는 기능이다. 이 저장소는 루트의 <code>index.html</code>이 <code>guide/vscode-guide.html</code>로 이동시키므로 파일을 옮기지 않고 그대로 공개할 수 있다.</p>
+<h3 id="publish-steps">공개 순서</h3>
+<ol>
+<li><b>변경 사항을 모두 푸시한다.</b> 소스 제어의 변경 사항이 비어 있어야 한다. 푸시하지 않은 내용은 공개 페이지에 나오지 않는다.</li>
+<li><b>저장소를 공개(Public)로 바꾼다.</b> GitHub 저장소의 <b>Settings → General</b> 맨 아래 <b>Danger Zone</b>에서 <b>Change repository visibility → Make public</b>을 누른다. 경고 창의 확인 버튼을 차례로 누르고, 마지막 입력칸에 <code>계정이름/저장소이름</code> 전체를 입력한 뒤 <b>I understand, change repository visibility</b>를 누른다.</li>
+<li><b>Pages를 켠다.</b> <b>Settings → Pages</b>에서 <b>Source</b>를 <code>Deploy from a branch</code>로 두고, <b>Branch</b>는 <code>main</code>, 폴더는 <code>/ (root)</code>를 골라 <b>Save</b>를 누른다.</li>
+<li><b>배포를 기다린다.</b> 1~2분 걸린다. 저장소의 <b>Actions</b> 탭에서 <code>pages build and deployment</code> 작업에 초록 체크가 뜨면 끝난 것이다.</li>
+<li><b>주소를 확인한다.</b> <b>Settings → Pages</b> 맨 위에 <b>Your site is live at …</b>와 함께 주소가 나온다. 형태는 <code>https://계정이름.github.io/저장소이름/</code>이다.</li>
+<li><b>로그인하지 않은 상태로 열어 본다.</b> 시크릿 창에 주소를 붙여넣어 「나의 개발 스텝」이 열리고 기술 연결 지도가 움직이면 성공이다. 404가 나오면 배포가 아직 끝나지 않았거나 푸시가 빠진 것이다.</li>
+</ol>
+<p>무료 계정은 비공개 저장소의 Pages를 쓸 수 없는 것으로 알려져 있다. 그래서 2번의 공개 전환이 필요하다. 결제 전에 Settings → Pages 화면의 안내를 직접 확인한다.</p>
+<h3 id="publish-source">/ (root)와 /docs</h3>
+<p>Pages 설정의 폴더 선택은 사이트의 맨 위 폴더를 정한다.</p>
+<table>
+<thead><tr><th>옵션</th><th>공개되는 범위</th><th>시작 파일</th></tr></thead>
+<tbody>
+<tr><td><code>/ (root)</code></td><td>저장소 전체 (루트와 모든 하위 폴더)</td><td>루트의 <code>index.html</code></td></tr>
+<tr><td><code>/docs</code></td><td><code>docs</code> 폴더 안의 파일만</td><td><code>docs/index.html</code></td></tr>
+</tbody>
+</table>
+<p>이 저장소의 홈페이지는 루트의 <code>index.html</code>과 <code>guide/</code>에 있고 <code>docs/</code>에는 블로그 초안만 있다. 따라서 <code>/ (root)</code>를 골라야 한다. 저장소가 공개이면 <code>/docs</code>를 골라도 GitHub 저장소 화면에서는 모든 파일이 보이므로 숨기는 효과가 없다.</p>
+<details id="publish-stuck">
+<summary>공개 전환이 안 될 때</summary>
+<p>공개 전환은 클릭 한 번으로 끝나지 않고 창이 여러 번 이어진다. 입력칸이 나오지 않으면 앞 단계 어딘가에서 멈춘 것이다.</p>
+<ol class="plain">
+<li>경고 창이 길면 아래 버튼이 화면 밖에 숨는다. 브라우저를 <kbd>Ctrl</kbd> + <kbd>-</kbd>로 축소하고 창 안쪽을 스크롤한다.</li>
+<li>창 안의 <b>I have read and understand these effects</b> 같은 확인 칸이나 버튼을 빠뜨리지 않았는지 본다. 버튼이 회색이면 앞 확인을 아직 누르지 않은 것이다.</li>
+<li>마지막 입력칸에는 저장소 이름만이 아니라 <code>계정이름/저장소이름</code> 전체를 대소문자까지 정확히 입력한다.</li>
+<li>브라우저의 자동 번역과 광고 차단 확장 프로그램이 창을 가릴 수 있다. 번역을 끄고 시크릿 창에서 다시 시도한다.</li>
+<li>시크릿 창에서 로그인하지 않은 채 저장소 주소를 열어 본다. 열린다면 이미 공개 상태다.</li>
+<li>포크이거나 조직 소유인 저장소는 공개 전환이 제한될 수 있다. 저장소 이름 위의 소유자 표시와 Fork 표시를 확인한다.</li>
+</ol>
+</details>
+<details id="publish-after">
+<summary>공개 후 알아둘 것</summary>
+<ul>
+<li>공개한 기록은 되돌릴 수 없다. 나중에 비공개로 바꿔도 이미 복제되거나 캐시된 내용은 남을 수 있다. 무료 계정은 비공개로 돌리면 Pages도 꺼진다.</li>
+<li>공개 주소는 비밀이 아니다. 주소를 아는 사람은 누구나 열 수 있고 검색에도 노출될 수 있다.</li>
+<li>공개 저장소에서는 <code>AGENTS.md</code>를 포함한 모든 파일과 커밋 기록이 보인다. 비밀번호, 키, 토큰은 저장소에 넣지 않는다. 필요하면 <code>.env</code> 같은 파일에 두고 Git에서 제외한다.</li>
+<li>공개 전에 커밋 작성자 이메일이 GitHub 비공개용 주소(<code>…@users.noreply.github.com</code>)인지 확인한다. 이 저장소는 확인을 마쳤다.</li>
+</ul>
+</details>
 </section>
 </main>
 <aside class="quick"><b>공통 메뉴</b><nav aria-label="스크롤 공통 메뉴">
