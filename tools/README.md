@@ -9,6 +9,7 @@
 | `package.json` | 명령어와 의존성(d3 7.9.0)을 적은 파일. 사람이 직접 고치는 파일이다 |
 | `package-lock.json` | 설치된 정확한 버전 기록. 자동 생성되며 수정하지 않는다. 커밋한다 |
 | `check.js` | 가이드 검사. 지도 데이터, 문법, 링크와 앵커, `~다.` 문체, 고딕 폰트를 확인한다 |
+| `build-index.js` | 각 페이지의 목차 태그와 본문으로 `guide/search-index.js`(키워드 색인)를 만든다. `npm run build`가 함께 실행한다 |
 | `sync-vendor.js` | 받아 둔 d3를 `guide/vendor/`에 복사한다 |
 | `node_modules/` | 내려받은 패키지. 용량이 크고 재생성할 수 있어 Git에서 제외한다 |
 

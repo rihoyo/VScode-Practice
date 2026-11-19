@@ -5,8 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>개요 · 나의 개발 스텝</title>
 <link rel="stylesheet" href="guide.css">
+<link rel="stylesheet" href="site-ui.css">
+<link rel="stylesheet" href="guide-ui.css">
 <script src="vendor/d3.min.js" defer></script>
 <script src="map-data.js" defer></script>
+<script src="search-index.js" defer></script>
+<script src="site-nav.js" defer></script>
 <script src="guide.js" defer></script>
 <script src="guide-map.js" defer></script>
 </head>
@@ -14,12 +18,8 @@
 <header>
 <h1>나의 개발 스텝</h1>
 <p>Node.js 설치 완료 · 다음은 <a href="vscode.html#claude-code">VS Code에서 Claude Code 연결하기</a></p>
-<nav aria-label="공통 메뉴">
-<a href="vscode-guide.html" aria-current="page">개요</a>
-<a href="git.html">Git</a>
-<a href="github.html">GitHub</a>
-<a href="vscode.html">VS Code</a>
-</nav>
+<div class="sitenav"></div>
+<nav class="tabs" aria-label="공통 메뉴"></nav>
 </header>
 <section id="map" class="mapwrap">
 <div class="map-bar">
@@ -87,12 +87,6 @@
 </details>
 </section>
 </main>
-<aside class="quick"><b>공통 메뉴</b><nav aria-label="스크롤 공통 메뉴">
-<a href="vscode-guide.html" aria-current="page">개요</a>
-<a href="git.html">Git</a>
-<a href="github.html">GitHub</a>
-<a href="vscode.html">VS Code</a>
-</nav></aside>
 </div>
 </body>
 </html>

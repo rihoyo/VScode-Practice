@@ -108,10 +108,21 @@ updateMenu();
   all.forEach((t) => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'tag'; b.textContent = '#' + t; b.setAttribute('aria-pressed', 'false');
-    b.addEventListener('click', () => { active = active === t ? null : t; apply(); });
+    b.addEventListener('click', () => { active = active === t ? null : t; if (active && window.KW) KW.add('#' + t); apply(); });
     tagBox.appendChild(b);
   });
-  if (all.length) tools.appendChild(tagBox);
+  if (all.length) {
+    const tg = document.createElement('button');
+    tg.type = 'button'; tg.className = 'toc-tagtg'; tg.setAttribute('aria-expanded', 'false');
+    tg.textContent = '태그 ' + all.length + '개';
+    tagBox.hidden = true;
+    tg.addEventListener('click', () => { const on = tagBox.hidden; tagBox.hidden = !on; tg.setAttribute('aria-expanded', String(on)); });
+    tools.append(tg, tagBox);
+  }
+  q.addEventListener('keydown', (e) => { if (e.key === 'Enter' && q.value.trim() && window.KW) KW.add(q.value); });
+  const more = document.createElement('a');
+  more.className = 'toc-more'; more.href = 'keywords.html'; more.textContent = '전체 페이지 키워드 보기 →';
+  tools.appendChild(more);
   toc.before(tools, info);
   toc.replaceChildren(frag);
 

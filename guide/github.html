@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GitHub · 나의 개발 스텝</title>
 <link rel="stylesheet" href="guide.css">
+<link rel="stylesheet" href="site-ui.css">
+<link rel="stylesheet" href="guide-ui.css">
+<script src="search-index.js" defer></script>
+<script src="site-nav.js" defer></script>
 <script src="guide.js" defer></script>
 </head>
 <body>
 <header>
 <p><a href="vscode-guide.html">나의 개발 스텝</a></p>
 <h1>GitHub</h1>
-<nav aria-label="공통 메뉴">
-<a href="vscode-guide.html">개요</a>
-<a href="git.html">Git</a>
-<a href="github.html" aria-current="page">GitHub</a>
-<a href="vscode.html">VS Code</a>
-</nav>
+<div class="sitenav"></div>
+<nav class="tabs" aria-label="공통 메뉴"></nav>
 </header>
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
@@ -84,12 +84,6 @@
 </details>
 </section>
 </main>
-<aside class="quick"><b>공통 메뉴</b><nav aria-label="스크롤 공통 메뉴">
-<a href="vscode-guide.html">개요</a>
-<a href="git.html">Git</a>
-<a href="github.html" aria-current="page">GitHub</a>
-<a href="vscode.html">VS Code</a>
-</nav></aside>
 </div>
 </body>
 </html>

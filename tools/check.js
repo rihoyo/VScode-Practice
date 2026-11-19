@@ -2,7 +2,8 @@
 //  1) 지도 데이터(map-data.js) 구조 검사
 //  2) 가이드 스크립트 문법 검사
 //  3) 페이지 사이 링크와 앵커(#id)가 실제로 있는지 검사
-//  4) 설명문이 "~다." 문체인지, 폰트가 고딕만 쓰이는지 검사
+//  4) 키워드 색인(search-index.js)이 최신인지, 메인 페이지 이동 메뉴의 목록이 실제 파일과 맞는지 검사
+//  5) 설명문이 "~다." 문체인지, 폰트가 고딕만 쓰이는지 검사
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
@@ -33,7 +34,7 @@ const linked = new Set(EDGES.flatMap((e) => [e.a, e.b]));
 for (const [id, n] of Object.entries(NODES)) if (!n.ghost && !linked.has(id)) errors.push(`노드 ${id}: 연결이 하나도 없다`);
 
 // ── 2) 문법 ──
-for (const f of ['guide.js', 'map-data.js', 'guide-map.js']) {
+for (const f of ['guide.js', 'site-nav.js', 'keywords.js', 'linux.js', 'linux-viz.js', 'network.js', 'network-field.js', 'map-data.js', 'guide-map.js', 'search-index.js']) {
   const r = spawnSync(process.execPath, ['--check', path.join(guide, f)], { encoding: 'utf8' });
   if (r.status !== 0) errors.push(`${f} 문법 오류:\n${r.stderr}`);
 }
@@ -52,6 +53,21 @@ const checkHref = (from, href) => {
 for (const f of pages) for (const m of html[f].matchAll(/href="([^"]+)"/g)) checkHref(f, m[1]);
 for (const e of EDGES) if (e.link) checkHref('map-data.js', e.link);
 for (const n of Object.values(NODES)) if (n.link) checkHref('map-data.js', n.link);
+
+// ── 3-1) 키워드 색인과 페이지 전환 메뉴 ──
+const indexFile = path.join(guide, 'search-index.js');
+if (!fs.existsSync(indexFile) || fs.readFileSync(indexFile, 'utf8') !== require('./build-index.js').generate())
+  errors.push('search-index.js가 최신이 아니다. tools 폴더에서 npm run build 를 실행한다');
+const nav = fs.readFileSync(path.join(guide, 'site-nav.js'), 'utf8');
+const menuPages = [...nav.matchAll(/href: '([^']+)'/g)].map((m) => m[1]);
+for (const p of menuPages) if (!html[p]) errors.push('site-nav.js: 메뉴에 있는 페이지 ' + p + '가 없다');
+for (const f of pages) if (!menuPages.includes(f)) errors.push(f + ': site-nav.js의 페이지 전환 메뉴에 등록되지 않았다');
+for (const f of pages) {
+  if (!/class="sitenav"/.test(html[f])) errors.push(f + ': 메인 페이지 이동 드롭다운 자리(<div class="sitenav">)가 없다');
+  for (const m of html[f].matchAll(/<a[^>]*href="#([^"]+)"[^>]*data-tags="([^"]*)"/g)) {
+    if (!anchors[f].has(m[1])) errors.push(f + ': 목차 앵커 #' + m[1] + '가 없다');
+  }
+}
 
 // ── 4) 문체와 폰트 ──
 // 설명문은 "~다." 로 끝낸다. 반말 어미(야/어/해/줘/와/봐/써/돼/워/둬 + 마침표)가 보이면 알려준다.
@@ -78,7 +94,7 @@ for (const f of fs.readdirSync(guide).filter((x) => x.endsWith('.css'))) {
     errors.push(`${f}: 바탕·명조(serif) 계열 폰트가 보인다. 고딕만 쓴다`);
 }
 
-// ── 5) 에이전트 목록(projects/README.md)의 폴더와 규칙 파일이 실제로 있는지 ──
+// ── 6) 에이전트 목록(projects/README.md)의 폴더와 규칙 파일이 실제로 있는지 ──
 const registry = path.join(root, 'projects', 'README.md');
 if (fs.existsSync(registry)) {
   for (const line of fs.readFileSync(registry, 'utf8').split('\n')) {

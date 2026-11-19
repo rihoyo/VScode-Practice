@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VS Code · 나의 개발 스텝</title>
 <link rel="stylesheet" href="guide.css">
+<link rel="stylesheet" href="site-ui.css">
+<link rel="stylesheet" href="guide-ui.css">
+<script src="search-index.js" defer></script>
+<script src="site-nav.js" defer></script>
 <script src="guide.js" defer></script>
 </head>
 <body>
 <header>
 <p><a href="vscode-guide.html">나의 개발 스텝</a></p>
 <h1>VS Code</h1>
-<nav aria-label="공통 메뉴">
-<a href="vscode-guide.html">개요</a>
-<a href="git.html">Git</a>
-<a href="github.html">GitHub</a>
-<a href="vscode.html" aria-current="page">VS Code</a>
-</nav>
+<div class="sitenav"></div>
+<nav class="tabs" aria-label="공통 메뉴"></nav>
 </header>
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
@@ -76,12 +76,6 @@
 <p>설치 후 터미널을 새로 열고 <code>claude --version</code>을 실행한다. 버전 숫자가 나오면 성공이다. 작업 폴더에서 <code>claude</code>를 입력하면 첫 실행 때 로그인 안내가 나온다.</p>
 </section>
 </main>
-<aside class="quick"><b>공통 메뉴</b><nav aria-label="스크롤 공통 메뉴">
-<a href="vscode-guide.html">개요</a>
-<a href="git.html">Git</a>
-<a href="github.html">GitHub</a>
-<a href="vscode.html" aria-current="page">VS Code</a>
-</nav></aside>
 </div>
 </body>
 </html>

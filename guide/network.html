@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>네트워크 · 나의 개발 스텝</title>
+<link rel="stylesheet" href="site-ui.css">
+<link rel="stylesheet" href="network.css">
+<script src="search-index.js" defer></script>
+<script src="site-nav.js" defer></script>
+<script src="network.js" defer></script>
+<script src="network-field.js" defer></script>
+</head>
+<body class="network">
+<canvas id="field" aria-hidden="true"></canvas>
+<header class="hero">
+<div class="sitenav"></div>
+<p class="eyebrow">NETWORK ARCHITECTURE <span>ON-PREM · CLOUD · HYBRID</span></p>
+<h1>연결은<br><em>수학</em>이고,<br>구조는 설계다.</h1>
+<p class="lead">온프레미스와 클라우드, 하이브리드의 구조를 이해하고 설계하고 구축해 자격 시험까지 간다. 확인한 단계만 완료로 표시한다.</p>
+<div class="hud" aria-live="off"><span>NODES <b id="h-n">0</b></span><span>LINKS <b id="h-e">0</b></span><span>⟨k⟩ <b id="h-k">0</b></span><span class="st">예정</span></div>
+<a class="cue" href="#net-intro">학습 순서 ↓</a>
+</header>
+<div class="body">
+<nav class="rail" data-toc aria-label="이 페이지의 목차">
+<b>목차</b>
+<a href="#net-intro" data-tags="네트워크 개념 학습순서">학습 순서</a>
+<a href="#net-model" data-tags="네트워크 OSI TCP/IP 계층">계층 모델</a>
+<a href="#net-math" data-tags="네트워크 IP 서브넷 CIDR 계산">주소와 서브넷 계산</a>
+<a href="#net-onprem" data-tags="네트워크 온프레미스 VLAN 방화벽">온프레미스 구조</a>
+<a href="#net-cloud" data-tags="네트워크 클라우드 VPC 구조">클라우드 구조</a>
+<a href="#net-hybrid" data-tags="네트워크 하이브리드 VPN 전용선">하이브리드 연결</a>
+<a href="#net-design" data-tags="네트워크 설계 순서">설계 순서</a>
+<a href="#net-cert" data-tags="네트워크 자격증 시험">자격 시험</a>
+<a class="kwlink" href="keywords.html">키워드 검색 →</a>
+</nav>
+<main>
+<section id="net-intro" class="ch">
+<div class="no">01</div>
+<div class="txt">
+<h2>학습 순서</h2>
+<p>순서는 <b>계층 모델 → 주소 계산 → 온프레미스 → 클라우드 → 하이브리드 → 설계 → 자격 시험</b>이다. 서버 쪽 기초는 <a href="linux.html">리눅스</a>와 함께 본다.</p>
+</div>
+</section>
+<section id="net-model" class="ch">
+<div class="no">02</div>
+<div class="txt">
+<h2>계층 모델</h2>
+<table class="ruled">
+<thead><tr><th>OSI 계층</th><th>TCP/IP 계층</th><th>다루는 것</th></tr></thead>
+<tbody>
+<tr><td>7 응용 · 6 표현 · 5 세션</td><td>응용</td><td>HTTP, DNS, SSH</td></tr>
+<tr><td>4 전송</td><td>전송</td><td>TCP, UDP, 포트</td></tr>
+<tr><td>3 네트워크</td><td>인터넷</td><td>IP 주소, 라우팅</td></tr>
+<tr><td>2 데이터 링크 · 1 물리</td><td>네트워크 접근</td><td>MAC 주소, 스위칭, 케이블</td></tr>
+</tbody>
+</table>
+<p class="cap">표 2-1 · 계층별 대응</p>
+</div>
+</section>
+<section id="net-math" class="ch">
+<div class="no">03</div>
+<div class="txt">
+<h2>주소와 서브넷 계산</h2>
+<p>IPv4 주소는 32비트이고, CIDR 표기의 <code>/n</code>은 앞의 n비트가 네트워크 부분이라는 뜻이다. 남는 호스트 부분이 <code>32 − n</code>비트이므로 주소 개수와 장비에 쓰는 주소 개수는 다음과 같다.</p>
+<div class="eq">전체 주소 = 2<sup>32 − n</sup> &nbsp;&nbsp;·&nbsp;&nbsp; 장비에 쓰는 주소 = 2<sup>32 − n</sup> − 2</div>
+<p>네트워크 주소와 브로드캐스트 주소는 장비에 줄 수 없어 2개를 뺀다. 아래 칸에 주소를 넣으면 계산 결과와 32비트 구조가 바로 보인다.</p>
+<form class="calc" id="calc" autocomplete="off">
+<label for="cidr">주소/접두사 길이</label>
+<div class="row"><input id="cidr" value="10.0.0.0/24" inputmode="text" spellcheck="false"><button type="submit">계산</button></div>
+<p class="err" id="calc-err" role="alert" hidden></p>
+<div class="bits" id="bits" aria-label="32비트 구조"></div>
+<p class="legend"><i class="n"></i>네트워크 부분 <i class="h"></i>호스트 부분</p>
+<dl class="res" id="calc-res"></dl>
+</form>
+<table class="ruled">
+<thead><tr><th>표기</th><th>전체 주소</th><th>장비에 쓰는 주소</th></tr></thead>
+<tbody>
+<tr><td><code>/24</code></td><td>256</td><td>254</td></tr>
+<tr><td><code>/26</code></td><td>64</td><td>62</td></tr>
+<tr><td><code>/28</code></td><td>16</td><td>14</td></tr>
+</tbody>
+</table>
+<p class="cap">표 3-1 · 자주 쓰는 접두사 길이</p>
+<p>클라우드는 서브넷마다 몇 개의 주소를 예약하므로 쓸 수 있는 개수가 이보다 적다. 서비스별 예약 규칙은 공식 문서로 확인한다.</p>
+</div>
+</section>
+<section id="net-onprem" class="ch">
+<div class="no">04</div>
+<div class="txt">
+<h2>온프레미스 구조</h2>
+<ul>
+<li><b>접근 · 분배 · 코어</b>의 3계층으로 스위치를 나누는 구성이 전통적이다.</li>
+<li><b>VLAN</b>으로 같은 스위치 안에서도 네트워크를 논리적으로 나눈다.</li>
+<li><b>방화벽</b>과 <b>DMZ</b>로 외부에 공개하는 서버와 내부 서버를 분리한다.</li>
+</ul>
+</div>
+</section>
+<section id="net-cloud" class="ch">
+<div class="no">05</div>
+<div class="txt">
+<h2>클라우드 구조</h2>
+<p>클라우드는 가상 네트워크 안에 서브넷, 라우팅, 보안 규칙을 소프트웨어로 만든다. 이름만 다르고 개념은 비슷하다.</p>
+<table class="ruled">
+<thead><tr><th>개념</th><th>AWS</th><th>Azure</th><th>Google Cloud</th></tr></thead>
+<tbody>
+<tr><td>가상 네트워크</td><td>VPC</td><td>VNet</td><td>VPC</td></tr>
+<tr><td>인터넷 출입구</td><td>인터넷 게이트웨이</td><td>공용 IP와 기본 경로</td><td>기본 인터넷 경로</td></tr>
+<tr><td>트래픽 허용 규칙</td><td>보안 그룹</td><td>네트워크 보안 그룹</td><td>방화벽 규칙</td></tr>
+</tbody>
+</table>
+<p class="cap">표 5-1 · 서비스별 용어 대응</p>
+</div>
+</section>
+<section id="net-hybrid" class="ch">
+<div class="no">06</div>
+<div class="txt">
+<h2>하이브리드 연결</h2>
+<p>온프레미스와 클라우드를 잇는 방식은 크게 두 가지다. <b>사이트 간 VPN</b>은 인터넷 위에 암호화된 터널을 만들어 빠르게 구축하고, <b>전용선</b>은 통신사 회선으로 대역폭과 지연을 안정적으로 확보한다. 경로 정보 교환에는 보통 BGP를 쓴다.</p>
+<svg class="fig" viewBox="0 0 640 190" role="img" aria-label="온프레미스와 클라우드가 VPN과 전용선으로 연결된 구조">
+<rect class="box" x="20" y="50" width="190" height="90"/>
+<text x="115" y="92" text-anchor="middle">온프레미스</text>
+<text class="s" x="115" y="112" text-anchor="middle">서버 · 스위치 · 방화벽</text>
+<rect class="box" x="430" y="50" width="190" height="90"/>
+<text x="525" y="92" text-anchor="middle">클라우드</text>
+<text class="s" x="525" y="112" text-anchor="middle">VPC · 서브넷 · 라우팅</text>
+<path class="ln dash" d="M210 78H430"/><text class="s" x="320" y="70" text-anchor="middle">사이트 간 VPN</text>
+<path class="ln" d="M210 118H430"/><text class="s" x="320" y="138" text-anchor="middle">전용선</text>
+<text class="s" x="320" y="176" text-anchor="middle">두 쪽의 IP 대역은 겹치지 않아야 한다</text>
+</svg>
+<p class="cap">그림 6-1 · 하이브리드 연결 구성</p>
+</div>
+</section>
+<section id="net-design" class="ch">
+<div class="no">07</div>
+<div class="txt">
+<h2>설계 순서</h2>
+<ol class="flowv">
+<li><b>요구사항</b> 사용자 수, 서비스 위치, 가용성 목표, 예산을 정리한다.</li>
+<li><b>IP 계획</b> 온프레미스와 클라우드의 대역이 겹치지 않아야 나중에 연결할 수 있다.</li>
+<li><b>서브넷 분리</b> 공개 영역, 내부 영역, 데이터 영역으로 나눈다.</li>
+<li><b>연결 방식</b> VPN과 전용선, 이중화 여부를 고른다.</li>
+<li><b>보안과 점검</b> 규칙을 적용하고 장애 상황을 가정해 확인한다.</li>
+</ol>
+</div>
+</section>
+<section id="net-cert" class="ch">
+<div class="no">08</div>
+<div class="txt">
+<h2>자격 시험</h2>
+<table class="ruled">
+<thead><tr><th>단계</th><th>시험</th><th>성격</th><th>상태</th></tr></thead>
+<tbody>
+<tr><td>입문</td><td>CompTIA Network+</td><td>네트워크 공통 기초</td><td><span class="st">예정</span></td></tr>
+<tr><td>입문</td><td>Cisco CCNA</td><td>스위칭, 라우팅, 장비 설정</td><td><span class="st">예정</span></td></tr>
+<tr><td>클라우드</td><td>AWS Solutions Architect – Associate</td><td>AWS 구조 설계 전반</td><td><span class="st">예정</span></td></tr>
+<tr><td>클라우드</td><td>Azure AZ-700</td><td>Azure 네트워크 설계와 구현</td><td><span class="st">예정</span></td></tr>
+<tr><td>전문</td><td>AWS Advanced Networking – Specialty</td><td>하이브리드와 복잡한 네트워크 설계</td><td><span class="st">예정</span></td></tr>
+<tr><td>전문</td><td>Google Professional Cloud Network Engineer</td><td>Google Cloud 네트워크 설계와 운영</td><td><span class="st">예정</span></td></tr>
+</tbody>
+</table>
+<p class="cap">표 8-1 · 단계별 시험 후보</p>
+<p>시험 이름과 범위는 개편될 수 있으므로 응시 전에 공식 안내를 확인한다.</p>
+</div>
+</section>
+</main>
+</div>
+</body>
+</html>

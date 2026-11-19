@@ -4,7 +4,8 @@
   "private": true,
   "description": "VS Code 실습 가이드의 개발 도구. 지도 물리 엔진(d3) 관리와 가이드 검사를 맡는다.",
   "scripts": {
-    "build": "node sync-vendor.js",
+    "build": "node sync-vendor.js && node build-index.js",
+    "index": "node build-index.js",
     "check": "node check.js"
   },
   "dependencies": {
