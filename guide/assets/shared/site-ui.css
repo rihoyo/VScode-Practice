@@ -1,7 +1,11 @@
 /* 사이트 공용 UI: 메인 페이지 이동 드롭다운, 사이트 안 메뉴(탭), 스크롤하면 나타나는 고정 메뉴바
  * 색은 각 사이트의 CSS가 변수(--panel, --line2, --accent, --acc-rgb, --ink, --mute, --bar, --shadow, --mono)로 정한다.
  * 모서리는 각지게, 폰트는 고딕만. */
-.sitenav{position:absolute;top:1.1rem;right:max(1.25rem,calc((100% - 89rem)/2));z-index:30}
+.sitenav{position:absolute;top:1.1rem;left:max(1.25rem,calc((100% - 89rem)/2));right:max(1.25rem,calc((100% - 89rem)/2));z-index:30;display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+.hd-tools{display:flex;align-items:center;gap:.5rem}
+.hd-tools .pm-btn{min-width:0}
+.hd-tools .tb-kw{padding:.35rem .8rem;background:var(--panel);font-size:.85rem;font-weight:700;color:var(--ink)}
+.hd-tools .tb-kw:hover{color:var(--accent)}
 .pm{position:relative;flex:none}
 .pm-btn{display:inline-flex;align-items:center;gap:.55rem;min-width:10.5rem;padding:.35rem .7rem;border:1px solid var(--line2);border-radius:0;background:var(--panel);color:var(--ink);
   font:700 .85rem/1.6 var(--mono);cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}
@@ -11,10 +15,16 @@
 .pm-cur{flex:1;text-align:left;white-space:nowrap}
 .pm-caret{font-size:.7rem;color:var(--mute);transition:transform .25s}
 .pm-btn[aria-expanded="true"] .pm-caret{transform:rotate(180deg)}
-.pm-list{position:absolute;right:0;top:calc(100% + .4rem);width:min(22rem,calc(100vw - 2rem));max-height:min(32rem,calc(100vh - 6rem));overflow:auto;
+.pm-list{position:absolute;left:0;top:calc(100% + .4rem);width:min(22rem,calc(100vw - 2rem));max-height:min(32rem,calc(100vh - 6rem));overflow:auto;
   background:var(--panel);border:1px solid var(--line2);border-top:2px solid var(--accent);box-shadow:8px 8px 0 var(--shadow);padding:.4rem;animation:pmin .22s}
 .pm-list[hidden]{display:none}
-.topbar .pm-list{right:auto;left:0}
+.tg .pm-list{left:auto;right:0}
+.tg-pop{width:min(26rem,calc(100vw - 2rem))}
+.tg-row{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 .5rem .4rem}
+.tg-chip{display:inline-flex;align-items:baseline;gap:.35rem;padding:.1rem .55rem;border:1px solid var(--line2);font:.78rem/1.6 var(--mono);color:var(--ink);text-decoration:none;transition:border-color .15s,color .15s,background .15s}
+.tg-chip small{font-size:.66rem;color:var(--mute)}
+.tg-chip:hover,.tg-chip:focus-visible{border-color:var(--accent);color:var(--accent);background:rgba(var(--acc-rgb),.08)}
+.tg-none{margin:.5rem .6rem;color:var(--mute);font-size:.85rem}
 @keyframes pmin{from{opacity:0;transform:translateY(-6px)}}
 .pm-g{margin:.5rem .6rem .3rem;font:700 .68rem/1.4 var(--mono);letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
 .pm-it{display:grid;grid-template-columns:.7rem 1fr;gap:0 .75rem;align-items:center;padding:.6rem .6rem;color:var(--ink);text-decoration:none;border:1px solid transparent;
@@ -58,9 +68,41 @@ header .tabs{margin:1rem 0 0}
 .tb-kw{flex:none;padding:.15rem .6rem;border:1px solid var(--line2);font:.78rem/1.6 var(--mono);color:var(--mute);text-decoration:none;white-space:nowrap}
 .tb-kw:hover,.tb-kw[aria-current="page"]{color:var(--accent);border-color:var(--accent)}
 @media(max-width:700px){
-  .sitenav{position:static;margin:0 0 1rem}
+  .sitenav{position:static;margin:0 0 1rem;flex-wrap:wrap}
+  .hd-tools .tb-kw{display:inline-block}
+  .tg-pop{position:fixed;left:1rem;right:1rem;top:auto;width:auto}
   .tb-search input{width:5.5rem}
   .tb-kw{display:none}
   .topbar{gap:.5rem}
 }
 [id]{scroll-margin-top:4.5rem}
+
+.pm-list p::before{content:none}
+
+/* 키워드 검색 패널: 입력칸 + 비었을 때 태그, 입력하면 관련 키워드와 섹션 */
+.kq{display:flex;margin:.3rem .4rem .2rem;border:1px solid var(--line2);background:var(--bg,var(--panel))}
+.kq:focus-within,.tb-search:focus-within{border-color:var(--accent)}
+.kq input{flex:1;min-width:0;border:0;border-radius:0;background:transparent;color:var(--ink);padding:.45rem .7rem;font:.9rem/1.5 var(--mono);outline:none}
+.kq button{border:0;background:transparent;color:var(--mute);padding:0 .8rem;cursor:pointer;font:1rem var(--mono)}
+.kq button:hover{color:var(--accent)}
+.kq-res mark,.tg-chip mark,.sg-it mark{background:rgba(var(--acc-rgb),.28);color:inherit;padding:0}
+.sg-list{display:grid;gap:1px;padding:0 .3rem .3rem}
+.sg-it{display:flex;justify-content:space-between;gap:.8rem;padding:.4rem .5rem;border:1px solid transparent;color:var(--ink);text-decoration:none;font-size:.88rem;line-height:1.5}
+.sg-it span{flex:none;font:.7rem/1.9 var(--mono);color:var(--mute)}
+.sg-it:hover,.sg-it:focus-visible{background:rgba(var(--acc-rgb),.08);border-color:var(--line2);outline:none}
+.sg-all{display:block;margin:.2rem .4rem .3rem;padding:.4rem .5rem;border-top:1px solid var(--line2);font:.8rem/1.5 var(--mono);color:var(--accent);text-decoration:none}
+.sg-all:hover,.sg-all:focus-visible{color:var(--ink-strong,var(--ink));outline:none}
+.tb-search .pm-list{left:auto;right:0}
+.tb-search.pm{position:relative}
+.tb-search .tg-pop{width:min(26rem,calc(100vw - 2rem))}
+
+/* 리눅스 계열 전환 스위치(혼합 · Debian · Red Hat) */
+.dsw{display:inline-flex;flex:none;border:1px solid var(--line2);background:var(--panel)}
+.dsw button{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border:0;border-right:1px solid var(--line2);border-radius:0;background:transparent;color:var(--mute);font:700 .78rem/1.6 var(--mono);cursor:pointer;transition:background .15s,color .15s}
+.dsw button:last-child{border-right:0}
+.dsw button:hover{color:var(--ink)}
+.dsw button.on{background:rgba(var(--acc-rgb),.16);color:var(--accent);box-shadow:inset 0 -2px var(--accent)}
+.dsw i{width:.55rem;height:.55rem;flex:none}
+.dsw .dp-mix{background:linear-gradient(90deg,#f26a3b 50%,#ff4545 50%)}.dsw .dp-deb{background:#f26a3b}.dsw .dp-rh{background:#ff4545}
+.topbar .dsw button{padding:.15rem .6rem;font-size:.74rem}
+@media(max-width:700px){.dsw button{padding:.25rem .45rem;font-size:.7rem}.dsw i{display:none}.topbar .tb-where{display:none}}

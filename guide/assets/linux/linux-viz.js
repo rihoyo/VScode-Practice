@@ -18,7 +18,14 @@
   ];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let w = 0, h = 0, dpr = 1, sel = 2, selAt = 0, yv = 0, hoverUntil = 0, visible = true, t0 = performance.now();
-  const G = '94,224,143';
+  const root = document.documentElement;
+  let G = '94,224,143', PANEL = '#0c110e', BG = '#080b09', MUTE = '#7e9486', DIM = '#4b5e53', INK = '#f2fbf5';
+  function theme() {
+    const s = getComputedStyle(root), v = (n) => s.getPropertyValue(n).trim();
+    G = v('--acc-rgb') || G; PANEL = v('--panel') || PANEL; BG = v('--bg') || BG; MUTE = v('--mute') || MUTE; DIM = v('--dim') || DIM; INK = v('--ink-strong') || INK;
+  }
+  theme();
+  document.addEventListener('distro', () => { theme(); if (reduce) draw(performance.now()); });
 
   function size() {
     dpr = Math.min(devicePixelRatio || 1, 2);
@@ -49,7 +56,7 @@
       g.strokeStyle = `rgba(${G},${0.12 / i})`; g.lineWidth = 1;
       g.strokeRect(L.sx + i * 7 + .5, L.sy - i * 7 + .5, L.sw, L.sh);
     }
-    g.fillStyle = 'rgba(12,17,14,.92)'; g.fillRect(L.sx, L.sy, L.sw, L.sh);
+    g.fillStyle = PANEL; g.fillRect(L.sx, L.sy, L.sw, L.sh);
     g.strokeStyle = `rgba(${G},.45)`; g.strokeRect(L.sx + .5, L.sy + .5, L.sw, L.sh);
     // 선택 줄 부드럽게 이동
     const target = L.sy + sel * L.rh;
@@ -61,11 +68,11 @@
     ROWS.forEach((r, i) => {
       const y = L.sy + i * L.rh + L.rh / 2, on = i === sel;
       g.font = `${fs}px ${MONO}`;
-      g.fillStyle = on ? `rgba(${G},.9)` : 'rgba(126,148,134,.7)';
+      g.fillStyle = on ? `rgba(${G},.9)` : MUTE;
       g.fillText(r[0], L.sx + 10, y);
-      g.fillStyle = on ? '#f2fbf5' : 'rgba(212,228,218,.75)';
+      g.fillStyle = on ? INK : MUTE;
       g.fillText('/' + r[1], L.sx + 10 + fs * 7.6, y);
-      g.fillStyle = 'rgba(75,94,83,.9)';
+      g.fillStyle = DIM;
       g.textAlign = 'right'; g.fillText(r[1] === 'tmp' ? '1777' : String(4096), L.sx + L.sw - 10, y); g.textAlign = 'left';
       g.strokeStyle = 'rgba(94,224,143,.08)'; g.beginPath(); g.moveTo(L.sx, L.sy + (i + 1) * L.rh + .5); g.lineTo(L.sx + L.sw, L.sy + (i + 1) * L.rh + .5); g.stroke();
     });
@@ -87,13 +94,13 @@
     g.font = `11px ${MONO}`;
     const lines = wrap(r[3].slice(0, n), L.cw - 20);
     const bh = 40 + Math.max(1, wrap(r[3], L.cw - 20).length) * 16;
-    g.fillStyle = 'rgba(8,11,9,.95)'; g.fillRect(L.cx, by, L.cw, bh);
+    g.fillStyle = BG; g.fillRect(L.cx, by, L.cw, bh);
     g.strokeStyle = `rgba(${G},.7)`; g.strokeRect(L.cx + .5, by + .5, L.cw, bh);
-    g.fillStyle = '#f2fbf5'; g.font = `700 12px ${MONO}`; g.fillText('/' + r[1] + '  ' + r[2], L.cx + 10, by + 16);
-    g.font = `11px ${MONO}`; g.fillStyle = 'rgba(126,148,134,1)';
+    g.fillStyle = INK; g.font = `700 12px ${MONO}`; g.fillText('/' + r[1] + '  ' + r[2], L.cx + 10, by + 16);
+    g.font = `11px ${MONO}`; g.fillStyle = MUTE;
     lines.forEach((ln, i) => g.fillText(ln, L.cx + 10, by + 38 + i * 16));
     if (!reduce && Math.floor(t * 2) % 2 === 0) { g.fillStyle = `rgba(${G},1)`; g.fillRect(L.sx + 10, L.sy + L.sh + 12, 7, 12); }
-    g.fillStyle = 'rgba(126,148,134,.9)'; g.font = `11px ${MONO}`; g.fillText('$ ls -l /', L.sx + 22, L.sy + L.sh + 18);
+    g.fillStyle = MUTE; g.font = `11px ${MONO}`; g.fillText('$ ls -l /', L.sx + 22, L.sy + L.sh + 18);
   }
 
   function pick(i) { if (i !== sel) { sel = i; selAt = performance.now(); } }

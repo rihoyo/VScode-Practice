@@ -1,7 +1,6 @@
 # VScode-Practice
 vscode가 익숙해지기까지 필요한 과정 공유<br>
 회사에서 처음 구축하고 이후 환경과 상관없이 작업을 이어갈 예정  
-참고로 줄바꿈은 `<br>` or `</br>`를 쓰거나 공백 2회를 하고 enter 하면 됨
 
 ## 열기
 
@@ -16,7 +15,7 @@ VScode-Practice/
 ├─ CLAUDE.md        AGENTS.md를 불러오는 한 줄
 ├─ index.html       홈페이지 진입점
 ├─ projects/        에이전트 목록(README.md)과 새 에이전트 템플릿
-├─ guide/           홈페이지 원문 + guide 에이전트 규칙(AGENTS.md, STATUS.md, TASKS.md)
+├─ guide/           홈페이지(html, assets/ 코드, data/ 데이터) + guide 에이전트 규칙(AGENTS.md, STATUS.md, TASKS.md)
 ├─ docs/blog/       티스토리용 마크다운과 변환 규칙 (blog 에이전트)
 └─ tools/           Node.js 도구 (검사, 라이브러리 복사)
 ```

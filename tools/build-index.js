@@ -1,5 +1,5 @@
 // 키워드 검색 색인 생성기. 실행: npm run build (또는 node build-index.js)
-// 각 페이지의 목차 링크(제목, data-tags)와 해당 섹션 본문에서 guide/search-index.js를 만든다.
+// 각 페이지의 목차 링크(제목, data-tags)와 해당 섹션 본문에서 guide/data/generated/search-index.js를 만든다.
 // 홈페이지는 서버 없이 열리므로 다른 페이지를 읽어 올 수 없어서 색인을 파일로 미리 만들어 둔다.
 const fs = require('fs');
 const path = require('path');
@@ -46,6 +46,8 @@ function generate() {
 module.exports = { generate };
 if (require.main === module) {
   const text = generate();
-  fs.writeFileSync(path.join(guide, 'search-index.js'), text);
-  console.log(`색인 생성 · 항목 ${(text.match(/\{"p":/g) || []).length}개 → guide/search-index.js`);
+  const out = path.join(guide, 'data', 'generated', 'search-index.js');
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, text);
+  console.log(`색인 생성 · 항목 ${(text.match(/\{"p":/g) || []).length}개 → guide/data/generated/search-index.js`);
 }

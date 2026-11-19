@@ -8,8 +8,9 @@
 | --- | --- |
 | `package.json` | 명령어와 의존성(d3 7.9.0)을 적은 파일. 사람이 직접 고치는 파일이다 |
 | `package-lock.json` | 설치된 정확한 버전 기록. 자동 생성되며 수정하지 않는다. 커밋한다 |
-| `check.js` | 가이드 검사. 지도 데이터, 문법, 링크와 앵커, `~다.` 문체, 고딕 폰트를 확인한다 |
-| `build-index.js` | 각 페이지의 목차 태그와 본문으로 `guide/search-index.js`(키워드 색인)를 만든다. `npm run build`가 함께 실행한다 |
+| `check.js` | 가이드 검사. 지도 데이터, 문법, 링크와 앵커, 공용 파일 연결, 용어 사전, 리눅스 실습 단계(시뮬레이터 실행), `~다.` 문체, 고딕 폰트를 확인한다 |
+| `build-index.js` | 각 페이지의 목차 태그와 본문으로 `guide/data/generated/search-index.js`(키워드 색인)를 만든다. `npm run build`가 함께 실행한다 |
+| `build-glossary.js` | `guide/data/glossary/*.json`(용어 사전)을 검사하고 `guide/data/generated/glossary-data.js`로 만든다. 필수 칸 누락, 오타 칸, 중복 용어, 줄임말의 풀네임 누락을 잡는다 |
 | `sync-vendor.js` | 받아 둔 d3를 `guide/vendor/`에 복사한다 |
 | `node_modules/` | 내려받은 패키지. 용량이 크고 재생성할 수 있어 Git에서 제외한다 |
 
@@ -21,7 +22,7 @@ VS Code 터미널(`` Ctrl+` ``)에서 `tools` 폴더로 이동한 뒤 실행한�
 cd tools
 npm install        # 처음 한 번, 또는 package.json을 고쳤을 때
 npm run check      # 가이드를 고친 뒤 커밋하기 전에
-npm run build      # d3 버전을 바꿨을 때만
+npm run build      # 용어 사전·페이지 목차를 고친 뒤, d3 버전을 바꿨을 때
 ```
 
 저장소 루트에서 바로 실행하려면 `npm --prefix tools run check` 를 쓴다.

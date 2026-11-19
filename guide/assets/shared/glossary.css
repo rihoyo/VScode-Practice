@@ -1,0 +1,13 @@
+/* 용어 설명창 (glossary.js): 용어에 점선 밑줄, 마우스를 올리면 가벼운 설명창 */
+.gl{border-bottom:1px dotted var(--accent);cursor:help;transition:background .15s}
+.gl:hover,.gl:focus-visible{background:rgba(var(--acc-rgb),.16);outline:none}
+.gl-tip{position:fixed;z-index:70;max-width:min(22rem,calc(100vw - 16px));padding:.55rem .8rem .7rem;background:var(--panel);border:1px solid var(--line2);border-top:2px solid var(--accent);
+  box-shadow:6px 6px 0 var(--shadow);color:var(--ink);font-size:.82rem;line-height:1.6;font-weight:400;pointer-events:none;animation:glin .12s}
+.gl-tip[hidden]{display:none}
+@keyframes glin{from{opacity:0;transform:translateY(3px)}}
+.gl-h b{font:700 .95rem/1.5 var(--mono);color:var(--accent)}
+.gl-tip dl{display:grid;grid-template-columns:auto 1fr;gap:.1rem .7rem;margin:.3rem 0 .35rem;padding:.3rem 0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.gl-tip dt{font:700 .66rem/1.9 var(--mono);letter-spacing:.08em;color:var(--mute)}
+.gl-tip dd{margin:0;font-size:.82rem}
+.gl-tip p{margin:0}
+.gl-tip dd,.gl-tip p,.gl-tip dt{font-weight:400}.gl-tip dt{font-weight:700}

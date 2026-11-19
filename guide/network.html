@@ -4,19 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>네트워크 · 나의 개발 스텝</title>
-<link rel="stylesheet" href="site-ui.css">
-<link rel="stylesheet" href="network.css">
-<script src="search-index.js" defer></script>
-<script src="site-nav.js" defer></script>
-<script src="network.js" defer></script>
-<script src="network-field.js" defer></script>
+<link rel="stylesheet" href="assets/shared/site-ui.css">
+<link rel="stylesheet" href="assets/shared/glossary.css">
+<link rel="stylesheet" href="assets/network/network.css">
+<script src="data/generated/search-index.js" defer></script>
+<script src="data/generated/glossary-data.js" defer></script>
+<script src="data/sites.js" defer></script>
+<script src="assets/shared/site-nav.js" defer></script>
+<script src="assets/shared/glossary.js" defer></script>
+<script src="assets/network/network.js" defer></script>
+<script src="assets/network/network-field.js" defer></script>
 </head>
 <body class="network">
 <canvas id="field" aria-hidden="true"></canvas>
 <header class="hero">
 <div class="sitenav"></div>
 <p class="eyebrow">NETWORK ARCHITECTURE <span>ON-PREM · CLOUD · HYBRID</span></p>
-<h1>연결은<br><em>수학</em>이고,<br>구조는 설계다.</h1>
+<h1>온라인의 시작<br><em>네트워크 아키텍처</em> 학습</h1>
 <p class="lead">온프레미스와 클라우드, 하이브리드의 구조를 이해하고 설계하고 구축해 자격 시험까지 간다. 확인한 단계만 완료로 표시한다.</p>
 <div class="hud" aria-live="off"><span>NODES <b id="h-n">0</b></span><span>LINKS <b id="h-e">0</b></span><span>⟨k⟩ <b id="h-k">0</b></span><span class="st">예정</span></div>
 <a class="cue" href="#net-intro">학습 순서 ↓</a>
@@ -90,6 +94,7 @@
 <div class="txt">
 <h2>온프레미스 구조</h2>
 <ul>
+<li>자체 서버실이나 <b>IDC</b>에 장비를 두고 직접 운영하는 구성이다.</li>
 <li><b>접근 · 분배 · 코어</b>의 3계층으로 스위치를 나누는 구성이 전통적이다.</li>
 <li><b>VLAN</b>으로 같은 스위치 안에서도 네트워크를 논리적으로 나눈다.</li>
 <li><b>방화벽</b>과 <b>DMZ</b>로 외부에 공개하는 서버와 내부 서버를 분리한다.</li>

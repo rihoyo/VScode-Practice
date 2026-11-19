@@ -24,7 +24,7 @@ a:hover{color:var(--link-hover)}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 
 /* 헤더 : 터미널 창 */
-header{position:relative;padding:1.4rem max(1.25rem,calc((100% - 89rem)/2)) 1.6rem;border-bottom:1px solid var(--line2);
+header{position:relative;padding:4rem max(1.25rem,calc((100% - 89rem)/2)) 1.6rem;border-bottom:1px solid var(--line2);
   background:linear-gradient(180deg,var(--hd-a),var(--hd-b))}
 header::before{content:"";display:block;width:11px;height:11px;background:#f87171;
   box-shadow:19px 0 #fbbf24,38px 0 #4ade80;margin-bottom:1.3rem}

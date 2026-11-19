@@ -2,7 +2,7 @@
 //  1) 지도 데이터(map-data.js) 구조 검사
 //  2) 가이드 스크립트 문법 검사
 //  3) 페이지 사이 링크와 앵커(#id)가 실제로 있는지 검사
-//  4) 키워드 색인(search-index.js)이 최신인지, 메인 페이지 이동 메뉴의 목록이 실제 파일과 맞는지 검사
+//  4) 키워드 색인과 용어 사전(glossary)이 올바르고 최신인지, 공용 파일 연결이 맞는지, 키워드 색인(search-index.js)이 최신인지, 메인 페이지 이동 메뉴의 목록이 실제 파일과 맞는지 검사
 //  5) 설명문이 "~다." 문체인지, 폰트가 고딕만 쓰이는지 검사
 const fs = require('fs');
 const path = require('path');
@@ -10,8 +10,14 @@ const { spawnSync } = require('child_process');
 
 const root = path.join(__dirname, '..');
 const guide = path.join(root, 'guide');
-const { ST, NODES, EDGES } = require(path.join(guide, 'map-data.js'));
+const { ST, NODES, EDGES } = require(path.join(guide, 'data', 'map-data.js'));
 const errors = [];
+// 폴더 안의 특정 확장자 파일을 모두 찾는다(guide 기준 상대 경로)
+const walk = (dir, ext, base = dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((d) => {
+  if (d.name === 'vendor' || d.name === 'node_modules') return [];
+  const p = path.join(dir, d.name);
+  return d.isDirectory() ? walk(p, ext, base) : d.name.endsWith(ext) ? [path.relative(base, p).replace(/\\/g, '/')] : [];
+});
 
 // ── 1) 지도 데이터 ──
 for (const [id, n] of Object.entries(NODES)) {
@@ -34,7 +40,7 @@ const linked = new Set(EDGES.flatMap((e) => [e.a, e.b]));
 for (const [id, n] of Object.entries(NODES)) if (!n.ghost && !linked.has(id)) errors.push(`노드 ${id}: 연결이 하나도 없다`);
 
 // ── 2) 문법 ──
-for (const f of ['guide.js', 'site-nav.js', 'keywords.js', 'linux.js', 'linux-viz.js', 'network.js', 'network-field.js', 'map-data.js', 'guide-map.js', 'search-index.js']) {
+for (const f of [...walk(path.join(guide, 'assets'), '.js', guide), ...walk(path.join(guide, 'data'), '.js', guide)]) {
   const r = spawnSync(process.execPath, ['--check', path.join(guide, f)], { encoding: 'utf8' });
   if (r.status !== 0) errors.push(`${f} 문법 오류:\n${r.stderr}`);
 }
@@ -51,21 +57,61 @@ const checkHref = (from, href) => {
   if (m[2] && !anchors[page].has(m[2])) errors.push(`${from}: 없는 앵커 ${href}`);
 };
 for (const f of pages) for (const m of html[f].matchAll(/href="([^"]+)"/g)) checkHref(f, m[1]);
-for (const e of EDGES) if (e.link) checkHref('map-data.js', e.link);
-for (const n of Object.values(NODES)) if (n.link) checkHref('map-data.js', n.link);
+for (const e of EDGES) if (e.link) checkHref('data/map-data.js', e.link);
+for (const n of Object.values(NODES)) if (n.link) checkHref('data/map-data.js', n.link);
 
 // ── 3-1) 키워드 색인과 페이지 전환 메뉴 ──
-const indexFile = path.join(guide, 'search-index.js');
+const indexFile = path.join(guide, 'data', 'generated', 'search-index.js');
 if (!fs.existsSync(indexFile) || fs.readFileSync(indexFile, 'utf8') !== require('./build-index.js').generate())
-  errors.push('search-index.js가 최신이 아니다. tools 폴더에서 npm run build 를 실행한다');
-const nav = fs.readFileSync(path.join(guide, 'site-nav.js'), 'utf8');
+  errors.push('data/generated/search-index.js가 최신이 아니다. tools 폴더에서 npm run build 를 실행한다');
+const nav = fs.readFileSync(path.join(guide, 'data', 'sites.js'), 'utf8');
 const menuPages = [...nav.matchAll(/href: '([^']+)'/g)].map((m) => m[1]);
-for (const p of menuPages) if (!html[p]) errors.push('site-nav.js: 메뉴에 있는 페이지 ' + p + '가 없다');
-for (const f of pages) if (!menuPages.includes(f)) errors.push(f + ': site-nav.js의 페이지 전환 메뉴에 등록되지 않았다');
+for (const p of menuPages) if (!html[p]) errors.push('data/sites.js: 메뉴에 있는 페이지 ' + p + '가 없다');
+for (const f of pages) if (!menuPages.includes(f)) errors.push(f + ': data/sites.js에 등록되지 않았다');
 for (const f of pages) {
   if (!/class="sitenav"/.test(html[f])) errors.push(f + ': 메인 페이지 이동 드롭다운 자리(<div class="sitenav">)가 없다');
   for (const m of html[f].matchAll(/<a[^>]*href="#([^"]+)"[^>]*data-tags="([^"]*)"/g)) {
     if (!anchors[f].has(m[1])) errors.push(f + ': 목차 앵커 #' + m[1] + '가 없다');
+  }
+}
+
+// ── 3-2) 모든 페이지가 공용 묶음을 같은 순서로 불러오는지, 용어 사전이 올바르고 최신인지 ──
+const SHARED = ['assets/shared/site-ui.css', 'assets/shared/glossary.css', 'data/generated/search-index.js', 'data/generated/glossary-data.js', 'data/sites.js', 'assets/shared/site-nav.js', 'assets/shared/glossary.js'];
+for (const f of pages) {
+  let at = -1;
+  for (const s of SHARED) {
+    const i = html[f].indexOf('"' + s + '"');
+    if (i < 0) errors.push(f + ': 공용 파일 ' + s + '를 불러오지 않는다');
+    else if (i < at) errors.push(f + ': 공용 파일 ' + s + '의 순서가 어긋났다(위 목록 순서로 불러온다)');
+    else at = i;
+  }
+  for (const m of html[f].matchAll(/(?:href|src)="((?:assets|data|vendor)\/[^"]+)"/g)) if (!fs.existsSync(path.join(guide, m[1]))) errors.push(f + ': 없는 파일 ' + m[1]);
+}
+const gl = require('./build-glossary.js');
+const glr = gl.load();
+errors.push(...glr.errors.map((e) => '용어 사전 · ' + e));
+if (!glr.errors.length && (!fs.existsSync(gl.out) || fs.readFileSync(gl.out, 'utf8') !== gl.generate()))
+  errors.push('data/generated/glossary-data.js가 최신이 아니다. tools 폴더에서 npm run build 를 실행한다');
+
+// ── 3-3) 리눅스 따라하기 실습: 데이터 형식과, 모든 단계가 시뮬레이터에서 계열마다 실제로 성공하는지 ──
+{
+  const lab = require(path.join(guide, 'data', 'linux-lab.js'));
+  const Sh = require(path.join(guide, 'assets', 'linux', 'lab-shell.js'));
+  const val = (v, d) => (typeof v === 'string' ? v : v && v[d]);
+  if (!Array.isArray(lab.lessons) || !lab.lessons.length) errors.push('data/linux-lab.js: lessons가 비었다');
+  for (const d of ['deb', 'rh']) {
+    const sh = Sh.create({ distro: d, files: lab.files });
+    (lab.lessons || []).forEach((les, li) => {
+      if (!les.id || !les.title || !Array.isArray(les.steps) || !les.steps.length) errors.push(`linux-lab 실습 ${li + 1}: id, title, steps가 필요하다`);
+      (les.steps || []).forEach((st, si) => {
+        const at = `linux-lab[${d}] ${les.title || li + 1} ${si + 1}단계`;
+        const cmd = val(st.cmd, d), say = val(st.say, d), ok = val(st.ok, d);
+        if (!cmd || !say || !ok) { errors.push(at + ': cmd, say, ok가 필요하다(계열별이면 deb와 rh 둘 다)'); return; }
+        for (const [k, t] of [['say', say], ['ok', ok]]) if (!/다\.$/.test(t)) errors.push(at + ': ' + k + '는 "~다."로 끝낸다');
+        const r = sh.run(cmd);
+        if (st.fails ? r.code === 0 : r.code !== 0) errors.push(at + ': 명령 "' + cmd + '"가 시뮬레이터에서 ' + (st.fails ? '실패해야 하는데 성공했다' : '실패했다 → ' + Sh.plain(r.out).split('\n')[0]));
+      });
+    });
   }
 }
 
@@ -84,11 +130,11 @@ for (const f of pages) {
     .replace(/<[^>]+>/g, '');
   lintText(f, text);
 }
-for (const f of ['map-data.js', 'guide-map.js']) {
+for (const f of ['data/map-data.js', 'data/linux-lab.js', 'assets/vscode/guide-map.js']) {
   const src = fs.readFileSync(path.join(guide, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   lintText(f, src);
 }
-for (const f of fs.readdirSync(guide).filter((x) => x.endsWith('.css'))) {
+for (const f of walk(path.join(guide, 'assets'), '.css', guide)) {
   const css = fs.readFileSync(path.join(guide, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
   if (/\bserif\b/i.test(css.replace(/sans-serif/gi, '')) || /Batang|Myeongjo|바탕|명조/i.test(css))
     errors.push(`${f}: 바탕·명조(serif) 계열 폰트가 보인다. 고딕만 쓴다`);

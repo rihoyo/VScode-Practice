@@ -1,7 +1,7 @@
 const header = document.querySelector('header');
 
 function updateMenu() {
-  document.body.classList.toggle('scrolled', header.getBoundingClientRect().bottom <= 0);
+  // 고정 메뉴바 표시는 site-nav.js가 맡는다
 }
 
 function revealTarget() {
@@ -97,9 +97,7 @@ updateMenu();
   const all = [...new Set(items.flatMap((i) => i.tags))].sort();
   const tools = document.createElement('div');
   tools.className = 'toc-tools';
-  const q = document.createElement('input');
-  q.type = 'search'; q.placeholder = '키워드 검색'; q.setAttribute('aria-label', '목차 키워드 검색');
-  tools.appendChild(q);
+  const q = { value: '' }; // 직접 입력 검색은 고정 메뉴바에만 둔다. 여기서는 태그 토글만 쓴다
   const info = document.createElement('p');
   info.className = 'toc-info'; info.hidden = true;
   const tagBox = document.createElement('div');
@@ -119,10 +117,6 @@ updateMenu();
     tg.addEventListener('click', () => { const on = tagBox.hidden; tagBox.hidden = !on; tg.setAttribute('aria-expanded', String(on)); });
     tools.append(tg, tagBox);
   }
-  q.addEventListener('keydown', (e) => { if (e.key === 'Enter' && q.value.trim() && window.KW) KW.add(q.value); });
-  const more = document.createElement('a');
-  more.className = 'toc-more'; more.href = 'keywords.html'; more.textContent = '전체 페이지 키워드 보기 →';
-  tools.appendChild(more);
   toc.before(tools, info);
   toc.replaceChildren(frag);
 
@@ -143,7 +137,6 @@ updateMenu();
     info.hidden = !filtering;
     info.textContent = n ? `${n}개 항목을 찾았다.` : '찾는 항목이 없다.';
   }
-  q.addEventListener('input', apply);
 
   // 지금 읽는 위치의 그룹은 자동으로 펼친다
   const head = new Map();

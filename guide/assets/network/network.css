@@ -23,13 +23,13 @@ button,input{font-family:inherit}
 .hero,.body{position:relative;z-index:1}
 
 /* 히어로 */
-.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:80rem;margin:0 auto;padding:6rem 1.6rem 3rem;pointer-events:none}
+.hero{display:flex;flex-direction:column;justify-content:flex-start;max-width:80rem;margin:0 auto;padding:5.5rem 1.6rem 3.5rem;pointer-events:none}
 .hero a,.hero .sitenav{pointer-events:auto}
-.hero .sitenav{top:1rem;right:1.6rem}
+.hero .sitenav{top:1rem;left:1.6rem;right:1.6rem}
 .eyebrow{margin:0 0 1.4rem;font:700 .74rem/1.5 var(--mono);letter-spacing:.24em;color:var(--ink)}
 .eyebrow span{display:block;margin-top:.2rem;font-weight:400;letter-spacing:.14em;color:var(--mute)}
-h1{margin:0;font:200 clamp(3rem,9.5vw,8.4rem)/1.02 var(--sans);letter-spacing:-.06em;color:var(--ink-strong)}
-h1 em{font-style:normal;font-weight:700;color:var(--accent);letter-spacing:-.07em}
+h1{margin:0;font:200 clamp(2.4rem,6.6vw,5.6rem)/1.12 var(--sans);letter-spacing:-.055em;color:var(--ink-strong)}
+h1 em{font-style:normal;font-weight:700;color:var(--accent);letter-spacing:-.06em}
 .lead{max-width:34rem;margin:1.6rem 0 1.4rem;color:#32465b;font-size:1rem;line-height:1.8}
 .hud{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;align-items:center;font:.74rem/1.5 var(--mono);letter-spacing:.1em;color:var(--mute)}
 .hud b{display:inline-block;min-width:2.4em;color:var(--ink-strong);font-weight:700}
@@ -59,7 +59,7 @@ code{font:.88em var(--mono);padding:.05em .4em;background:var(--ice);border:1px 
 .st{display:inline-block;padding:0 .5rem;border:1px dashed var(--line2);color:var(--mute);font:700 .72rem/1.6 var(--mono)}
 .cap{margin:.3rem 0 1.2rem;font:.78rem var(--mono);color:var(--mute)}
 @media(max-width:860px){
-  .hero{padding:5rem 1rem 2rem}.hero .sitenav{position:absolute;top:1rem;right:1rem;margin:0}
+  .hero{padding:4.6rem 1rem 2rem}.hero .sitenav{position:absolute;top:1rem;left:1rem;right:1rem;margin:0}
   .body{display:block;padding:0 .8rem 3rem}
   .rail{position:static;margin-bottom:1rem;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));column-gap:1.2rem}
   .rail b{grid-column:1/-1}
