@@ -259,3 +259,26 @@ tbody tr:hover{background:rgba(74,222,128,.05)}
 .toc a.sub{padding-left:1.5rem;font-size:.82rem}
 .toc a.sub:hover,.toc a.sub.active{padding-left:1.8rem}
 @media(max-width:650px){table{display:block;overflow-x:auto}}
+
+/* 목차 도구: 접기, 검색, 태그 */
+.toc-tools{display:grid;gap:.5rem;margin-top:.6rem}
+.toc-tools input{width:100%;box-sizing:border-box;padding:.3rem .5rem;border:1px solid var(--line2);border-radius:0;background:#06090d;color:var(--ink);font:.82rem/1.5 var(--mono)}
+.toc-tools input:focus{outline:none;border-color:var(--accent)}
+.toc-tags{display:flex;flex-wrap:wrap;gap:.25rem}
+.tag{padding:0 .4rem;border:1px solid var(--line2);border-radius:0;background:transparent;color:var(--mute);font:.72rem/1.6 var(--mono);cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.tag:hover{color:var(--ink);border-color:var(--accent)}
+.tag[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);background:rgba(74,222,128,.1)}
+.toc-info{margin:.4rem 0 0;font-size:.78rem;color:var(--mute)}
+.toc-group[hidden],.toc a[hidden]{display:none}
+.toc-row{display:flex;align-items:stretch;gap:.2rem}
+.toc-row a{flex:1;min-width:0}
+.toc-tg{width:1.2rem;flex:none;border:0;background:transparent;color:var(--mute);cursor:pointer;padding:0;font:.7rem var(--mono)}
+.toc-tg::before{content:"▸";display:inline-block;transition:transform .2s var(--ease)}
+.toc-tg[aria-expanded="true"]::before{transform:rotate(90deg)}
+.toc-tg:hover{color:var(--accent)}
+.toc-sub{display:none;margin:.2rem 0 .3rem .6rem}
+.toc-group.open .toc-sub{display:grid;gap:.3rem}
+@media(max-width:650px){
+  .toc nav{display:grid}
+  .toc a{border-left:2px solid var(--line);padding:.15rem .7rem}
+}

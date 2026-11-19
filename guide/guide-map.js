@@ -121,7 +121,16 @@
   if (!paused) sim.restart();
 
   // ── 확대·이동 ──
-  const zoom = d3.zoom().scaleExtent([0.25, 2.5]).on('zoom', (e) => {
+  // 휠 제스처가 지도 위에서 시작됐을 때만 확대·축소하고, 지도 밖에서 시작한 휠은 페이지 스크롤로 넘겨
+  let wheelOwner = 'page', wheelAt = 0;
+  document.addEventListener('wheel', (e) => {
+    if (e.timeStamp - wheelAt > 220) wheelOwner = canvas.contains(e.target) ? 'map' : 'page';
+    wheelAt = e.timeStamp;
+  }, { capture: true, passive: true });
+
+  const zoom = d3.zoom().scaleExtent([0.25, 2.5])
+    .filter((e) => (e.type === 'wheel' ? e.ctrlKey || wheelOwner === 'map' : !e.ctrlKey && !e.button))
+    .on('zoom', (e) => {
     world.attr('transform', e.transform);
     canvas.style.setProperty('--gx', e.transform.x + 'px');
     canvas.style.setProperty('--gy', e.transform.y + 'px');
@@ -132,12 +141,16 @@
 
   function fit(list, maxK = 1.2, animate = true) {
     const W = canvas.clientWidth, H = canvas.clientHeight;
-    const inset = P && !P.hidden && W > 900 ? P.offsetWidth + 24 : 0;
+    // 패널을 뺀 나머지 영역의 중앙에 맞춰: 넓은 화면은 오른쪽 패널, 좁은 화면은 아래 패널
+    const open = P && !P.hidden;
+    const sheet = matchMedia('(max-width: 900px)').matches;
+    const inset = open && !sheet ? P.offsetWidth + 24 : 0;
+    const Hv = Math.max(120, H - (open && sheet ? P.offsetHeight : 0));
     const x0 = d3.min(list, (n) => n.x - n.w / 2), x1 = d3.max(list, (n) => n.x + n.w / 2);
     const y0 = d3.min(list, (n) => n.y - n.h / 2), y1 = d3.max(list, (n) => n.y + n.h / 2);
     const pad = 70;
-    const k = Math.max(0.3, Math.min(maxK, (W - inset) / (x1 - x0 + 2 * pad), H / (y1 - y0 + 2 * pad)));
-    const tx = (W - inset) / 2 - ((x0 + x1) / 2) * k, ty = H / 2 - ((y0 + y1) / 2) * k;
+    const k = Math.max(0.3, Math.min(maxK, (W - inset) / (x1 - x0 + 2 * pad), Hv / (y1 - y0 + 2 * pad)));
+    const tx = (W - inset) / 2 - ((x0 + x1) / 2) * k, ty = Hv / 2 -((y0 + y1) / 2) * k;
     const T = d3.zoomIdentity.translate(tx, ty).scale(k);
     if (animate && !reduce) svg.transition().duration(750).ease(d3.easeCubicInOut).call(zoom.transform, T);
     else svg.call(zoom.transform, T);

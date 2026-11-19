@@ -24,7 +24,7 @@
 <section id="map" class="mapwrap">
 <div class="map-bar">
 <h2>기술 연결 지도</h2>
-<p class="hint">네모를 끌어 보고, 빈 곳을 끌어 이동하고, 휠로 확대한다. 선 위의 ◆를 누르면 무엇이 오가는지 움직이며 보여 준다.</p>
+<p class="hint">네모를 끌어 보고, 빈 곳을 끌어 이동하고, 지도 위에서 휠을 시작하면 확대한다. 선 위의 ◆를 누르면 무엇이 오가는지 움직이며 보여 준다.</p>
 <div class="map-tools">
 <button type="button" class="btn" id="t-fit">⌖ 전체 보기</button>
 <button type="button" class="btn" id="t-panel">▤ 설명 패널</button>
@@ -34,7 +34,7 @@
 </div>
 <div class="map-canvas" id="map-canvas">
 <svg id="map-svg" role="group" aria-label="기술 연결 지도"></svg>
-<div class="map-help">끌기 · 이동 / 휠 · 확대 / 네모 · 선택</div>
+<div class="map-help">끌기 · 이동 / 지도 위 휠 · 확대 / 네모 · 선택</div>
 <div class="panel" id="panel" aria-live="polite"><p class="hint"><b>$ loading</b>지도를 불러오는 중이다. 이 화면이 계속 보이면 JavaScript가 꺼져 있거나 vendor/d3.min.js가 없는 것이다.</p></div>
 </div>
 <div class="map-foot">
@@ -48,9 +48,9 @@
 </section>
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
-<a href="#map">기술 연결 지도</a>
-<a href="#flow">세 도구는 이렇게 연결된다</a>
-<a href="#roadmap">이후에 다룰 수업</a>
+<a href="#map" data-tags="지도 개요">기술 연결 지도</a>
+<a href="#flow" data-tags="개념 흐름">세 도구는 이렇게 연결된다</a>
+<a href="#roadmap" data-tags="계획 예정">이후에 다룰 수업</a>
 </nav></aside>
 <main>
 <section id="flow">
