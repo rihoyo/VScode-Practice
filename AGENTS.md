@@ -8,7 +8,7 @@
 ## 저장소 구성
 
 - 이 저장소 하나가 메인(허브)이고, 하위 폴더 하나가 에이전트 하나야. 에이전트 목록은 `projects/README.md`에 있어.
-- 루트에는 문서(`README.md`, `AGENTS.md`, `CLAUDE.md`)와 홈페이지 진입 파일(`index.html`)만 둬. 새 에이전트는 `projects/_template/`을 복사해 만들고 목록에 한 줄 등록해.
+- 루트에는 문서(`README.md`, `AGENTS.md`, `CLAUDE.md`)와 메인 페이지 진입 파일(`index.html`)만 둬. 새 에이전트는 `projects/_template/`을 복사해 만들고 목록에 한 줄 등록해.
 - 현재 에이전트는 `guide`(홈페이지와 Node 도구)와 `blog`(티스토리 변환)야. 파일 위치는 목록의 폴더 열을 따라.
 
 ## 총괄 규칙 (마스터가 에이전트를 지정할 때)

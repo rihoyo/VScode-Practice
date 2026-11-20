@@ -11,6 +11,7 @@
 | `check.js` | 가이드 검사. 지도 데이터, 문법, 링크와 앵커, 공용 파일 연결, 용어 사전, 리눅스 실습 단계(시뮬레이터 실행), `~다.` 문체, 고딕 폰트를 확인한다 |
 | `build-index.js` | 각 페이지의 목차 태그와 본문으로 `guide/data/generated/search-index.js`(키워드 색인)를 만든다. `npm run build`가 함께 실행한다 |
 | `build-glossary.js` | `guide/data/glossary/*.json`(용어 사전)을 검사하고 `guide/data/generated/glossary-data.js`로 만든다. 필수 칸 누락, 오타 칸, 중복 용어, 줄임말의 풀네임 누락을 잡는다 |
+| `make-cursor.js` | 메인 페이지의 마우스 포인터 이미지를 만든다. 흰 배경을 투명하게 하고 커서 크기(1x, 2x)로 줄여 `guide/assets/home/`에 저장하며, 클릭 지점(핫스팟)을 알려 준다 |
 | `sync-vendor.js` | 받아 둔 d3를 `guide/vendor/`에 복사한다 |
 | `node_modules/` | 내려받은 패키지. 용량이 크고 재생성할 수 있어 Git에서 제외한다 |
 

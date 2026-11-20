@@ -20,7 +20,7 @@
 guide/
 ├─ *.html                 글 내용 층. 페이지마다 한 파일. 목차(data-toc, data-tags)와 본문
 ├─ assets/                화면을 만드는 코드 층
-│  ├─ shared/             모든 페이지 공용: site-ui.css(메뉴·검색 패널), glossary.css/js(설명창), site-nav.js, keywords.js
+│  ├─ shared/             모든 페이지 공용: site-ui.css(메뉴·검색 패널), glossary.css/js(설명창), cursor.css/js(마우스 포인터), site-nav.js, keywords.js
 │  ├─ vscode/             VS Code 공부 세트: guide.css, guide-ui.css, guide.js, guide-map.js(기술 연결 지도)
 │  ├─ linux/              리눅스: linux.css, linux.js, linux-viz.js(스캔 뷰포트), linux-mode.js(계열 전환 연출), lab-shell.js(가상 셸 엔진), lab.js(따라하기 화면)
 │  └─ network/            네트워크: network.css, network.js(서브넷 계산기), network-field.js(배경 그래프)
@@ -37,3 +37,5 @@ guide/
 - 모든 페이지는 `<head>`에서 공용 묶음을 같은 순서로 불러온다(site-ui.css, glossary.css, search-index.js, glossary-data.js, sites.js, site-nav.js, glossary.js). 새 페이지는 기존 페이지의 머리말을 복사해 만들고, 빠지거나 순서가 틀리면 `npm run check`가 알려 준다.
 - 사이트 전용 코드는 그 사이트 폴더 안에서만 고치고, 두 사이트 이상이 쓰면 `assets/shared/`로 옮긴다.
 - **리눅스 따라하기 실습**: 실습 내용은 `data/linux-lab.js`에서 고쳐. 단계마다 `cmd`(입력할 명령, 계열별이면 `{ deb, rh }`), `say`(설명), `ok`(해설)를 쓰고, 실패해야 정상인 단계는 `fails: true`를 달아. `npm run check`가 모든 단계를 두 계열 모두에서 시뮬레이터로 실행해 성공 여부를 확인해. 새 명령어가 필요하면 `assets/linux/lab-shell.js`에 추가해. 실습 상태는 메모리에만 있어서 새로고침하면 사라지고, 이 사실은 페이지에 항상 적어 둬. 시뮬레이터에서 성공한 것은 실제 환경에서 마스터가 확인하기 전에는 완료로 표시하지 않아.
+- **메인 페이지(루트 `index.html`)**: 맨 처음 열리는 진짜 메인이야. 코드 비가 쏟아지고 마우스 자리에 ASCII 아트 블랙홀(그림자, 광자 고리, 휘어진 빛, 강착 원반)이 떠. 블랙홀 글자는 안정적으로 유지하고, 바탕에 깔린 실제 글자 칸은 세계 좌표에 고정돼 있다가 블랙홀이 가까워지면 칸마다 다른 시점에 하나씩 떨어져 나와 중력과 소용돌이로 서서히 끌려가(삼켜진 자리는 몇 초 뒤 다시 생겨나고, 포인터가 멀어지면 제자리로 돌아가). 코드 비는 그대로 두고 블랙홀 쪽으로 살짝 휘어지기만 해. 이 물리는 `home.js`의 `physics()`에 있어. 클릭·드래그하면 그 지점으로 모든 글자가 처음엔 천천히 갈수록 기하급수로 빨려 들고(약 2.6초), 글자가 빠르게 뒤바뀌다가 제목과 선택 카드가 블랙홀에서 변형되며 튀어나와(화면이 끊기지 않게 겹쳐). 선택 카드는 `data/sites.js`로 자동 생성돼. 같은 탭에서 한 번 본 뒤에는 바로 선택 화면으로 가고(`?intro=1`로 다시 봐), 모션 줄이기 설정이면 연출 없이 선택 화면이야. 연출 시간은 `home.js` 맨 위의 `COLLAPSE`, `EMERGE`로 조절해. 개발 중에는 콘솔에서 `__homePreview(0.5)`(0~1 빨려드는 구간), `__homePreview(1.3)`(1~2 튀어나오는 구간)로 원하는 순간을 멈춰 볼 수 있어. 마우스 포인터는 모든 페이지 공용이야(아래 항목). 각 페이지의 드롭다운 맨 위 `메인` 항목이 여기로 돌아와.
+- **마우스 포인터**: `assets/shared/cursor.js`·`cursor.css`가 맡아. 화살표는 마스터가 고른 이미지(assets/home/cursor@2x.png를 cursor.css에 base64로 넣어 마스크로 쓰고 테마 색으로 칠함, 끝점이 클릭 지점)고, 마름모 고리와 함께 포인터에 지연 없이 붙어. 이미지를 바꾸면 tools의 make-cursor.js로 PNG를 만든 뒤 cursor.css의 --arrow 값을 새 base64로 바꿔. 색은 페이지의 `--accent`(메인 페이지는 먹색+붉은 고리)를 읽어 테마와 리눅스 계열 전환에 맞춰 바뀌어. 동작: 링크·버튼 확장, 용어 위 `?`, 지도 위 잡기, 누름 수축+파문, 드래그하면 범위 지정 상자로 변신(크기 표시), 로딩과 페이지 이동 중에는 정렬 막대와 알고리즘 이름이 떠올라. 코드에서는 `Cursor.busy(true, '이유')`로 로딩 연출을 켜고 `false`로 꺼. 입력칸 위에서는 기본 글자 커서를 쓰고, 터치 기기에서는 동작하지 않아. 모서리는 각지게 하고 transform·opacity만 움직여. site-nav.js가 자동으로 불러오고 메인 페이지는 index.html이 직접 불러와.

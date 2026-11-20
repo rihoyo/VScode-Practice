@@ -43,6 +43,9 @@
     const list = el('div', 'pm-list');
     list.id = id; list.hidden = true;
     list.appendChild(el('p', 'pm-g', '메인 페이지 이동'));
+    const home = el('a', 'pm-it', '<i></i><b>메인</b><span>첫 화면으로 돌아가 메인 페이지를 고른다</span>');
+    home.href = '../index.html'; home.style.setProperty('--pc', 'var(--ink)');
+    list.appendChild(home);
     SITES.forEach((s) => {
       const a = el('a', 'pm-it', `<i></i><b>${s.name}</b><span>${s.d}</span>`);
       a.href = s.pages[0].href;
@@ -239,4 +242,11 @@
       if (a.matches && a.matches('[data-toc] a.active')) where.innerHTML = `<b>${site ? site.name : '키워드'}</b> · ${a.textContent.trim()}`;
     })).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
   }
+})();
+
+/* 공용 마우스 포인터(모양·테마 색·동작 연출)를 모든 페이지에 불러온다 */
+(() => {
+  const cs = document.currentScript, base = cs ? cs.src.replace(/site-nav.js.*$/, "") : "assets/shared/";
+  const l = document.createElement("link"); l.rel = "stylesheet"; l.href = base + "cursor.css"; document.head.append(l);
+  const j = document.createElement("script"); j.src = base + "cursor.js"; document.head.append(j);
 })();

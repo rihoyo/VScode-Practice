@@ -1,0 +1,68 @@
+/* 커스텀 마우스 포인터 · 모든 페이지 공용(cursor.js가 만든다)
+ * 색은 #cur의 인라인 변수 --cur(화살표) --cur-edge(윤곽) --cur-ring(고리)이 정하고, 각 페이지 테마가 바뀌면 부드럽게 따라 바뀐다.
+ * 모서리는 각지게(고리도 마름모). 움직임은 transform·opacity만 써서 끊기지 않게 한다. */
+html.has-cur,html.has-cur *{cursor:none!important}
+html.has-cur :is(input:not([type=button i],[type=checkbox i],[type=radio i],[type=range i]),textarea,[contenteditable="true"]){cursor:text!important}
+html.has-cur select{cursor:default!important}
+
+#cur{position:fixed;left:0;top:0;width:0;height:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .25s ease;
+  --arrow:url("data:image/png;base64,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");--cur:#4ade80;--cur-edge:#080c11;--cur-ring:#4ade80;--ease:cubic-bezier(.2,.8,.2,1)}
+#cur.on{opacity:1}
+#cur.s-text,#cur.is-out{opacity:0}
+
+/* 고리: 포인터와 같은 자리에 붙어 있다(지연 없음). 상태에 따라 모양만 변한다 */
+.cur-ring{position:absolute;left:0;top:0;will-change:transform}
+.cur-ring i{position:absolute;left:-18px;top:-18px;width:36px;height:36px;border:1.5px solid var(--cur-ring);opacity:.5;
+  transform:rotate(45deg) scale(.32);transition:transform .32s var(--ease),opacity .25s,border-color .35s,background-color .3s}
+.cur-ring i::before{content:"";position:absolute;inset:-5px;border:1.5px dashed var(--cur-ring);opacity:0;transition:opacity .25s}
+.cur-ring i::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;transform:rotate(-45deg);font:700 13px/1 var(--mono,monospace);color:var(--cur-ring);opacity:0;transition:opacity .2s}
+#cur.s-link .cur-ring i{opacity:.95;transform:rotate(45deg) scale(.9);background:color-mix(in srgb,var(--cur-ring) 12%,transparent)}
+#cur.s-help .cur-ring i{opacity:.9;transform:rotate(45deg) scale(.66)}
+#cur.s-help .cur-ring i::after{opacity:1}
+#cur.s-grab .cur-ring i{opacity:.9;transform:rotate(45deg) scale(1.1);border-style:dashed}
+#cur.s-grab.is-down .cur-ring i{transform:rotate(45deg) scale(.8)}
+#cur.is-down .cur-ring i{transform:rotate(45deg) scale(.5);opacity:.9}
+#cur.is-drag .cur-ring i{opacity:0;transform:rotate(45deg) scale(.2)}
+#cur.is-busy .cur-ring i{opacity:1;transform:rotate(45deg) scale(1.15);border-color:transparent}
+#cur.is-busy .cur-ring i::before{opacity:1;animation:cur-spin 1.6s linear infinite}
+#cur.is-busy .cur-ring i::after{opacity:0}
+@keyframes cur-spin{to{transform:rotate(360deg)}}
+
+/* 화살표: 마스터가 고른 이미지(home/cursor@2x.png)를 마스크로 써서 테마 색으로 칠한다. 끝점이 클릭 지점 */
+.cur-pt{position:absolute;left:0;top:0;will-change:transform}
+.cur-arrow{display:block;width:20px;height:24px;margin:-0.3px 0 0 -0.7px;transform-origin:0 0;background:var(--cur);
+  -webkit-mask:var(--arrow) center/100% 100% no-repeat;mask:var(--arrow) center/100% 100% no-repeat;
+  filter:drop-shadow(0 0 .7px var(--cur-edge)) drop-shadow(0 0 .7px var(--cur-edge));transition:transform .18s var(--ease),background-color .35s}
+#cur.s-link .cur-arrow{transform:scale(.9) rotate(-6deg)}
+#cur.is-down .cur-arrow{transform:scale(.8)}
+#cur.is-drag .cur-arrow{transform:scale(.75) rotate(-10deg)}
+#cur.is-busy .cur-arrow{transform:scale(.9)}
+
+/* 로딩 중: 커서 곁에 알고리즘이 떠오른다(정렬 막대 + 해독되는 함수 이름) */
+.cur-lab{position:absolute;left:16px;top:20px;display:flex;align-items:flex-end;gap:7px;padding:3px 7px 3px 6px;white-space:nowrap;
+  background:var(--cur-edge);border:1px solid var(--cur-ring);color:var(--cur-ring);font:700 11px/1.3 var(--mono,monospace);letter-spacing:.02em;
+  opacity:0;transform:translate(-6px,-4px) scale(.92);transform-origin:0 0;transition:opacity .22s,transform .3s var(--ease),border-color .35s,color .35s,background-color .35s}
+#cur.is-busy .cur-lab,#cur.is-drag .cur-lab{opacity:1;transform:none}
+.cur-bars{display:flex;align-items:flex-end;gap:2px;height:12px}
+.cur-bars b{display:block;width:3px;background:currentColor;transition:height .1s linear,opacity .1s}
+#cur.is-drag .cur-bars{display:none}
+
+/* 드래그: 범위 지정 상자로 변한다 */
+.cur-box{position:fixed;left:0;top:0;z-index:2147482999;pointer-events:none;opacity:0;border:1px solid var(--cur-ring,#4ade80);background:color-mix(in srgb,var(--cur-ring,#4ade80) 9%,transparent);will-change:transform,width,height}
+.cur-box.on{opacity:1;transition:opacity .15s}
+.cur-box.end{opacity:0;transition:opacity .22s ease,left .22s var(--ease,ease),top .22s var(--ease,ease),width .22s var(--ease,ease),height .22s var(--ease,ease)}
+.cur-box i{position:absolute;width:7px;height:7px;border:2px solid var(--cur-ring,#4ade80)}
+.cur-box i:nth-child(1){left:-2px;top:-2px;border-right:0;border-bottom:0}
+.cur-box i:nth-child(2){right:-2px;top:-2px;border-left:0;border-bottom:0}
+.cur-box i:nth-child(3){left:-2px;bottom:-2px;border-right:0;border-top:0}
+.cur-box i:nth-child(4){right:-2px;bottom:-2px;border-left:0;border-top:0}
+
+/* 클릭 파문 */
+.cur-rip{position:fixed;z-index:2147482998;width:14px;height:14px;margin:-7px 0 0 -7px;pointer-events:none;border:1.5px solid var(--cur-ring,#4ade80);transform:rotate(45deg) scale(.4);opacity:.9;animation:cur-rip .55s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes cur-rip{to{transform:rotate(45deg) scale(3.4);opacity:0}}
+
+@media(prefers-reduced-motion:reduce){
+  .cur-ring i,.cur-arrow,.cur-lab{transition:none}
+  #cur.is-busy .cur-ring i::before{animation:none}
+  .cur-rip{display:none}
+}

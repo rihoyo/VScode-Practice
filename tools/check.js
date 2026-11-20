@@ -130,7 +130,18 @@ for (const f of pages) {
     .replace(/<[^>]+>/g, '');
   lintText(f, text);
 }
-for (const f of ['data/map-data.js', 'data/linux-lab.js', 'assets/vscode/guide-map.js']) {
+// 루트 index.html(첫 화면): 불러오는 파일과 링크가 실제로 있는지, 설명문이 "~다."인지
+{
+  const idx = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  for (const m of idx.matchAll(/(?:href|src)="([^"]+)"/g)) {
+    if (/^(https?:|#)/.test(m[1])) continue;
+    const [file, hash] = m[1].split('#');
+    if (!fs.existsSync(path.join(root, file))) errors.push('루트 index.html: 없는 파일 ' + m[1]);
+    else if (hash && file.endsWith('.html')) { const t = fs.readFileSync(path.join(root, file), 'utf8'); if (!t.includes('id="' + hash + '"')) errors.push('루트 index.html: 없는 앵커 ' + m[1]); }
+  }
+  lintText('index.html', idx.replace(/<(script|style|code)[\s\S]*?<\/\1>/g, ' ').replace(/<[^>]+>/g, ''));
+}
+for (const f of ['data/map-data.js', 'data/linux-lab.js', 'assets/vscode/guide-map.js', 'assets/home/home-ui.js']) {
   const src = fs.readFileSync(path.join(guide, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   lintText(f, src);
 }

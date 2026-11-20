@@ -1,0 +1,65 @@
+/* 메인 페이지(첫 화면) · 종이 같은 바탕에 검은 글자, 쏟아지는 코드와 블랙홀
+ * 레이아웃: 전면 캔버스(코드 비) 위에 메인 글과 사이트 선택 카드. 폰트는 고딕(한글 폴백 포함)만, 모서리는 각지게. */
+:root{
+  --paper:#f1efe9;--ink:#101010;--mute:#5b5850;--line:#c9c5b9;--red:#e11d48;
+  --mono:"Cascadia Mono","Cascadia Code",Consolas,"D2Coding","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",monospace;
+  --sans:"Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;border-radius:0}
+html,body{height:100%}
+body.home{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 var(--sans);overflow:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+::selection{background:var(--ink);color:var(--paper)}
+button{font-family:inherit;border-radius:0}
+
+#field{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.stage{position:fixed;inset:0;z-index:1;pointer-events:none}
+.stage > *{pointer-events:auto}
+
+/* 첫 화면 */
+.label{position:absolute;top:1.1rem;left:1.4rem;margin:0;font:700 .74rem/1.4 var(--mono);letter-spacing:.2em;color:var(--ink);pointer-events:none}
+.label span{color:var(--mute);font-weight:400}
+.enter{position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);padding:.7rem 1.4rem;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font:700 .86rem/1.5 var(--mono);letter-spacing:.08em;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.enter::after{content:"_";margin-left:.2rem;animation:blink 1s steps(1) infinite}
+.enter:hover{background:var(--ink);color:var(--paper)}
+.skip{position:absolute;right:1.4rem;bottom:1.1rem;padding:.2rem .1rem;border:0;border-bottom:1px solid var(--mute);background:transparent;color:var(--mute);font:.74rem var(--mono);cursor:pointer}
+.skip:hover{color:var(--ink);border-color:var(--ink)}
+@keyframes blink{50%{opacity:0}}
+body:not(.is-idle) .enter{opacity:0;pointer-events:none;transition:opacity .25s}
+body.is-main .skip,body.is-main .enter{display:none}
+body.is-main .label span::after{content:" · 선택한다"}
+
+/* 메인 */
+.main{position:absolute;inset:0;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:4.5rem 1.4rem 3rem;text-align:center;visibility:hidden;opacity:0;pointer-events:none}
+body.is-main .main{visibility:visible;opacity:1;pointer-events:auto}
+.main > *{max-width:100%}
+.eyebrow{margin:0;font:700 .74rem/1.4 var(--mono);letter-spacing:.3em;color:var(--mute)}
+h1{margin:0;font:800 clamp(2.6rem,10.5vw,9rem)/1 var(--sans);letter-spacing:-.06em;color:var(--ink)}
+.sub{max-width:34rem;margin:0;color:var(--mute);font-size:1rem}
+.sites{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:min(66rem,100%);margin-top:.6rem;border:1px solid var(--ink);background:rgba(241,239,233,.86);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);text-align:left}
+.card{position:relative;display:grid;align-content:start;gap:.35rem;padding:1.3rem 1.3rem 1.2rem;border-right:1px solid var(--ink);color:var(--ink);text-decoration:none;transition:background .2s,color .2s}
+.card:last-child{border-right:0}
+.card::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--pc,var(--ink))}
+.card .no{font:700 .72rem/1.4 var(--mono);letter-spacing:.2em;color:var(--mute)}
+.card b{font:800 1.7rem/1.25 var(--sans);letter-spacing:-.04em}
+.card .d{font-size:.9rem;line-height:1.6;color:var(--mute)}
+.card .go{margin-top:.6rem;font:700 .78rem var(--mono);letter-spacing:.1em;transition:transform .2s}
+.card:hover,.card:focus-visible{background:var(--ink);color:var(--paper)}
+.card:hover .no,.card:hover .d,.card:focus-visible .no,.card:focus-visible .d{color:#cfcbbf}
+.card:hover .go{transform:translateX(.4rem)}
+.foot{margin:0;font:.76rem var(--mono);color:var(--mute)}
+.foot a{color:var(--ink)}
+.replay{padding:0;border:0;border-bottom:1px solid var(--mute);background:transparent;color:var(--mute);font:inherit;cursor:pointer}
+.replay:hover{color:var(--ink);border-color:var(--ink)}
+.main noscript{display:block;font-size:.9rem}
+
+@media(max-width:760px){
+  .sites{grid-template-columns:minmax(0,1fr)}
+  .card{border-right:0;border-bottom:1px solid var(--ink)}.card:last-child{border-bottom:0}
+  .main{justify-content:flex-start;gap:1rem}
+  .label{left:1rem}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* 마우스 포인터는 assets/shared/cursor.css·cursor.js가 그린다(메인 페이지는 먹색 화살표 + 붉은 고리) */

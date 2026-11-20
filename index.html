@@ -1,12 +1,30 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=guide/vscode-guide.html">
-  <title>나의 개발 스텝</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>나의 개발 스텝</title>
+<link rel="stylesheet" href="guide/assets/home/home.css">
+<link rel="stylesheet" href="guide/assets/shared/cursor.css">
+<script src="guide/data/sites.js" defer></script>
+<script src="guide/assets/home/home-ui.js" defer></script>
+<script src="guide/assets/home/home.js" defer></script>
+<script src="guide/assets/shared/cursor.js" defer></script>
 </head>
-<body>
-  <p><a href="guide/vscode-guide.html">나의 개발 스텝 열기</a></p>
+<body class="home is-idle">
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="stage">
+<p class="label">나의 개발 스텝 <span>· MAIN</span></p>
+<button class="enter" type="button">클릭하거나 드래그하면 열린다</button>
+<button class="skip" type="button">건너뛰기 →</button>
+<main class="main">
+<p class="eyebrow">DEV STEPS</p>
+<h1>나의 개발 스텝</h1>
+<p class="sub">VS Code로 시작해 리눅스와 네트워크까지, 배운 순서대로 이어 붙이는 공부 지도다.</p>
+<nav class="sites" id="sites" aria-label="메인 페이지 선택"></nav>
+<p class="foot"><a id="kw" href="guide/keywords.html">전체 키워드</a> · <button class="replay" type="button">첫 연출 다시 보기</button></p>
+<noscript><p><a href="guide/vscode-guide.html">VS Code 공부</a> · <a href="guide/linux.html">리눅스</a> · <a href="guide/network.html">네트워크</a></p></noscript>
+</main>
+</div>
 </body>
 </html>
