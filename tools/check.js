@@ -76,7 +76,7 @@ for (const f of pages) {
 }
 
 // ── 3-2) 모든 페이지가 공용 묶음을 같은 순서로 불러오는지, 용어 사전이 올바르고 최신인지 ──
-const SHARED = ['assets/shared/site-ui.css', 'assets/shared/glossary.css', 'data/generated/search-index.js', 'data/generated/glossary-data.js', 'data/sites.js', 'assets/shared/site-nav.js', 'assets/shared/glossary.js'];
+const SHARED = ['assets/shared/transition.js', 'assets/shared/site-ui.css', 'assets/shared/glossary.css', 'data/generated/search-index.js', 'data/generated/glossary-data.js', 'data/sites.js', 'assets/shared/site-nav.js', 'assets/shared/glossary.js'];
 for (const f of pages) {
   let at = -1;
   for (const s of SHARED) {

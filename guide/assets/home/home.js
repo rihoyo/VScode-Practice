@@ -172,9 +172,9 @@
     const t = (now - t0) / 1000, dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now;
     g.clearRect(0, 0, W, H);
     g.textAlign = 'center'; g.textBaseline = 'middle';
-    // 포인터를 따라가고, 한동안 움직이지 않으면 저절로 떠다닌다
+    // 포인터를 따라간다. 포인터가 화면에 한 번이라도 들어온 뒤에는 가만히 있어도 그 자리에 머문다(자동으로 떠다니지 않는다)
     if (mode === 'idle' || mode === 'main') {
-      if (!seen || now - lastMove > 3500) { T.x = W * (0.5 + 0.28 * Math.sin(t * 0.55)); T.y = H * (0.5 + 0.22 * Math.sin(t * 0.83 + 1)); }
+      if (!seen) { T.x = W * (0.5 + 0.28 * Math.sin(t * 0.55)); T.y = H * (0.5 + 0.22 * Math.sin(t * 0.83 + 1)); }
     }
     P.x += (T.x - P.x) * 0.16; P.y += (T.y - P.y) * 0.16;
 
