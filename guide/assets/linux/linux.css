@@ -183,3 +183,4 @@ tbody tr:hover{background:rgba(var(--acc-rgb),.04)}
 .lab-in input{flex:1;min-width:0;border:0;border-radius:0;background:transparent;color:var(--ink-strong);font:inherit;outline:none;caret-color:var(--accent)}
 .lab-term:focus-within{border-color:var(--accent)}
 @media(max-width:900px){.lab{grid-template-columns:minmax(0,1fr)}.lab-out{height:18rem}.lab-bar em{display:none}}
+.lab-out .l.skiphint{opacity:.7;font-size:.74rem}

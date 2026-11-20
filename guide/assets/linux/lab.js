@@ -44,6 +44,46 @@
   const lines = (text, cls) => { if (text === '') return; text.split('\n').forEach((t) => line(t, cls)); };
   const bottom = () => { out.scrollTop = out.scrollHeight; };
 
+  /* ── 실제 서버처럼 보이는 재생: apt·dnf·ping은 기다림과 진행 막대를 섞어 한 줄씩 보여 준다 ──
+   * 계획은 lab-theatre.js가 만들고, 여기서는 시간에 맞춰 그리기만 한다. 재생 중 Enter·Ctrl+C·Esc는 건너뛰기(빨리 감기)다. */
+  let playTok = 0, skipNow = false, wake = null;
+  const inRow = $('.lab-in');
+  const sleep = (ms) => new Promise((ok) => { if (skipNow) return ok(); const t = setTimeout(() => { wake = null; ok(); }, ms); wake = () => { clearTimeout(t); wake = null; ok(); }; });
+  const bar = (p, w = 24) => '[' + '#'.repeat(Math.round(p * w)).padEnd(w, '-') + ']';
+  async function play(events, tok) {
+    for (const e of events) {
+      if (tok !== playTok) return;
+      if (e.t === 'line') { line(e.s, e.cls); }
+      else if (e.t === 'wait') { await sleep(e.ms); continue; }
+      else if (e.t === 'temp') { line(e.s, 'dim'); const d = out.lastElementChild; bottom(); await sleep(e.ms); d.remove(); continue; }
+      else if (e.t === 'spin') {
+        line(e.s, ''); const d = out.lastElementChild, frames = ['.', '..', '...'], t0 = performance.now(); let k = 0;
+        while (!skipNow && tok === playTok && performance.now() - t0 < e.ms) { d.dataset.t = e.s; d.textContent = e.s + ' ' + frames[k++ % 3]; await sleep(120); }
+        if (tok !== playTok) return;
+        d.textContent = e.s + ' ' + e.done;
+      } else if (e.t === 'bar') {
+        line('', 'dim'); const d = out.lastElementChild, t0 = performance.now(); let p = 0;
+        while (p < 1 && !skipNow && tok === playTok) {
+          const u = Math.min(1, (performance.now() - t0) / e.ms); p = u < 1 ? u * u * (3 - 2 * u) * 0.96 + u * 0.04 : 1; // 처음과 끝은 느리게
+          const rate = (0.6 + 0.9 * Math.abs(Math.sin(u * 7))).toFixed(1);
+          d.textContent = (e.label || '') + ' ' + bar(p) + ' ' + String(Math.floor(p * 100)).padStart(3) + '%  ' + rate + ' MB/s';
+          bottom(); await sleep(70);
+        }
+        d.remove(); if (tok !== playTok) return; continue;
+      }
+      bottom();
+    }
+  }
+  function onSkip(e) { if (e.key === 'Enter' || e.key === 'Escape' || (e.key === 'c' && e.ctrlKey)) { e.preventDefault(); e.stopPropagation(); skipNow = true; if (wake) wake(); } }
+  function lockInput(on) {
+    inRow.style.visibility = on ? 'hidden' : '';
+    input.disabled = on;
+    if (window.Cursor) window.Cursor.busy(on, 'lab');
+    if (on) document.addEventListener('keydown', onSkip, true); else document.removeEventListener('keydown', onSkip, true);
+    if (!on) input.focus();
+  }
+  function cancelPlay() { playTok++; if (wake) wake(); if (inRow.style.visibility) lockInput(false); }
+
   /* ── 안내 화면 ── */
   const lesson = () => LAB.lessons[li];
   const key = (l, s) => l + ':' + s;
@@ -88,6 +128,7 @@
 
   /* ── 셸 시작과 초기화 ── */
   function start(note) {
+    cancelPlay();
     sh = window.LabShell.create({ distro: distroNow(), files: LAB.files });
     out.replaceChildren(); entered = []; hpos = 0; done = new Set(); li = 0; si = 0; hint = '';
     line(distroNow() === 'rh' ? 'Rocky Linux 9.3 (Blue Onyx) — 연습용 시뮬레이션' : 'Ubuntu 22.04.4 LTS — 연습용 시뮬레이션', 'dim');
@@ -98,13 +139,23 @@
   }
 
   /* ── 입력 ── */
-  function submit() {
+  async function submit() {
     const text = input.value, s = lesson().steps[si];
     line(sh.prompt() + text, 'cmdline');
     input.value = '';
     if (text.trim()) { entered.push(text); hpos = entered.length; }
     const r = sh.run(text);
-    if (r.clear) out.replaceChildren(); else lines(r.out, r.code ? 'bad' : '');
+    const ev = !r.clear && window.LabTheatre ? window.LabTheatre.plan(sh.distro, text, r) : [];
+    if (r.clear) out.replaceChildren();
+    else if (ev.length) {
+      const tok = ++playTok; skipNow = false; lockInput(true);
+      const hint0 = document.createElement('div'); hint0.className = 'l dim skiphint'; hint0.textContent = '[ Enter · Ctrl+C · Esc : 건너뛰기 ]';
+      out.append(hint0); bottom();
+      await play(ev, tok);
+      hint0.remove();
+      if (tok !== playTok) return; // 재생 도중 초기화나 계열 전환이 있었다
+      lockInput(false);
+    } else lines(r.out, r.code ? 'bad' : '');
     ps.textContent = sh.prompt();
     const finished = lesson().steps.every((_, i) => done.has(key(li, i)));
     if (text.trim() && !finished && s) {

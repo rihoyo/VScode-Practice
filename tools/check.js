@@ -98,6 +98,16 @@ if (!glr.errors.length && (!fs.existsSync(gl.out) || fs.readFileSync(gl.out, 'ut
   const lab = require(path.join(guide, 'data', 'linux-lab.js'));
   const Sh = require(path.join(guide, 'assets', 'linux', 'lab-shell.js'));
   const val = (v, d) => (typeof v === 'string' ? v : v && v[d]);
+  { // 연출 계획: 글자를 이으면 셸 출력과 같아야 하고, 오래 걸리는 명령도 12초를 넘기지 않아야 한다
+    const T = require(path.join(guide, 'assets', 'linux', 'lab-theatre.js'));
+    for (const [d, c] of [['deb', 'sudo apt update'], ['deb', 'sudo apt install tree'], ['rh', 'sudo dnf install tree'], ['deb', 'ping -c 3 8.8.8.8'], ['deb', 'apt update']]) {
+      const sh = Sh.create({ distro: d, files: lab.files }), r = sh.run(c), ev = T.plan(d, c, r);
+      if (!ev.length) { errors.push('lab-theatre: ' + c + ' 연출 계획이 비었다'); continue; }
+      if (T.flatten(ev) !== r.out) errors.push('lab-theatre: ' + c + ' 연출 글자가 셸 출력과 다르다');
+      if (T.total(ev) > 12000) errors.push('lab-theatre: ' + c + ' 연출이 12초를 넘는다');
+    }
+    if (T.plan('deb', 'ls', { out: 'a', code: 0 }).length) errors.push('lab-theatre: 일반 명령은 즉시 출력해야 한다');
+  }
   if (!Array.isArray(lab.lessons) || !lab.lessons.length) errors.push('data/linux-lab.js: lessons가 비었다');
   for (const d of ['deb', 'rh']) {
     const sh = Sh.create({ distro: d, files: lab.files });
