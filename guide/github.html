@@ -33,6 +33,10 @@
 <a class="sub" href="#publish-source" data-tags="공개 Pages">/ (root)와 /docs</a>
 <a class="sub" href="#publish-stuck" data-tags="공개 문제해결">공개 전환이 안 될 때</a>
 <a class="sub" href="#publish-after" data-tags="공개 Pages">공개 후 알아둘 것</a>
+<a href="#owner" data-tags="소유권 이전 Transfer">5. 저장소 소유권 넘기기</a>
+<a class="sub" href="#owner-steps" data-tags="소유권 이전 Transfer">이전 순서</a>
+<a class="sub" href="#owner-after" data-tags="소유권 이전 Transfer Clone">이전 후 해야 할 일</a>
+<a class="sub" href="#owner-stuck" data-tags="소유권 이전 문제해결">이전이 안 될 때</a>
 </nav></aside>
 <main>
 <section id="done">
@@ -86,6 +90,48 @@
 <li>공개 저장소에서는 <code>AGENTS.md</code>를 포함한 모든 파일과 커밋 기록이 보인다. 비밀번호, 키, 토큰은 저장소에 넣지 않는다. 필요하면 <code>.env</code> 같은 파일에 두고 Git에서 제외한다.</li>
 <li>공개 전에 커밋 작성자 이메일이 GitHub 비공개용 주소(<code>…@users.noreply.github.com</code>)인지 확인한다. 이 저장소는 확인을 마쳤다.</li>
 </ul>
+</details>
+</section>
+<section id="owner">
+<h2>5. 저장소 소유권 넘기기</h2>
+<p>저장소의 주인을 다른 계정이나 조직으로 옮기는 기능이 Transfer ownership(소유권 이전)이다. 파일과 커밋 기록, 이슈, PR, 스타, 협업자는 그대로 함께 간다. 복사본을 만드는 Fork와 달리 원본이 통째로 옮겨 간다.</p>
+<table>
+<thead><tr><th>하고 싶은 일</th><th>쓰는 방법</th></tr></thead>
+<tbody>
+<tr><td>다른 사람이 같이 고치게 한다</td><td>Settings의 Collaborators에서 초대한다(소유권은 그대로)</td></tr>
+<tr><td>내 계정에서 조직으로 옮긴다</td><td>소유권 이전, 받는 곳에 조직 이름을 입력한다</td></tr>
+<tr><td>저장소를 완전히 다른 사람에게 준다</td><td>소유권 이전, 받는 곳에 상대 계정 이름을 입력한다</td></tr>
+</tbody>
+</table>
+<h3 id="owner-steps">이전 순서</h3>
+<ol class="plain">
+<li>보내는 쪽은 저장소의 관리자(Admin) 권한이 있어야 한다. 저장소 화면 위쪽의 <b>Settings</b> 탭을 연다.</li>
+<li><b>General</b> 화면을 맨 아래까지 내려 빨간 테두리의 <b>Danger Zone</b>을 찾는다.</li>
+<li><b>Transfer ownership</b>의 <b>Transfer</b> 버튼을 누른다.</li>
+<li>새 주인의 계정 이름이나 조직 이름을 입력한다. 받는 쪽에 같은 이름의 저장소가 이미 있으면 진행되지 않는다. 필요하면 이름 칸에서 새 저장소 이름을 바꾼다.</li>
+<li>확인 칸에 <code>계정이름/저장소이름</code> 전체를 정확히 입력하고 이전을 확정한다.</li>
+<li>받는 쪽이 개인 계정이면 이메일로 확인 요청이 가고, 받는 사람이 정해진 기간 안에 수락해야 이전이 끝난다. 조직이면 조직에서 저장소를 만들 수 있는 사람이 받아야 한다. 요청을 보낸 뒤에는 상대에게 이메일을 확인해 달라고 알린다.</li>
+</ol>
+<p>이전이 끝나면 저장소 주소가 <code>github.com/새주인/저장소이름</code>으로 바뀐다. 성공하면 저장소 화면 위쪽의 소유자 이름이 새 주인으로 보인다.</p>
+<details id="owner-after">
+<summary>이전 후 해야 할 일</summary>
+<ul>
+<li>이전 주소는 한동안 새 주소로 자동 연결된다. 그래도 내 컴퓨터의 연결 주소는 바꿔 두는 편이 낫다. 터미널에서 <code>git remote -v</code>로 지금 주소를 보고 <code>git remote set-url origin https://github.com/새주인/저장소이름.git</code>으로 바꾼다. 새 주인이 같은 이름으로 저장소를 다시 만들면 자동 연결이 끊긴다.</li>
+<li>GitHub Pages 주소는 자동 연결되지 않는다. <code>계정.github.io/저장소</code> 주소가 새 주인 기준으로 바뀌므로 README와 북마크의 주소를 고친다. 이 저장소처럼 Pages로 공개한 경우 새 주인이 Settings의 Pages에서 공개 설정을 다시 확인한다.</li>
+<li>이전한 뒤에는 내 쪽의 관리자 권한이 사라질 수 있다. 계속 같이 작업하려면 새 주인에게 협업자로 초대해 달라고 요청한다.</li>
+<li>내 계정에서 만든 Fork나 Actions 비밀값(Secrets) 같은 연결 설정은 저장소 종류에 따라 다르게 동작할 수 있다. 이전 직후 Settings와 Actions 탭을 한 번 훑어 확인한다.</li>
+<li>코드 안에 옛 주소(<code>github.com/옛주인/…</code>)가 적힌 곳, 예를 들어 <code>README.md</code>와 배포 설정을 검색해서 새 주소로 고친다.</li>
+</ul>
+</details>
+<details id="owner-stuck">
+<summary>이전이 안 될 때</summary>
+<ol class="plain">
+<li><b>Transfer</b> 버튼이 보이지 않으면 Admin 권한이 없는 것이다. 저장소 주인이나 조직 관리자에게 부탁한다.</li>
+<li>받는 쪽에 같은 이름의 저장소나 Fork가 있으면 막힌다. 이름을 바꾸거나 받는 쪽의 저장소를 정리한다.</li>
+<li>조직으로 보낼 때는 받는 쪽이 정책으로 이전을 제한했을 수 있다. 조직 관리자에게 허용 여부를 묻는다.</li>
+<li>수락 메일이 오지 않으면 스팸함을 본다. 기간이 지나면 요청이 만료되므로 처음부터 다시 보낸다.</li>
+<li>이전은 돌이키기 어렵다. 잘못 보냈다면 새 주인에게 같은 방식으로 다시 이전해 달라고 부탁해야 한다. 보내기 전에 계정 이름의 철자를 한 번 더 확인한다.</li>
+</ol>
 </details>
 </section>
 </main>

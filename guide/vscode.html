@@ -30,6 +30,9 @@
 <a href="#push" data-tags="커밋 Push">3. 첫 커밋과 푸시</a>
 <a href="#next" data-tags="AI Claude Codex">4. 두 AI에게 같은 파일 읽히기</a>
 <a href="#claude-code" data-tags="Claude 설치">5. Claude Code 설치 방식</a>
+<a href="#shortcuts" data-tags="단축키 폴더 열기">6. 자주 쓰는 단축키</a>
+<a class="sub" href="#open-recent" data-tags="단축키 폴더 열기">자주 쓰는 폴더 빨리 열기</a>
+<a class="sub" href="#key-table" data-tags="단축키">단축키 모음</a>
 </nav></aside>
 <main>
 <section id="vscode-basics"><h2>1. 편집기와 소스 제어</h2><p>VS Code로 프로젝트 파일을 편집한다. 왼쪽 소스 제어에서 <a href="git.html#git-install">PC에 설치된 Git</a>을 조작하고 <a href="github.html#transfer">GitHub 저장소와 변경을 주고받을 수 있다.</a></p></section><section id="clone-steps"><h2>2. GitHub 저장소 복제</h2>
@@ -79,6 +82,51 @@
 <p>Node.js를 설치한 상태라면 npm으로도 설치할 수 있다. <a href="vscode-guide.html#map">기술 연결 지도</a>에서 Node.js와 Claude의 연결을 볼 수 있다.</p>
 <p><code>npm install -g @anthropic-ai/claude-code</code></p>
 <p>설치 후 터미널을 새로 열고 <code>claude --version</code>을 실행한다. 버전 숫자가 나오면 성공이다. 작업 폴더에서 <code>claude</code>를 입력하면 첫 실행 때 로그인 안내가 나온다.</p>
+</section>
+<section id="shortcuts">
+<h2>6. 자주 쓰는 단축키</h2>
+<p>마우스로 메뉴를 찾는 시간을 줄이는 단축키를 모았다. 아래는 Windows 기준이고 Mac은 <kbd>Ctrl</kbd> 대신 <kbd>Cmd</kbd>를 쓰는 경우가 많다. 안 먹히는 단축키는 <kbd>Ctrl</kbd> + <kbd>K</kbd> 다음 <kbd>Ctrl</kbd> + <kbd>S</kbd>로 키보드 단축키 화면을 열어 확인한다.</p>
+<h3 id="open-recent">자주 쓰는 폴더 빨리 열기</h3>
+<p><kbd>Ctrl</kbd> + <kbd>R</kbd>을 누르면 최근에 연 폴더와 작업 영역 목록이 화면 위쪽에 뜬다(Open Recent). 목록은 최근에 연 순서로 보인다.</p>
+<ol class="plain">
+<li><kbd>Ctrl</kbd> + <kbd>R</kbd>을 누른다.</li>
+<li>폴더 이름 일부를 입력하면 목록이 걸러진다. 예) <code>VScode</code></li>
+<li>방향키로 고르고 <kbd>Enter</kbd>를 누른다. 지금 창이 그 폴더로 바뀐다. 성공하면 왼쪽 탐색기에 그 폴더의 파일이 보이고, 창 제목에 폴더 이름이 나온다.</li>
+</ol>
+<p>같은 목록은 메뉴에서도 열린다. 왼쪽 위 <b>파일(File)</b> → <b>최근 항목 열기(Open Recent)</b>를 누르면 되고, 이 메뉴 맨 아래의 <b>Clear Recently Opened</b>로 목록을 비울 수 있다. 목록은 이 컴퓨터의 VS Code에만 저장되므로 다른 PC에서는 보이지 않는다. 폴더를 옮기거나 지우면 목록의 그 항목은 열리지 않는다.</p>
+<p>터미널에서 열고 싶으면 폴더 안에서 <code>code .</code>를 입력한다. 점(<code>.</code>)은 지금 폴더라는 뜻이다. <code>code 문서\GitHub\VScode-Practice</code>처럼 경로를 적어도 열린다. <code>code</code> 명령을 찾을 수 없다고 나오면 VS Code를 새로 설치할 때 PATH 추가 옵션을 켜지 않은 것이다.</p>
+<p class="note"><b>확인 전</b> · <kbd>Ctrl</kbd> + <kbd>R</kbd> 최근 폴더 열기는 마스터의 기억을 바탕으로 적었다. 실제 화면에서 목록이 뜨는지 확인한 뒤 확인 완료로 바꾼다.</p>
+<h3 id="key-table">단축키 모음</h3>
+<table>
+<thead><tr><th>단축키</th><th>하는 일</th></tr></thead>
+<tbody>
+<tr><td colspan="2"><b>열기와 이동</b></td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>R</kbd></td><td>최근에 연 폴더 열기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd> 다음 <kbd>Ctrl</kbd> + <kbd>O</kbd></td><td>폴더 선택 창으로 폴더 열기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd></td><td>새 VS Code 창 열기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>파일 이름으로 바로 열기(이름 일부만 입력)</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td><td>명령 팔레트. 모든 기능을 이름으로 실행(예: <code>Git: Push</code>)</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Tab</kbd></td><td>열려 있는 파일 사이 전환</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>W</kbd></td><td>지금 파일 탭 닫기</td></tr>
+<tr><td colspan="2"><b>화면 켜고 끄기</b></td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td><td>왼쪽 사이드바 보이기와 숨기기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td><td>터미널 열기와 닫기(<kbd>`</kbd>는 숫자 1 왼쪽 키)</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd></td><td>탐색기(파일 목록)</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd></td><td>소스 제어(Git 변경 내용)</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td><td>확장 프로그램</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>,</kbd></td><td>설정</td></tr>
+<tr><td colspan="2"><b>검색과 편집</b></td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>F</kbd></td><td>지금 파일에서 찾기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td><td>폴더 전체에서 찾기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td>선택한 글자와 같은 글자를 하나씩 더 선택(한꺼번에 고치기)</td></tr>
+<tr><td><kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>Alt</kbd> + <kbd>↓</kbd></td><td>현재 줄을 위나 아래로 옮기기</td></tr>
+<tr><td><kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>↓</kbd></td><td>현재 줄을 아래로 복사</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd></td><td>현재 줄 지우기</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td><td>현재 줄을 주석으로 바꾸기와 되돌리기</td></tr>
+<tr><td><kbd>F2</kbd></td><td>이름 바꾸기(변수나 함수 이름을 쓰는 곳 모두 함께 변경)</td></tr>
+<tr><td><kbd>Ctrl</kbd> + <kbd>S</kbd></td><td>저장</td></tr>
+</tbody>
+</table>
 </section>
 </main>
 </div>

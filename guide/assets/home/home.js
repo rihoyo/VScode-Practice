@@ -1,8 +1,8 @@
-/* 메인 페이지(첫 화면) 연출
+﻿/* 메인 페이지(첫 화면) 연출
  * 1) idle     : 코드가 쏟아지고, 마우스 자리에 ASCII 아트 블랙홀(그림자, 광자 고리, 휘어진 빛, 강착 원반)이 뜬다.
  *               블랙홀 모양을 이루는 글자는 안정적으로 유지되고, 포인트 글자 몇 개만 원반 면을 따라 천천히 빨려 든다.
- * 2) collapse : 클릭하거나 드래그하면 그 지점으로 모든 글자가 처음엔 천천히, 갈수록 기하급수적으로 빨려 든다(약 2.6초).
- *               빨려 드는 글자는 점점 빠르게 뒤바뀌고, 블랙홀은 커진다.
+ * 2) collapse : 클릭하거나 드래그하면 화면 가득한 코드가 그 지점으로 소용돌이치며 흘러든다(약 2.6초). 처음엔 천천히, 갈수록 기하급수로 빨라진다.
+ *               글자는 핵에서 사라지면 바깥에서 다시 들어와 화면이 비지 않고, 점점 빠르게 뒤바뀌며 블랙홀은 커진다.
  * 3) emerge   : 끝나기 직전부터 제목과 선택 카드가 클릭 지점에서 변형되며 튀어나온다. 화면이 끊기지 않고 겹쳐서 이어진다.
  * 4) main     : 제목과 메인 페이지 선택 카드. 뒤에는 흐려진 코드 비와 작은 블랙홀이 남는다.
  * 같은 탭에서 한 번 본 뒤에는 바로 4)로 간다(?intro=1을 붙이면 다시 본다). 모션 줄이기 설정이면 연출 없이 4)다. */
@@ -208,30 +208,61 @@
     if (artA > 0.05) drawArt(P.x, P.y, Rb, artA, chaos, t);
   }
 
-  /* ── 클릭 후: 모든 글자가 클릭 지점으로 빨려 든다 ── */
+  /* ── 클릭 후: 화면 가득한 코드가 소용돌이치며 클릭 지점으로 끝없이 흘러든다 ──
+   * 원칙: 연출 내내 화면 어디에도 빈 종이 면이 생기면 안 된다. 그래서 글자를 "모으지" 않고 "흐르게" 한다.
+   * 각 글자는 클릭 지점에서 화면 가장자리까지 뻗은 반직선 위의 한 점(rho: 0=핵, 1=가장자리)에 있고, rho² 가 균일하게 깔려 있다.
+   * 모든 글자의 rho² 가 같은 속도로 줄어들어 중심으로 흘러들고(바깥에서 보면 중심에 가까울수록 빠르다), 핵에서 사라지는 즉시
+   * 같은 반직선의 가장자리(화면 밖)에서 새 글자로 들어온다. 가장자리는 화면 테두리를 따라 정해서 어느 방향에서도 끊김 없이 채워진다.
+   * 시작 위치는 지금 화면의 글자 칸 그대로라 연출이 시작될 때 튀지 않는다. */
+  let flowOK = false, qn = null, th0 = null, Q0 = null, core0 = 1;
+  const rayLen = (th) => { // 클릭 지점에서 th 방향으로 화면 테두리(조금 바깥)까지의 거리
+    const c = Math.cos(th), s = Math.sin(th), tx = c > 1e-6 ? (W - P.x) / c : c < -1e-6 ? -P.x / c : 1e9, ty = s > 1e-6 ? (H - P.y) / s : s < -1e-6 ? -P.y / s : 1e9;
+    return Math.min(tx, ty) + 24;
+  };
+  function initFlow() {
+    const n = cols * rows; core0 = bigRbStart * 0.9;
+    qn = new Float32Array(n); th0 = new Float32Array(n); Q0 = new Float32Array(n);
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const i = r * cols + c, s2 = st[i], x = s2 === 1 ? px[i] : c * cw + cw / 2, y = s2 === 1 ? py[i] : r * ch + ch / 2, dx = x - P.x, dy = y - P.y, th = Math.atan2(dy, dx);
+      const rho = clamp((Math.hypot(dx, dy) - core0) / Math.max(1, rayLen(th) - core0), 0, 1);
+      th0[i] = th; qn[i] = rho * rho; Q0[i] = rho * rho + 0.03;
+    }
+    flowOK = true;
+  }
   function drawCollapse(now, t, dt) {
-    const tau = freeze >= 0 ? freeze : clamp((now - rt0) / COLLAPSE, 0, 1), diag = Math.hypot(W, H);
+    const tau = freeze >= 0 ? freeze : clamp((now - rt0) / COLLAPSE, 0, 1);
     const growth = E(tau, 4.2); // 블랙홀도 갈수록 빠르게 커진다
     Rb = lerp(bigRbStart, Math.min(W, H) * 0.27, growth); bigRb = Rb;
     const chaos = ease((tau - 0.55) / 0.45);
+    if (!flowOK) initFlow();
     g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
     g.font = `${ch - 5}px ${MONO}`;
+    const S = 3.4 * E(tau, 5.2), dS = 3.4 * (E(tau, 5.2) - E(Math.max(0, tau - 0.035), 5.2)); // 지금까지 흘러든 바퀴 수
+    const m = E(tau, 3), Om = 2.4 * E(tau, 3.5), kt = 0.5 * m, scr = 0.9 * m, endF = 1 - ease((tau - 0.82) / 0.18), core = Rb * 0.9;
+    const pos = (i, SS) => { // 흐름의 한 시점에서 칸 i의 위치
+      const u = qn[i] - SS, q = u - Math.floor(u), th = th0[i] + Om + kt * 0.5 * Math.log(Q0[i] / (q + 0.03)), rho = Math.sqrt(q), rr = core + rho * Math.max(1, rayLen(th) - core);
+      return { w: Math.floor(u), r: rr, x: P.x + Math.cos(th) * rr, y: P.y + Math.sin(th) * rr };
+    };
+    const dens = 0.45 + 0.4 * m; // 빈 칸(공백)도 글자로 채워 어느 곳도 비지 않게 한다
     for (let c = 0; c < cols; c++) {
-      const L = rainL[c], pos = (t * rainV[c] + rainP[c]) % (rows + L + 8), x = c * cw + cw / 2;
+      const L = rainL[c], rp = (t * rainV[c] + rainP[c]) % (rows + L + 8);
       for (let r = 0; r < rows; r++) {
-        const i2 = r * cols + c, s2 = st[i2];
-        if (s2 === 2) continue; // 이미 삼켜진 칸
-        const y = r * ch + ch / 2, sx = s2 === 1 ? px[i2] : x, sy = s2 === 1 ? py[i2] : y, dx = sx - P.x, dy = sy - P.y, r0 = Math.hypot(dx, dy);
-        const delay = 0.2 * (r0 / diag), p = clamp((tau - delay) / (1 - delay), 0, 1), e = E(p, 5.2);
-        const rr = r0 * (1 - e);
-        if (rr < Rb * 0.95) continue; // 이미 삼켜졌다
-        const d = pos - r, lit = d >= 0 && d < L, a = lit ? (d < 1 ? 1 : 0.14 + 0.8 * (1 - d / L) ** 1.6) : 0.13;
-        const th = Math.atan2(dy, dx) + e * (4.5 + 15 * Math.exp(-r0 / 240)); // 안쪽일수록 더 많이 감겨 나선 팔이 된다
-        const k = Math.random() < e * 0.85 ? pc() : lit ? colStream[c][(r + c * 3) % 48] : cell(c, r);
-        put(k, P.x + Math.cos(th) * rr, P.y + Math.sin(th) * rr, a, lit && d < 1);
+        const i = r * cols + c, d = rp - r, lit = d >= 0 && d < L, ch0 = cell(c, r);
+        if (ch0 === ' ' && !lit && (i * 2654435761 >>> 0) / 4294967296 > dens) continue;
+        const o = pos(i, S);
+        if (o.x < -12 || o.x > W + 12 || o.y < -12 || o.y > H + 12) continue;
+        const fade = clamp((o.r - core) / (Rb * 0.5), 0, 1) * endF;
+        if (fade <= 0.02) continue;
+        const a0 = lit ? (d < 1 ? 1 : 0.2 + 0.8 * (1 - d / L) ** 1.6) : 0.22 + 0.5 * m, a = a0 * fade;
+        const k = ch0 === ' ' && !lit ? pc() : Math.random() < scr ? pc() : lit ? colStream[c][(r + c * 3) % 48] : ch0;
+        put(k, o.x, o.y, a, lit && d < 1);
+        if (m > 0.12 && i % 3 === 0) { // 빠르게 흘러 들며 중심 쪽으로 늘어나는 잔상(같은 바퀴 안에서만)
+          const o2 = pos(i, S - dS);
+          if (o2.w === o.w) put(k, o2.x, o2.y, a * 0.5, false);
+        }
       }
     }
-    clearAround(P.x, P.y, Rb);
+    clearAround(P.x, P.y, Rb * 0.45);
     drawArt(P.x, P.y, Rb, 1, chaos, t);
     if (freeze < 0 && !domShown && tau >= MAIN_AT) { domShown = true; showMain(true); }
     if (freeze < 0 && tau >= 1) { mode = 'emerge'; emergeAt = now; stageClass('main'); st.fill(0); act = []; }
@@ -244,7 +275,7 @@
   function go() {
     if (mode !== 'idle') return;
     if (!seen) { T.x = P.x = W / 2; T.y = P.y = H / 2; } else { P.x = T.x; P.y = T.y; }
-    mode = 'collapse'; rt0 = performance.now(); domShown = false; bigRbStart = Rb; stageClass('collapse');
+    mode = 'collapse'; rt0 = performance.now(); domShown = false; flowOK = false; bigRbStart = Rb; stageClass('collapse');
   }
   function showMain(animated) {
     body.classList.remove('is-idle', 'is-collapse', 'is-resolve'); body.classList.add('is-main');
@@ -273,7 +304,7 @@
       freeze = -1; freezeU = u; mode = 'emerge'; domShown = true; bigRb = TARGET.idle.Rb * 1.1 + Math.min(W, H) * 0.27 * 0.6; emergeAt = performance.now();
       showMain(true);
       document.querySelector('.main').getAnimations().forEach((a) => { a.pause(); a.currentTime = u * 1100; });
-    } else { freeze = tau; freezeU = -1; mode = 'collapse'; stageClass('collapse'); domShown = true; bigRbStart = TARGET.idle.Rb; }
+    } else { freeze = tau; freezeU = -1; mode = 'collapse'; flowOK = false; stageClass('collapse'); domShown = true; bigRbStart = TARGET.idle.Rb; }
     if (!raf) raf = requestAnimationFrame(loop);
   };
 
