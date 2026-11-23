@@ -28,14 +28,14 @@
   // 바탕 글자 칸 하나하나의 물리 상태. st: 0 제자리, 1 끌려가는 중, 2 삼켜짐(비어 있음), 3 다시 생겨나는 중
   let st = null, px = null, py = null, vx = null, vy = null, tm = null, thr = null, act = [];
   const P = { x: -999, y: -999 }, T = { x: -999, y: -999 };
-  let seen = false, lastMove = 0, last = 0, t0 = 0;
+  let seen = false, inside = true, lastMove = 0, last = 0, t0 = 0;
   let mode = 'idle', rt0 = 0, emergeAt = 0, domShown = false, bigRb = 60, ZERO = 0;
   let freezeU = -1; // 개발용 미리보기: emerge 진행도 고정
   let freeze = -1; // 개발용 미리보기: 0 이상이면 collapse 진행도를 이 값에 고정한다
   let Rb = 78, artA = 1, dim = 1; // 지금 값(천천히 목표로 따라간다)
   let raf = 0;
-  const alphaStyle = Array.from({ length: 12 }, (_, i) => `rgba(${INK},${((i + 1) / 12).toFixed(2)})`);
-  const redStyle = Array.from({ length: 12 }, (_, i) => `rgba(${RED},${((i + 1) / 12).toFixed(2)})`);
+  const alphaStyle = Array.from({ length: 48 }, (_, i) => `rgba(${INK},${((i + 1) / 48).toFixed(3)})`);
+  const redStyle = Array.from({ length: 48 }, (_, i) => `rgba(${RED},${((i + 1) / 48).toFixed(3)})`);
   const rnd = (a, b) => a + Math.random() * (b - a);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, u) => a + (b - a) * u;
@@ -72,7 +72,7 @@
   }
   const cell = (c, r) => rowStr[r][c] || ' ';
   const put = (k, x, y, a, red) => {
-    g.fillStyle = (red ? redStyle : alphaStyle)[clamp(Math.round(a * 12) - 1, 0, 11)];
+    g.fillStyle = (red ? redStyle : alphaStyle)[clamp(Math.round(a * 48) - 1, 0, 47)] /* 48단계: 밝기 단계가 거칠면 클릭 순간 바탕 글자 밝기가 계단처럼 변한다 */;
     g.fillText(k, x, y);
   };
 
@@ -172,9 +172,9 @@
     const t = (now - t0) / 1000, dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now;
     g.clearRect(0, 0, W, H);
     g.textAlign = 'center'; g.textBaseline = 'middle';
-    // 포인터를 따라간다. 포인터가 화면에 한 번이라도 들어온 뒤에는 가만히 있어도 그 자리에 머문다(자동으로 떠다니지 않는다)
+    // 포인터를 따라간다. 포인터가 화면에 있으면 가만히 있어도 그 자리에 머물고, 브라우저 밖으로 나갔거나 창을 보고 있지 않거나 아직 들어온 적이 없으면 저절로 떠다닌다
     if (mode === 'idle' || mode === 'main') {
-      if (!seen) { T.x = W * (0.5 + 0.28 * Math.sin(t * 0.55)); T.y = H * (0.5 + 0.22 * Math.sin(t * 0.83 + 1)); }
+      if (!seen || !inside) { T.x = W * (0.5 + 0.28 * Math.sin(t * 0.55)); T.y = H * (0.5 + 0.22 * Math.sin(t * 0.83 + 1)); }
     }
     P.x += (T.x - P.x) * 0.16; P.y += (T.y - P.y) * 0.16;
 
@@ -208,24 +208,27 @@
     if (artA > 0.05) drawArt(P.x, P.y, Rb, artA, chaos, t);
   }
 
-  /* ── 클릭 후: 화면 가득한 코드가 소용돌이치며 클릭 지점으로 끝없이 흘러든다 ──
-   * 원칙: 연출 내내 화면 어디에도 빈 종이 면이 생기면 안 된다. 그래서 글자를 "모으지" 않고 "흐르게" 한다.
-   * 각 글자는 클릭 지점에서 화면 가장자리까지 뻗은 반직선 위의 한 점(rho: 0=핵, 1=가장자리)에 있고, rho² 가 균일하게 깔려 있다.
-   * 모든 글자의 rho² 가 같은 속도로 줄어들어 중심으로 흘러들고(바깥에서 보면 중심에 가까울수록 빠르다), 핵에서 사라지는 즉시
-   * 같은 반직선의 가장자리(화면 밖)에서 새 글자로 들어온다. 가장자리는 화면 테두리를 따라 정해서 어느 방향에서도 끊김 없이 채워진다.
-   * 시작 위치는 지금 화면의 글자 칸 그대로라 연출이 시작될 때 튀지 않는다. */
-  let flowOK = false, qn = null, th0 = null, Q0 = null, core0 = 1;
-  const rayLen = (th) => { // 클릭 지점에서 th 방향으로 화면 테두리(조금 바깥)까지의 거리
-    const c = Math.cos(th), s = Math.sin(th), tx = c > 1e-6 ? (W - P.x) / c : c < -1e-6 ? -P.x / c : 1e9, ty = s > 1e-6 ? (H - P.y) / s : s < -1e-6 ? -P.y / s : 1e9;
-    return Math.min(tx, ty) + 24;
-  };
+  /* ── 클릭 후: 화면 가득한 코드가 완전한 원형 소용돌이로 클릭 지점에 빨려 든다 ──
+   * 원칙 1) 어느 순간에도 빈 종이 면이 없다. 2) 모양은 모서리 없는 원형 나선이다. 3) 클릭한 프레임에서 화면이 튀지 않는다.
+   * 글자를 "모으지" 않고 "흐르게" 한다. 글자는 클릭 지점을 중심으로 한 큰 원판(반지름 Rf) 안에 면적 균일(r² 균일)하게 깔려 있고,
+   * 모두 같은 양씩 r² 가 줄어들며(중심에 가까울수록 눈에는 빠르게) 핵으로 흘러들고, 핵에서 사라지면 원판 바깥 가장자리에서 다시 들어온다.
+   * 원판은 화면보다 넓어서 화면 밖 부분에도 보이지 않는 글자(유령 글자)를 미리 깔아 두었다가 흘러 들어올 때 화면을 채운다.
+   * 시작 위치는 지금 화면의 글자 칸 그대로고, 밝기와 밀도는 천천히 올려서 클릭 순간에 컷 전환처럼 바뀌지 않는다. */
+  let flowOK = false, qn = null, th0 = null, Q0 = null, gone = null, ph = [], nCell = 0, Rc2 = 1, Rf2 = 1, span = 1;
   function initFlow() {
-    const n = cols * rows; core0 = bigRbStart * 0.9;
-    qn = new Float32Array(n); th0 = new Float32Array(n); Q0 = new Float32Array(n);
+    const n = cols * rows, far = Math.max(Math.hypot(P.x, P.y), Math.hypot(W - P.x, P.y), Math.hypot(P.x, H - P.y), Math.hypot(W - P.x, H - P.y));
+    Rc2 = (bigRbStart * 0.9) ** 2; Rf2 = (far * 1.03) ** 2; span = Rf2 - Rc2; nCell = n;
+    const np = Math.min(Math.max(0, Math.round((Math.PI * Rf2 - W * H) / (cw * ch) * 0.9)), Math.max(0, 42000 - n)), N = n + np;
+    qn = new Float32Array(N); th0 = new Float32Array(N); Q0 = new Float32Array(N); gone = new Uint8Array(n); ph = new Array(np);
     for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-      const i = r * cols + c, s2 = st[i], x = s2 === 1 ? px[i] : c * cw + cw / 2, y = s2 === 1 ? py[i] : r * ch + ch / 2, dx = x - P.x, dy = y - P.y, th = Math.atan2(dy, dx);
-      const rho = clamp((Math.hypot(dx, dy) - core0) / Math.max(1, rayLen(th) - core0), 0, 1);
-      th0[i] = th; qn[i] = rho * rho; Q0[i] = rho * rho + 0.03;
+      const i = r * cols + c, s2 = st[i], x = s2 === 1 ? px[i] : c * cw + cw / 2, y = s2 === 1 ? py[i] : r * ch + ch / 2, dx = x - P.x, dy = y - P.y, d2 = dx * dx + dy * dy;
+      th0[i] = Math.atan2(dy, dx); qn[i] = (((d2 - Rc2) / span) % 1 + 1) % 1; Q0[i] = qn[i] + 0.03; gone[i] = s2 === 2 || s2 === 3 ? 1 : 0; // 이미 삼켜져 비어 있던 칸은 서서히 나타난다
+    }
+    for (let k = 0; k < np; k++) { // 화면 밖의 원판 부분을 채우는 유령 글자
+      let x, y, tries = 0;
+      do { const rr = Math.sqrt(Rc2 + Math.random() * span), th = Math.random() * 6.2832; x = P.x + Math.cos(th) * rr; y = P.y + Math.sin(th) * rr; } while (x > -20 && x < W + 20 && y > -20 && y < H + 20 && ++tries < 6);
+      const dx = x - P.x, dy = y - P.y, i = n + k;
+      th0[i] = Math.atan2(dy, dx); qn[i] = (((dx * dx + dy * dy - Rc2) / span) % 1 + 1) % 1; Q0[i] = qn[i] + 0.03; ph[k] = pc();
     }
     flowOK = true;
   }
@@ -238,23 +241,25 @@
     g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
     g.font = `${ch - 5}px ${MONO}`;
     const S = 3.4 * E(tau, 5.2), dS = 3.4 * (E(tau, 5.2) - E(Math.max(0, tau - 0.035), 5.2)); // 지금까지 흘러든 바퀴 수
-    const m = E(tau, 3), Om = 2.4 * E(tau, 3.5), kt = 0.5 * m, scr = 0.9 * m, endF = 1 - ease((tau - 0.82) / 0.18), core = Rb * 0.9;
-    const pos = (i, SS) => { // 흐름의 한 시점에서 칸 i의 위치
-      const u = qn[i] - SS, q = u - Math.floor(u), th = th0[i] + Om + kt * 0.5 * Math.log(Q0[i] / (q + 0.03)), rho = Math.sqrt(q), rr = core + rho * Math.max(1, rayLen(th) - core);
+    const m = E(tau, 3), k0 = ease(tau / 0.3), Om = 2.4 * E(tau, 3.5), kt = 1.5 * m, scr = 0.9 * m, endF = 1 - ease((tau - 0.82) / 0.18), core = Rb * 0.9;
+    const pos = (i, SS) => { // 흐름의 한 시점에서 글자 i의 위치(완전한 원형)
+      const u = qn[i] - SS, q = u - Math.floor(u), th = th0[i] + Om + kt * 0.5 * Math.log(Q0[i] / (q + 0.03)), rr = Math.sqrt(Rc2 + q * span);
       return { w: Math.floor(u), r: rr, x: P.x + Math.cos(th) * rr, y: P.y + Math.sin(th) * rr };
     };
-    const dens = 0.45 + 0.4 * m; // 빈 칸(공백)도 글자로 채워 어느 곳도 비지 않게 한다
+    const dens = 0.5 * k0; // 빈 칸(공백)에도 글자를 채워 어느 곳도 비지 않게 한다. 천천히 채워서 컷이 느껴지지 않는다
+    const on = (o) => o.x > -12 && o.x < W + 12 && o.y > -12 && o.y < H + 12;
     for (let c = 0; c < cols; c++) {
       const L = rainL[c], rp = (t * rainV[c] + rainP[c]) % (rows + L + 8);
       for (let r = 0; r < rows; r++) {
         const i = r * cols + c, d = rp - r, lit = d >= 0 && d < L, ch0 = cell(c, r);
         if (ch0 === ' ' && !lit && (i * 2654435761 >>> 0) / 4294967296 > dens) continue;
         const o = pos(i, S);
-        if (o.x < -12 || o.x > W + 12 || o.y < -12 || o.y > H + 12) continue;
-        const fade = clamp((o.r - core) / (Rb * 0.5), 0, 1) * endF;
+        if (!on(o)) continue;
+        const fade = clamp((o.r - core) / (Rb * 0.5), 0, 1) * endF * (gone[i] ? k0 : 1);
         if (fade <= 0.02) continue;
-        const a0 = lit ? (d < 1 ? 1 : 0.2 + 0.8 * (1 - d / L) ** 1.6) : 0.22 + 0.5 * m, a = a0 * fade;
+        const a0 = lit ? (d < 1 ? 1 : 0.14 + 0.8 * (1 - d / L) ** 1.6) : 0.13 + 0.4 * k0 + 0.15 * m, a = a0 * fade;
         const k = ch0 === ' ' && !lit ? pc() : Math.random() < scr ? pc() : lit ? colStream[c][(r + c * 3) % 48] : ch0;
+        if (lit && ch0 !== ' ') put(ch0, o.x, o.y, 0.13 * fade, false); // 평소 화면처럼 쏟아지는 코드 밑에도 바탕 글자가 깔려 있다
         put(k, o.x, o.y, a, lit && d < 1);
         if (m > 0.12 && i % 3 === 0) { // 빠르게 흘러 들며 중심 쪽으로 늘어나는 잔상(같은 바퀴 안에서만)
           const o2 = pos(i, S - dS);
@@ -262,7 +267,14 @@
         }
       }
     }
-    clearAround(P.x, P.y, Rb * 0.45);
+    for (let k = 0; k < ph.length; k++) { // 화면 밖에서 흘러 들어오는 유령 글자: 화면 안에 들어온 것만 그린다
+      const i = nCell + k, o = pos(i, S);
+      if (!on(o)) continue;
+      const fade = clamp((o.r - core) / (Rb * 0.5), 0, 1) * endF;
+      if (fade <= 0.02) continue;
+      put(Math.random() < scr ? pc() : ph[k], o.x, o.y, (0.13 + 0.4 * k0 + 0.15 * m) * fade, false);
+    }
+    clearAround(P.x, P.y, Rb * lerp(1, 0.45, k0)); // 블랙홀 둘레를 비우는 폭도 천천히 줄여 이어 간다
     drawArt(P.x, P.y, Rb, 1, chaos, t);
     if (freeze < 0 && !domShown && tau >= MAIN_AT) { domShown = true; showMain(true); }
     if (freeze < 0 && tau >= 1) { mode = 'emerge'; emergeAt = now; stageClass('main'); st.fill(0); act = []; }
@@ -274,7 +286,7 @@
   const stageClass = (m) => { body.classList.remove('is-idle', 'is-collapse', 'is-resolve', 'is-main'); body.classList.add('is-' + m); };
   function go() {
     if (mode !== 'idle') return;
-    if (!seen) { T.x = P.x = W / 2; T.y = P.y = H / 2; } else { P.x = T.x; P.y = T.y; }
+    if (!seen) { T.x = P.x = W / 2; T.y = P.y = H / 2; } // 클릭해도 블랙홀 위치를 포인터로 순간 이동시키지 않는다(따라가던 속도 그대로 이어 간다)
     mode = 'collapse'; rt0 = performance.now(); domShown = false; flowOK = false; bigRbStart = Rb; stageClass('collapse');
   }
   function showMain(animated) {
@@ -309,8 +321,10 @@
   };
 
   /* ── 입력 ── */
-  const move = (e) => { T.x = e.clientX; T.y = e.clientY; if (!seen) { P.x = T.x; P.y = T.y; } seen = true; lastMove = performance.now(); };
+  const move = (e) => { inside = true; T.x = e.clientX; T.y = e.clientY; if (!seen) { P.x = T.x; P.y = T.y; } seen = true; lastMove = performance.now(); };
   addEventListener('pointermove', move, { passive: true });
+  document.documentElement.addEventListener('mouseleave', () => { inside = false; }); // 포인터가 브라우저 밖으로 나가면 블랙홀이 저절로 떠다닌다
+  addEventListener('blur', () => { inside = false; }); // 창을 보고 있지 않을 때도
   addEventListener('pointerdown', (e) => {
     if (mode !== 'idle' || e.target.closest('button,a')) return;
     move(e); go();
