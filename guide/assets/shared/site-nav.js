@@ -221,7 +221,7 @@
   // 스크롤하면 고정 메뉴바를 보인다(모든 페이지 공통). 머리말이 화면 밖으로 나가거나, 긴 머리말이면 화면 절반쯤 내려갔을 때.
   const head = document.querySelector("header");
   const upd = () => {
-    const past = head ? head.getBoundingClientRect().bottom <= 0 || scrollY > innerHeight * 0.6 : scrollY > 200;
+    const past = document.body.dataset.bar === "always" || (head ? head.getBoundingClientRect().bottom <= 0 || scrollY > innerHeight * 0.6 : scrollY > 200);
     document.body.classList.toggle("scrolled", past);
     if (past) closeAll();
   };

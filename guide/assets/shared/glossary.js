@@ -11,7 +11,7 @@
   TERMS.forEach((e, i) => e.k.forEach((k) => map.set(k.toLowerCase(), i)));
   const alts = [...map.keys()].sort((a, b) => b.length - a.length).map(esc).join('|');
   const RE = new RegExp('(?<![A-Za-z0-9_])(' + alts + ')(?![A-Za-z0-9_])', 'gi');
-  const SKIP = 'script,style,pre,kbd,textarea,input,button,select,svg,canvas,nav,h1,summary,.gl,.topbar,.pm,.dsw,.tmux,.eyebrow,.vl,.cn,.kq,[data-toc],.idx,.mini,.rail,.pn-h,.tabs';
+  const SKIP = 'script,style,pre,kbd,textarea,input,button,select,svg,canvas,nav,h1,summary,[data-no-gl],.gl,.topbar,.pm,.dsw,.tmux,.eyebrow,.vl,.cn,.kq,[data-toc],.idx,.mini,.rail,.pn-h,.tabs';
 
   function annotate(root) {
     const seen = new Set(), nodes = [];

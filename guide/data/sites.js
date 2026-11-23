@@ -9,6 +9,7 @@ window.SITE_CONFIG = {
       { href: 'git.html', name: 'Git' },
       { href: 'github.html', name: 'GitHub' },
       { href: 'vscode.html', name: 'VS Code' },
+      { href: '3d-test.html', name: '3D 테스트' },
     ] },
     { id: 'linux', name: '리눅스', d: 'OS 이해하기 · 터미널로 보는 노트', c: '#e95420', pages: [
       { href: 'linux.html', name: '리눅스 홈' },
