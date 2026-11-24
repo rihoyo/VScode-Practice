@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI · 나의 개발 스텝</title>
+<script src="assets/shared/transition.js"></script>
+<link rel="stylesheet" href="assets/shared/site-ui.css">
+<link rel="stylesheet" href="assets/shared/glossary.css">
+<link rel="stylesheet" href="assets/ai/ai.css">
+<script src="data/generated/search-index.js" defer></script>
+<script src="data/generated/glossary-data.js" defer></script>
+<script src="data/sites.js" defer></script>
+<script src="assets/shared/site-nav.js" defer></script>
+<script src="assets/shared/glossary.js" defer></script>
+<script src="data/ai-data.js" defer></script>
+<script src="assets/ai/ai.js" defer></script>
+</head>
+<body class="ai">
+<header class="hero">
+<div class="sitenav"></div>
+<nav class="tabs" aria-label="공통 메뉴"></nav>
+<p class="eyebrow">AI CODING AGENTS<sup class="fn" data-fn="ai-asof"></sup></p>
+<h1>AI로 개발하는 법<br><em class="cl">Claude Code</em> 그리고 <em class="cx">Codex</em></h1>
+<p class="lead">두 도구가 어떻게 움직이는지, 실무에서 어떻게 쓰는지, 기초로 뭘 알아야 하는지를 정리한다. 심화에서는 컨텍스트와 하네스를 다루고, 실습에서는 같은 요청이 설정 하나로 어떻게 달라지는지 직접 눌러 본다.</p>
+<div class="snap" id="snap" aria-label="점검한 버전"></div>
+</header>
+<div class="layout">
+<aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
+<a href="#ai-intro" data-tags="AI Claude Codex 읽는순서">1. 한눈에 보기</a>
+<a href="#ai-basics" data-tags="AI 기초 에이전트 프롬프트 토큰">2. 기초로 알아둘 것</a>
+<a class="sub" href="#ai-loop" data-tags="에이전트 루프 동작">에이전트 루프</a>
+<a class="sub" href="#ai-ask" data-tags="프롬프트 요청 작성">좋은 요청의 네 요소</a>
+<a href="#ai-how" data-tags="Claude Codex 동작방식 비교 권한">3. 두 도구의 동작 방식</a>
+<a href="#ai-work" data-tags="실무 워크플로 리뷰 CI">4. 실무에서 쓰는 법</a>
+<a href="#ai-context" data-tags="컨텍스트 압축 심화">5. 심화: 컨텍스트</a>
+<a href="#ai-harness" data-tags="하네스 훅 스킬 MCP 서브에이전트 심화">6. 심화: 하네스</a>
+<a href="#ai-labs" data-tags="실습 시연 AI">7. 실습</a>
+<a class="sub" href="#lab-rules" data-tags="실습 지시문 CLAUDE.md AGENTS.md">실습 1 지시문</a>
+<a class="sub" href="#lab-context" data-tags="실습 컨텍스트 compact clear">실습 2 컨텍스트</a>
+<a class="sub" href="#lab-perm" data-tags="실습 권한 샌드박스 승인">실습 3 권한</a>
+<a class="sub" href="#lab-hook" data-tags="실습 훅 검증">실습 4 훅과 검증</a>
+<a class="sub" href="#lab-sub" data-tags="실습 서브에이전트 컨텍스트">실습 5 서브에이전트</a>
+<a class="sub" href="#lab-exec" data-tags="실습 자동화 CI headless">실습 6 자동 실행</a>
+<a href="#ai-plans" data-tags="요금제 플랜 Pro Max Plus Business">8. 플랜별 기능</a>
+<a href="#ai-updates" data-tags="업데이트 변경기록 2026-11-24">9. 2026-11-24 업데이트</a>
+<a href="#ai-sources" data-tags="출처 확인">10. 출처와 확인 방법</a>
+<a href="#notes" data-tags="주석 기준 출처">주석</a>
+</nav></aside>
+<main>
+
+<section id="ai-intro" class="ch">
+<h2>1. 한눈에 보기</h2>
+<p><b>Claude Code</b>와 <b>Codex</b>는 둘 다 터미널, 편집기, 앱에서 코드를 읽고 고치고 실행하는 AI 에이전트다. 채팅처럼 답만 하지 않고 파일을 열고 명령을 돌리고 결과를 보고 다음 행동을 정한다. 그래서 잘 쓰려면 모델 성능보다 <b>무엇을 읽히고, 무엇을 허락하고, 어떻게 검증하게 하느냐</b>가 더 크게 작용한다.</p>
+<table class="cmp">
+<thead><tr><th></th><th class="cl">Claude Code</th><th class="cx">Codex</th></tr></thead>
+<tbody>
+<tr><th>만든 곳</th><td>Anthropic</td><td>OpenAI</td></tr>
+<tr><th>쓰는 곳</th><td>터미널, VS Code 확장, 데스크톱·웹, 원격 제어</td><td>터미널(TUI), IDE 확장, 데스크톱 앱, 웹 클라우드 작업, iOS</td></tr>
+<tr><th>지시문 파일</th><td><code>CLAUDE.md</code></td><td><code>AGENTS.md</code></td></tr>
+<tr><th>돈 내는 방식</th><td>Claude 구독(Pro 이상)이나 API</td><td>ChatGPT 구독(무료~Enterprise)이나 API 키</td></tr>
+</tbody>
+</table>
+<p class="note">읽는 순서는 <b>기초 → 동작 방식 → 실무 → 심화(컨텍스트·하네스) → 실습 → 플랜 → 업데이트</b>다. 실습은 서버나 계정 없이 이 페이지 안에서 시뮬레이션으로 돌아가고, 새로고침하면 처음으로 돌아간다. 시뮬레이터에서 본 동작은 실제 도구에서 마스터가 직접 확인하기 전에는 확인 완료로 보지 않는다.</p>
+</section>
+
+<section id="ai-basics" class="ch">
+<h2>2. 기초로 알아둘 것</h2>
+<h3 id="ai-loop">에이전트 루프</h3>
+<p>에이전트는 한 번 답하고 끝나지 않고 <b>목표 → 읽기 → 계획 → 실행 → 확인</b>을 목표가 달성될 때까지 되풀이한다. 실행은 도구(파일 읽기, 파일 수정, 명령 실행, 검색, MCP로 붙인 외부 서비스)를 부르는 일이다.</p>
+<div class="loopfig" aria-label="에이전트 루프">
+<span>목표</span><i>→</i><span>읽기</span><i>→</i><span>계획</span><i>→</i><span class="hot">도구 실행</span><i>→</i><span>결과 확인</span><i class="back">↺ 달성할 때까지</i>
+</div>
+<ol class="plain">
+<li><b>모델과 하네스를 구분한다.</b> 모델은 생각하는 두뇌고, 하네스는 그 둘레의 도구, 권한, 지시문, 검증 장치다. 같은 모델도 하네스가 다르면 결과가 크게 달라진다. 심화에서 자세히 다룬다.</li>
+<li><b>토큰과 컨텍스트를 안다.</b> 모델이 한 번에 보는 글의 양이 컨텍스트 창이고 글자 수는 토큰으로 센다. 대화, 읽은 파일, 명령 출력이 모두 여기에 쌓이고, 가득 차 갈수록 비용이 늘고 앞부분을 놓치기 쉽다.</li>
+<li><b>권한을 안다.</b> 파일 수정과 명령 실행은 기본적으로 허락을 받고 한다. 허락을 줄수록 빠르지만 위험도 커진다.</li>
+<li><b>검증은 사람의 몫이다.</b> 에이전트가 "됐다"고 말하는 것과 실제로 되는 것은 다르다. 테스트, 린트, <code>git diff</code>로 직접 확인한다.</li>
+</ol>
+<h3>먼저 익혀 두면 좋은 개발 기초</h3>
+<ul>
+<li><b>터미널</b>: <code>cd</code>, <code>ls</code>, 경로 읽기. <a href="linux.html">리눅스</a>에서 연습한다.</li>
+<li><b>Git</b>: 브랜치, <code>git diff</code>, 커밋. 에이전트가 만든 변경은 반드시 diff로 본다. <a href="git.html">Git</a> 페이지를 본다.</li>
+<li><b>테스트와 린트</b>: 에이전트에게 "끝났는지 어떻게 알 수 있나"를 알려 주는 기준이다.</li>
+<li><b>비밀값</b>: <code>.env</code>, 키, 토큰은 저장소에 넣지 않고 에이전트에게 붙여 넣지 않는다.</li>
+<li><b>코드 읽기</b>: 쓰지는 못해도 읽을 수 있어야 맡긴 결과를 판단한다.</li>
+</ul>
+<h3 id="ai-ask">좋은 요청의 네 요소</h3>
+<table>
+<thead><tr><th>요소</th><th>뜻</th><th>예</th></tr></thead>
+<tbody>
+<tr><td>목표</td><td>무엇을 바꾸는가</td><td>3D 페이지의 제목 위치를 구간 맨 위로 옮긴다</td></tr>
+<tr><td>범위</td><td>어디까지 건드리는가</td><td><code>guide/</code> 안의 파일만</td></tr>
+<tr><td>제약</td><td>하지 말아야 할 것</td><td>새 라이브러리를 추가하지 않고 커밋하지 않는다</td></tr>
+<tr><td>완료 기준</td><td>끝났음을 어떻게 아는가</td><td><code>npm run check</code>가 통과하면 끝이다</td></tr>
+</tbody>
+</table>
+<div class="two">
+<div class="bad"><b>약한 요청</b><p>"페이지 좀 고쳐 줘."</p><small>무엇을, 어디까지, 언제까지 해야 끝인지 알 수 없어서 에이전트가 추측으로 크게 바꾼다.</small></div>
+<div class="good"><b>강한 요청</b><p>"<code>3d-test.html</code>의 구간 제목을 구간 맨 위로 옮겨. <code>guide/</code> 밖은 건드리지 말고, 끝나면 <code>npm run check</code>를 돌려서 결과만 알려 줘."</p><small>범위, 제약, 완료 기준이 있어서 결과를 바로 검증할 수 있다.</small></div>
+</div>
+</section>
+
+<section id="ai-how" class="ch">
+<h2>3. 두 도구의 동작 방식</h2>
+<p>핵심 구조는 같다. 사용자의 요청과 <b>지시문 파일</b>을 읽고, 도구를 불러 작업하고, 권한 규칙에 따라 허락을 받거나 막힌다. 달라지는 곳은 설정 파일의 모양, 권한을 나누는 방식, 확장 수단의 이름이다.</p>
+<table class="cmp">
+<thead><tr><th></th><th class="cl">Claude Code</th><th class="cx">Codex</th></tr></thead>
+<tbody>
+<tr><th>지시문</th><td><code>CLAUDE.md</code>. 다른 파일을 <code>@파일</code>로 가져올 수 있다. 이 저장소의 <code>CLAUDE.md</code>는 <code>@AGENTS.md</code> 한 줄로 <code>AGENTS.md</code>를 가져온다.</td><td><code>AGENTS.md</code>. 여러 도구가 함께 읽도록 만든 공통 형식이다.</td></tr>
+<tr><th>설정</th><td><code>.claude/settings.json</code>(권한, 훅 등)과 사용자 전역 설정</td><td><code>~/.codex/config.toml</code>(승인 정책, 샌드박스, MCP 서버 등)</td></tr>
+<tr><th>권한 모델</th><td>권한 모드(기본, 편집 자동 수락, plan, auto, 우회)와 허용·거부 규칙. 11-17 이후 권한 모드를 정하지 않은 대화형 세션은 auto mode로 시작한다.</td><td><b>승인 정책</b>(언제 물을지)과 <b>샌드박스</b>(어디까지 닿는지)를 따로 정한다. 읽기 전용, 작업 폴더 쓰기, 전체 접근이 있다.</td></tr>
+<tr><th>확장</th><td>훅, 스킬, 서브에이전트, MCP, 플러그인, 모드(mod), 예약 작업(<code>/loop</code>)</td><td>스킬, MCP, 서브에이전트(<code>agents.enabled</code>), 앱 도구, 에이전트 지휘소(<code>codex agents</code>)</td></tr>
+<tr><th>한 번만 실행</th><td><code>claude -p "요청"</code></td><td><code>codex exec "요청"</code></td></tr>
+<tr><th>대화 관리</th><td><code>/clear</code>, <code>/compact</code>, <code>/resume</code>, <code>/context</code></td><td><code>/new</code>, <code>/compact</code>, <code>/resume</code>, <code>/status</code></td></tr>
+<tr><th>코드 리뷰</th><td><code>/code-review</code>(대상이 없으면 브랜치 전체. 버그와 CLAUDE.md 위반을 본다)</td><td><code>/review</code>와 Plus 이상의 자동 코드 리뷰(GitHub 연동)</td></tr>
+</tbody>
+</table>
+<p class="note">명령 이름은 버전마다 바뀔 수 있다. 터미널에서 <code>/help</code>를 눌러 지금 버전의 목록을 확인한다.<sup class="fn" data-fn="ai-slash"></sup></p>
+</section>
+
+<section id="ai-work" class="ch">
+<h2>4. 실무에서 쓰는 법</h2>
+<p>실무의 기본 흐름은 <b>탐색 → 계획 → 구현 → 검증 → 리뷰 → 정리</b>다. 처음부터 구현을 시키지 않고, 먼저 읽고 계획만 내게 한 뒤 사람이 방향을 고친다. 이때 Claude Code의 plan 모드나 Codex의 읽기 전용 샌드박스를 쓰면 코드가 바뀔 걱정 없이 탐색할 수 있다.</p>
+<table>
+<thead><tr><th>상황</th><th>이렇게 시킨다</th><th>사람이 확인할 것</th></tr></thead>
+<tbody>
+<tr><td>버그 수정</td><td>재현 방법과 실패하는 테스트를 주고 "테스트가 통과하게 고쳐라"</td><td>원인이 맞는지, 테스트를 지워서 통과시키지 않았는지</td></tr>
+<tr><td>기능 추가</td><td>계획을 먼저 받고 승인한 뒤 작은 단위로 구현</td><td>범위 밖 파일 변경이 없는지</td></tr>
+<tr><td>리팩터링</td><td>동작을 바꾸지 않는다는 제약과 기존 테스트를 준다</td><td>테스트 전후 결과가 같은지</td></tr>
+<tr><td>테스트 작성</td><td>대상 함수와 경계 조건 목록을 준다</td><td>테스트가 실제로 실패할 수 있는지(코드를 일부러 깨 본다)</td></tr>
+<tr><td>코드 리뷰</td><td>브랜치를 주고 버그와 위반만 보고하게 한다</td><td>지적이 진짜인지(거짓 양성을 걸러 낸다)</td></tr>
+<tr><td>새 저장소 파악</td><td>"구조, 실행 방법, 테스트 방법을 요약해라"</td><td>요약을 실제 파일과 맞춰 본다</td></tr>
+<tr><td>반복 작업</td><td><code>claude -p</code>, <code>codex exec</code>를 CI나 스크립트에서 돌린다</td><td>권한을 최소로 주었는지</td></tr>
+</tbody>
+</table>
+<ul>
+<li><b>작게 맡긴다.</b> 한 세션에 한 가지 일만 시키고, 끝나면 대화를 정리한다.</li>
+<li><b>브랜치나 워크트리에서 돌린다.</b> 잘못되면 버리면 되도록 main에서 시키지 않는다.</li>
+<li><b>사람이 쥐는 것</b>: 비밀값, 배포 승인, 데이터 삭제, 설계 결정. 이 넷은 에이전트에게 넘기지 않는다.</li>
+<li><b>커밋은 작게, 자주.</b> 마스터가 직접 커밋과 푸시를 연습하는 동안에는 에이전트에게 커밋하지 말라고 지시문에 적어 둔다. 이 저장소의 방식이다.</li>
+</ul>
+</section>
+
+<section id="ai-context" class="ch deep">
+<h2>5. 심화: 컨텍스트</h2>
+<p><b>컨텍스트</b>는 모델이 지금 이 순간 눈앞에 두고 있는 글 전체다. 시스템 지시, 도구 설명, 지시문 파일(<code>CLAUDE.md</code>, <code>AGENTS.md</code>), 대화, 읽은 파일, 명령 출력이 모두 들어간다. 창은 유한해서 가득 차면 오래된 내용이 밀리거나 요약된다.</p>
+<table>
+<thead><tr><th>무엇이 쌓이나</th><th>특징</th><th>줄이는 법</th></tr></thead>
+<tbody>
+<tr><td>고정 부분(시스템, 도구 정의)</td><td>매번 들어가고 줄일 수 없다. MCP 서버를 많이 붙일수록 커진다.</td><td>안 쓰는 MCP 서버를 끈다</td></tr>
+<tr><td>지시문 파일</td><td>세션마다 처음에 읽힌다. 길수록 매번 비용이 든다.</td><td>짧게 유지하고 자세한 내용은 파일 경로로 가리킨다</td></tr>
+<tr><td>읽은 파일</td><td>한 번 읽으면 계속 남는다.</td><td>필요한 줄 범위만 읽게 한다</td></tr>
+<tr><td>명령 출력</td><td>테스트 로그 전체가 들어오면 크다.</td><td>실패한 줄만 보게 하고 출력을 잘라 준다</td></tr>
+<tr><td>대화</td><td>턴이 쌓일수록 늘어난다.</td><td>일이 바뀌면 <code>/clear</code>(<code>/new</code>), 길어지면 <code>/compact</code></td></tr>
+</tbody>
+</table>
+<h3>세 가지 도구</h3>
+<ol class="plain">
+<li><b>압축(<code>/compact</code>)</b>: 지금까지의 대화를 요약해 자리를 비운다. 같은 일을 이어 갈 때 쓰고, 요약에서 세부가 빠질 수 있다.</li>
+<li><b>초기화(<code>/clear</code>, Codex는 <code>/new</code>)</b>: 대화를 비우고 처음부터 다시 시작한다. 일이 바뀔 때 쓴다. 지시문 파일은 새로 읽힌다.</li>
+<li><b>분리(서브에이전트)</b>: 큰 탐색을 다른 에이전트에게 맡기고 요약만 받는다. 읽은 파일 수십 개가 내 컨텍스트에 쌓이지 않는다. 실습 5에서 숫자로 본다.</li>
+</ol>
+<p class="note">컨텍스트가 80%를 넘기면 지시를 놓치거나 같은 실수를 되풀이하기 쉽다. 이 신호가 보이면 압축하거나 새로 시작한다. 실습 2에서 직접 채워 본다.</p>
+</section>
+
+<section id="ai-harness" class="ch deep">
+<h2>6. 심화: 하네스</h2>
+<p><b>하네스</b>는 모델을 둘러싼 모든 것이다. 모델에게 무엇을 보여 주고(컨텍스트), 무엇을 할 수 있게 하고(도구), 어디까지 허락하고(권한·샌드박스), 어떻게 확인하게 할지(검증)를 정한다. 같은 모델이라도 하네스가 좋으면 잘 쓰고, 나쁘면 같은 실수를 되풀이한다.</p>
+<table>
+<thead><tr><th>부품</th><th>하는 일</th><th>Claude Code</th><th>Codex</th></tr></thead>
+<tbody>
+<tr><td>지시문</td><td>이 저장소의 규칙을 알려 준다(권고)</td><td><code>CLAUDE.md</code></td><td><code>AGENTS.md</code></td></tr>
+<tr><td>권한·샌드박스</td><td>할 수 있는 범위를 막는다(강제)</td><td>권한 모드, 허용·거부 규칙</td><td>승인 정책, 샌드박스 모드</td></tr>
+<tr><td>훅</td><td>특정 순간에 코드를 자동 실행한다(강제)</td><td><code>PreToolUse</code>, <code>PostToolUse</code>, <code>Stop</code> 등</td><td>지시문, CI 단계, 승인 검토자로 대신한다</td></tr>
+<tr><td>스킬</td><td>자주 쓰는 절차를 묶어 필요할 때만 불러온다</td><td>Skills</td><td>Skills</td></tr>
+<tr><td>MCP</td><td>외부 도구와 서비스를 붙인다</td><td><code>/mcp</code></td><td><code>config.toml</code>의 MCP 서버</td></tr>
+<tr><td>서브에이전트</td><td>일을 나눠 컨텍스트를 아낀다</td><td><code>/agents</code></td><td><code>agents.enabled</code></td></tr>
+<tr><td>검증</td><td>끝났음을 기계가 확인한다</td><td>테스트, 린트, 훅</td><td>테스트, 린트, CI</td></tr>
+</tbody>
+</table>
+<h3>설계 원칙</h3>
+<ol class="plain">
+<li><b>권고와 강제를 나눈다.</b> 지시문은 부탁이라 어길 수 있다. 꼭 지켜야 하는 것(비밀 파일 접근 금지, 검사 실행)은 권한 규칙이나 훅으로 막는다.</li>
+<li><b>피드백 고리를 만든다.</b> 에이전트가 스스로 틀렸음을 알 수 있어야 한다. 검사 명령 하나(<code>npm run check</code>)를 정하고, 수정할 때마다 돌리게 한다.</li>
+<li><b>작게 열고 필요하면 넓힌다.</b> 처음에는 읽기만, 다음에는 작업 폴더 쓰기만 허락한다. 네트워크나 폴더 밖 쓰기는 마지막이다.</li>
+<li><b>지시문은 짧게, 근거는 파일로.</b> 규칙 열 줄이 규칙 백 줄보다 잘 지켜진다.</li>
+<li><b>결과를 남긴다.</b> 결정과 다음 단계를 파일(<code>STATUS.md</code>)에 적어 다음 세션이 이어받게 한다.</li>
+</ol>
+<h3>이 저장소의 하네스</h3>
+<p>마스터의 저장소가 좋은 예다. <code>AGENTS.md</code>가 규칙을 말하고(권고), <code>CLAUDE.md</code>는 그것을 가져오고, <code>npm run check</code>가 링크, 문체, 폰트, 지도 데이터를 기계로 검사하며(검증), <code>STATUS.md</code>가 진행 상황을 남긴다(결과 기록). 규칙만 적은 것이 아니라 <b>어긴 것을 잡아 주는 장치</b>가 있다는 점이 핵심이다.</p>
+<pre class="cfg"><span class="cm">// Claude Code: .claude/settings.json - 파일을 고칠 때마다 검사를 자동으로 돌린다</span>
+{
+  "hooks": {
+    "PostToolUse": [
+      { "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "npm run check" }] }
+    ]
+  }
+}
+
+<span class="cm"># Codex: ~/.codex/config.toml - 묻는 때와 닿는 범위를 따로 정한다</span>
+approval_policy = "on-request"
+sandbox_mode    = "workspace-write"</pre>
+</section>
+
+<section id="ai-labs" class="ch labs">
+<h2>7. 실습</h2>
+<p>명령어만 외우면 "개발자 노트에 왜 이런 게 적혀 있는지"를 알 수 없다. 아래 여섯 실습은 같은 요청을 설정 하나만 바꿔 돌려 보고, <b>무슨 일이 일어났는지, 무엇이 달라졌는지, 왜 해야 하는지</b>를 보여 준다. 모두 이 페이지 안의 시뮬레이션이라 새로고침하면 처음으로 돌아가고 아무것도 저장되지 않는다.</p>
+
+<article class="lab" id="lab-rules" data-lab="rules">
+<h3><span>실습 1</span>지시문 한 줄이 결과를 바꾼다</h3>
+<p>같은 요청을 지시문 파일(<code>CLAUDE.md</code>/<code>AGENTS.md</code>)의 규칙만 바꿔 보낸다. 규칙을 켜고 끄면서 에이전트의 행동이 어떻게 달라지는지 본다.</p>
+<div class="lab-ui" data-ui="rules"></div>
+<p class="why"><b>왜 하나</b> 지시문은 에이전트가 세션을 시작할 때 처음 읽는 규칙집이다. 매번 같은 말을 되풀이하지 않아도 되고, 사람이 바뀌어도 같은 방식으로 일하게 만든다. 규칙은 짧을수록 잘 지켜진다.</p>
+</article>
+
+<article class="lab" id="lab-context" data-lab="context">
+<h3><span>실습 2</span>컨텍스트를 채우고 비운다</h3>
+<p>작업을 하나씩 추가해 컨텍스트가 차오르는 것을 보고, <code>/compact</code>와 <code>/clear</code>가 각각 무엇을 바꾸는지 눌러 본다. 숫자는 감을 잡기 위한 예시다.</p>
+<div class="lab-ui" data-ui="context"></div>
+<p class="why"><b>왜 하나</b> 컨텍스트가 가득 차면 느려지고 비싸지고, 앞에서 정한 규칙을 놓친다. 언제 압축하고 언제 새로 시작할지 아는 것이 긴 작업의 품질을 정한다.</p>
+</article>
+
+<article class="lab" id="lab-perm" data-lab="perm">
+<h3><span>실습 3</span>권한 모드가 행동을 막고 푼다</h3>
+<p>같은 여섯 행동을 모드별로 돌려 본다. 어떤 행동은 그냥 지나가고, 어떤 행동은 허락을 구하고, 어떤 행동은 막힌다.</p>
+<div class="lab-ui" data-ui="perm"></div>
+<p class="why"><b>왜 하나</b> 허락을 모두 열면 빠르지만 파일 삭제나 푸시도 그냥 지나간다. 모두 닫으면 안전하지만 매번 눌러야 한다. 일에 맞는 모드를 고르는 것이 하네스 설계의 시작이다. 이 표는 단순화한 모델이다.</p>
+</article>
+
+<article class="lab" id="lab-hook" data-lab="hook">
+<h3><span>실습 4</span>훅과 검증이 실수를 되돌린다</h3>
+<p>에이전트가 오타가 든 수정을 했다고 하자. 검사 훅이 없을 때와 있을 때를 각각 재생해 결과를 비교한다.</p>
+<div class="lab-ui" data-ui="hook"></div>
+<p class="why"><b>왜 하나</b> "고쳤다"는 말은 증거가 아니다. 검사가 자동으로 돌고 실패가 에이전트에게 되돌아가야 스스로 고친다. 지시문의 "검사를 돌려라"는 부탁이고, 훅은 강제다.</p>
+</article>
+
+<article class="lab" id="lab-sub" data-lab="sub">
+<h3><span>실습 5</span>서브에이전트로 컨텍스트를 아낀다</h3>
+<p>코드베이스에서 인증 코드를 찾는 탐색을 직접 할 때와 서브에이전트에게 맡길 때의 컨텍스트 사용량을 비교한다. 읽을 파일 수를 바꿔 본다.</p>
+<div class="lab-ui" data-ui="sub"></div>
+<p class="why"><b>왜 하나</b> 탐색은 많이 읽고 조금만 남기는 일이다. 그 많은 읽기를 내 컨텍스트에 쌓을 필요가 없다. 요약만 받으면 본 작업에 쓸 자리가 남는다.</p>
+</article>
+
+<article class="lab" id="lab-exec" data-lab="exec">
+<h3><span>실습 6</span>한 번만 실행해서 자동화한다</h3>
+<p>도구, 작업, 출력 형식, 권한 범위를 골라 <code>claude -p</code>와 <code>codex exec</code> 명령을 만든다. 각 부분이 무엇을 하는지 옆에 풀어 준다.</p>
+<div class="lab-ui" data-ui="exec"></div>
+<p class="why"><b>왜 하나</b> 대화 없이 한 번 돌리면 CI, 스크립트, 예약 작업에서 쓸 수 있다. 사람이 없으니 권한은 최소로, 출력은 기계가 읽을 형식으로 정해야 한다.</p>
+</article>
+</section>
+
+<section id="ai-plans" class="ch">
+<h2>8. 플랜별 기능</h2>
+<p>Claude는 구독에 Claude Code가 들어 있고, Codex는 ChatGPT 구독에 들어 있다. 플랜을 올릴수록 <b>사용량, 모델, 속도, 협업·보안 기능</b>이 열린다. 아래에서 도구와 플랜을 골라 무엇이 열리는지 본다.<sup class="fn" data-fn="ai-plan-basis"></sup></p>
+<div class="plans" id="plans"></div>
+</section>
+
+<section id="ai-updates" class="ch">
+<h2>9. 2026-11-24 업데이트</h2>
+<p>2026-11-24 기준으로 Claude Code는 <b>2.1.331</b>(11-23), Codex CLI는 <b>0.172.0</b>(11-24)까지 나왔다. 각 줄의 오른쪽에 "그래서 무엇이 달라지나"를 붙였다.<sup class="fn" data-fn="ai-asof"></sup></p>
+<div class="upd" id="upd"></div>
+<p>곧 바뀔 일도 있다. 관리형 플러그인 마켓플레이스는 2026-11-30 이후 기본으로 자동 갱신된다.<sup class="fn" data-fn="ai-future"></sup></p>
+</section>
+
+<section id="ai-sources" class="ch">
+<h2>10. 출처와 확인 방법</h2>
+<ul id="src"></ul>
+<p>이 페이지는 위 공식 페이지를 읽고 정리했다.<sup class="fn" data-fn="ai-asof"></sup> 도구는 빠르게 바뀌므로 다음 순서로 직접 확인한다.</p>
+<ol class="plain">
+<li>터미널에서 <code>claude --version</code>, <code>codex --version</code>으로 설치된 버전을 본다.</li>
+<li>슬래시 명령은 <code>/help</code>로 지금 버전의 목록을 본다.</li>
+<li>요금과 한도는 위 요금 페이지와 계정의 사용량 화면에서 본다.</li>
+</ol>
+</section>
+
+<section class="notes" id="notes">
+<h2>주석</h2>
+<ol>
+<li data-fn="ai-asof">이 페이지의 요금, 한도, 버전, 변경 기록은 2026-11-24에 공식 페이지(Claude 요금제, Claude Code 변경 기록, Codex 요금제와 변경 기록)를 읽고 정리했다. 일부 페이지는 길어서 일부만 읽었고, 읽히지 않은 값은 <b>?</b>로 표시했다.</li>
+<li data-fn="ai-slash">표의 슬래시 명령은 2026-11-24 점검 기준으로 정리했다. 마스터가 실제 화면에서 직접 확인하기 전까지는 확인 전이다.</li>
+<li data-fn="ai-plan-basis">요금과 한도는 2026-11-24에 공식 페이지를 읽고 정리한 값이다. 페이지에서 읽히지 않은 칸은 <b>?</b>로 두었고, 한도는 고정 수치가 아니라 추정치다. 결제 전에 공식 요금 페이지에서 다시 확인한다.</li>
+<li data-fn="ai-future">Claude Code 변경 기록에 적힌 예고다. 검색 결과에는 Opus 4.8 빠른 모드가 11-30에 제거된다는 내용도 있었지만 공식 페이지에서 확인하지 못해 확인 전으로 둔다.</li>
+</ol>
+</section>
+
+</main>
+</div>
+</body>
+</html>

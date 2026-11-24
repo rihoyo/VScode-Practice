@@ -10,12 +10,16 @@ window.SITE_CONFIG = {
       { href: 'github.html', name: 'GitHub' },
       { href: 'vscode.html', name: 'VS Code' },
       { href: '3d-test.html', name: '3D 테스트' },
+      { href: 'code-test.html', name: '코드 테스트' },
     ] },
     { id: 'linux', name: '리눅스', d: 'OS 이해하기 · 터미널로 보는 노트', c: '#e95420', pages: [
       { href: 'linux.html', name: '리눅스 홈' },
     ] },
     { id: 'network', name: '네트워크', d: '구조 설계와 자격 시험 · 도면으로 보는 노트', c: '#1d6fb8', pages: [
       { href: 'network.html', name: '네트워크 홈' },
+    ] },
+    { id: 'ai', name: 'AI', d: 'Claude Code · Codex 사용법, 컨텍스트와 하네스, 실습과 플랜 비교', c: '#e9855f', pages: [
+      { href: 'ai.html', name: 'AI 홈' },
     ] },
   ],
 };

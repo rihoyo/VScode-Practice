@@ -4,7 +4,7 @@
 :root{
   color-scheme:dark;
   --bg:#080b09;--panel:#0c110e;--panel2:#101713;--line:#1c2a22;--line2:#2f4b3a;
-  --ink:#d4e4da;--mute:#7e9486;--dim:#4b5e53;--accent:#5ee08f;--acc-rgb:94,224,143;--warn:#f0a73a;
+  --ink:#d4e4da;--mute:#7e9486;--dim:#4b5e53;--accent:#5ee08f;--acc-rgb:94,224,143;--warn:#f0a73a;--fn:var(--warn);
   --bar:rgba(8,11,9,.94);--shadow:rgba(0,0,0,.55);--ink-strong:#f2fbf5;--on-accent:#04100a;--grid:rgba(94,224,143,.035);
   --mono:"Cascadia Mono","Cascadia Code",Consolas,"D2Coding","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",monospace;
   --sans:"Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;

@@ -75,6 +75,15 @@ for (const f of pages) {
   }
 }
 
+// ── 3-1-1) 주석: 본문의 번호(sup.fn)와 맨 끝 주석 목록(.notes li)이 서로 짝이 맞는지 ──
+for (const f of pages) {
+  const used = new Set([...html[f].matchAll(/<sup class="fn" data-fn="([^"]+)"/g)].map((m) => m[1]));
+  const notes = html[f].match(/<section class="notes"[\s\S]*?<\/section>/);
+  const defined = new Set(notes ? [...notes[0].matchAll(/<li data-fn="([^"]+)"/g)].map((m) => m[1]) : []);
+  for (const k of used) if (!defined.has(k)) errors.push(f + ': 주석 "' + k + '"의 내용(<li data-fn>)이 없다');
+  for (const k of defined) if (!used.has(k)) errors.push(f + ': 주석 "' + k + '"가 본문에서 쓰이지 않는다');
+}
+
 // ── 3-2) 모든 페이지가 공용 묶음을 같은 순서로 불러오는지, 용어 사전이 올바르고 최신인지 ──
 const SHARED = ['assets/shared/transition.js', 'assets/shared/site-ui.css', 'assets/shared/glossary.css', 'data/generated/search-index.js', 'data/generated/glossary-data.js', 'data/sites.js', 'assets/shared/site-nav.js', 'assets/shared/glossary.js'];
 for (const f of pages) {

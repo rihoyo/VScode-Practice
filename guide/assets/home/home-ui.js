@@ -5,6 +5,7 @@
   const cfg = window.SITE_CONFIG;
   const list = document.getElementById('sites');
   if (cfg && list) {
+    list.style.setProperty('--n', String(cfg.sites.length)); // 카드가 몇 개든 한 줄에 나란히(좁은 화면에서는 한 열)
     cfg.sites.forEach((s, i) => {
       const a = document.createElement('a');
       a.className = 'card'; a.href = 'guide/' + s.pages[0].href; a.style.setProperty('--pc', s.c);

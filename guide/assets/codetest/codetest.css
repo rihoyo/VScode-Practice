@@ -1,0 +1,31 @@
+/* 코드 테스트 · 작업 중인 cmd 화면처럼 보이는 연출. 모서리는 각지게, 폰트는 고딕(한글 폴백 포함) 모노스페이스. */
+:root{--bg:#0c0c0c;--fg:#cccccc;--dim:#767676;--green:#16c60c;--cyan:#3a96dd;--yellow:#f9f1a5;--blue:#6e95ff;--magenta:#c678dd;--red:#e74856;--white:#f2f2f2;
+  --mono:"Cascadia Mono","Cascadia Code",Consolas,"D2Coding","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",monospace;
+  --panel:#0b0d18;--line2:rgba(255,255,255,.3);--shadow:rgba(0,0,0,.6);--ink:#f2f2f2;--ink-strong:#fff;--mute:rgba(255,255,255,.6);--accent:#16c60c;--acc-rgb:22,198,12;--bar:rgba(12,12,12,.94);--sans:"Pretendard Variable","Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+*,*::before,*::after{box-sizing:border-box;border-radius:0}
+html,body{height:100%}
+body.codetest{margin:0;background:var(--bg);color:var(--fg);overflow:hidden}
+.top{display:none}
+.codetest .topbar{display:none!important}
+#term{position:fixed;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;background:var(--bg);font:15px/1.5 var(--mono);cursor:text}
+.tbar{flex:none;display:flex;align-items:center;justify-content:space-between;height:32px;padding:0 0 0 12px;background:#1f1f1f;color:#d0d0d0;font:12px var(--sans);border-bottom:1px solid #2b2b2b;user-select:none}
+.tbar .wb{display:flex;height:100%}
+.tbar .wb i{display:grid;place-items:center;width:46px;font-style:normal;font-size:12px;color:#c8c8c8}
+.tbar .wb i:last-child:hover{background:#c42b1c;color:#fff}
+#screen,#editor{flex:1 1 auto;min-height:0;overflow:hidden;padding:10px 16px 14px;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-all}
+#screen{display:flex;flex-direction:column;justify-content:flex-end}
+#screen[hidden]{display:none}
+#screen .l{min-height:1.5em;color:var(--fg)}
+#screen .l.p{color:var(--fg)}
+#editor{display:flex;flex-direction:column;padding:0}
+#editor[hidden]{display:none}
+#ed-body{flex:1 1 auto;min-height:0;overflow:hidden;padding:10px 16px 0 0;display:flex;flex-direction:column;justify-content:flex-end}
+.el{display:flex;min-height:1.5em;white-space:pre}
+.el .n{flex:none;width:4.2em;padding-right:1.1em;text-align:right;color:#4d4d4d;user-select:none}
+.el .t{flex:1;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.g{color:var(--green)}.c{color:var(--cyan)}.y{color:var(--yellow)}.d{color:var(--dim)}.m{color:var(--magenta)}.r{color:var(--red)}.w{color:var(--white)}.b{color:var(--blue)}
+.k{color:var(--magenta)}.s{color:#98c379}.nu{color:#e5c07b}.cm{color:#6a737d}.f{color:#61afef}.bi{color:#56b6c2}.dc{color:#d19a66}
+.cur{display:inline-block;width:.62em;height:1.15em;vertical-align:text-bottom;background:var(--fg);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+#kbd{position:fixed;left:-200px;top:0;width:10px;height:10px;opacity:0}
+.nojs{padding:6rem 2rem;color:#fff;font:16px var(--sans)}

@@ -62,8 +62,16 @@ updateMenu();
     if (!it.a.classList.contains('sub') || !groups.length) groups.push({ head: it, subs: [] });
     else groups[groups.length - 1].subs.push(it);
   });
+  // 목차의 부 구분(span.part)은 바로 뒤 그룹 앞에 라벨로 다시 놓는다
+  const partOf = new Map();
+  let pendingPart = null;
+  [...toc.children].forEach((el) => {
+    if (el.classList.contains('part')) pendingPart = el;
+    else if (pendingPart && el.matches('a[href^="#"]')) { partOf.set(el, pendingPart); pendingPart = null; }
+  });
   const frag = document.createDocumentFragment();
   groups.forEach((g) => {
+    if (partOf.has(g.head.a)) frag.appendChild(partOf.get(g.head.a));
     const box = document.createElement('div');
     box.className = 'toc-group';
     const row = document.createElement('div');

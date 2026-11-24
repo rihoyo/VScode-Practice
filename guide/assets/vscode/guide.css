@@ -4,7 +4,7 @@
   color-scheme:dark;
   --bg:#080c11;--panel:#0e141b;--panel2:#121a23;--line:#1f2b39;--line2:#324356;
   --ink:#dbe6f0;--mute:#8393a6;
-  --accent:#4ade80;--cyan:#38bdf8;--amber:#fbbf24;--slate:#7c8da1;
+  --accent:#4ade80;--cyan:#38bdf8;--amber:#fbbf24;--fn:#fbbf24;--slate:#7c8da1;
   /* 한글 글자는 고딕으로만 떨어지게 폴백을 명시해 */
   --mono:"Cascadia Code","Cascadia Mono",Consolas,"D2Coding","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",monospace;
   --sans:"Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
@@ -256,6 +256,7 @@ tbody tr:hover{background:rgba(var(--acc-rgb),.05)}
 .toc-group[hidden],.toc a[hidden]{display:none}
 .toc-row{display:flex;align-items:stretch;gap:.2rem}
 .toc-row a{flex:1;min-width:0}
+.toc-row>a:first-child{margin-left:1.4rem}
 .toc-tg{width:1.2rem;flex:none;border:0;background:transparent;color:var(--mute);cursor:pointer;padding:0;font:.7rem var(--mono)}
 .toc-tg::before{content:"▸";display:inline-block;transition:transform .2s var(--ease)}
 .toc-tg[aria-expanded="true"]::before{transform:rotate(90deg)}

@@ -114,3 +114,4 @@ table.ruled{width:100%;border-collapse:collapse;margin:.8rem 0 0;font-size:.9rem
 .flowv li:last-child::after{display:none}
 .flowv b{display:block;color:var(--ink-strong)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+:root{--fn:#b45309} /* 주석 번호 색(밝은 바탕에서 읽히도록) */

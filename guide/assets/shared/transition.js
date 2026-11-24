@@ -18,6 +18,7 @@
     keywords: { bg: '#080c11', fg: '#fbbf24', cmd: '$ grep -r keyword' },
     linux: { bg: '#080b09', fg: '#5ee08f', cmd: '$ cd ~/linux' },
     network: { bg: '#e8eef4', fg: '#1d6fb8', cmd: '$ ping network' },
+    ai: { bg: '#0d0f13', fg: '#e9855f', cmd: '$ claude' },
   };
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -26,6 +27,7 @@
     if (/\/linux\.html$/.test(p)) return 'linux';
     if (/\/network\.html$/.test(p)) return 'network';
     if (/\/keywords\.html$/.test(p)) return 'keywords';
+    if (/\/ai\.html$/.test(p)) return 'ai';
     if (/\/guide\//.test(p)) return 'vscode';
     return 'home';
   };

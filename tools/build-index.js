@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const guide = path.join(__dirname, '..', 'guide');
-const ORDER = ['vscode-guide', 'git', 'github', 'vscode', 'linux', 'network', 'keywords'];
+const ORDER = ['vscode-guide', 'git', 'github', 'vscode', 'linux', 'network', 'ai', 'keywords'];
 const decode = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 const plain = (h) => decode(h.replace(/<(script|style)[\s\S]*?<\/\1>/g, ' ').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 

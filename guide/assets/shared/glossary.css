@@ -11,3 +11,18 @@
 .gl-tip dd{margin:0;font-size:.82rem}
 .gl-tip p{margin:0}
 .gl-tip dd,.gl-tip p,.gl-tip dt{font-weight:400}.gl-tip dt{font-weight:700}
+
+/* 주석 (glossary.js): 본문에는 문장 우측 상단의 작은 번호 n(색만 다름), 맨 끝에 주석 목록, 번호에 마우스를 올리면 같은 설명창 */
+sup.fn{display:inline;margin:0 .05em 0 .12em;padding:0;font:inherit;font-weight:700;font-size:.66em;line-height:0;vertical-align:super;color:var(--fn,#e0a526);cursor:help;border:0;transition:color .15s}
+sup.fn:hover,sup.fn:focus-visible{color:var(--accent);outline:none;text-decoration:underline dotted}
+.gl-fn{font-size:.82rem}
+.gl-fn code{font-size:.78rem}
+.notes{margin-top:2.4rem;padding-top:1rem;border-top:1px solid var(--line2)}
+.notes h2{font-size:1rem}
+/* 페이지의 단계 목록(번호 상자) 모양을 이어받지 않고, 보통 번호 목록으로 되돌린다 */
+.notes ol{margin:.6rem 0 0;padding:0 0 0 1.6rem;list-style:decimal;counter-reset:none;font-size:.86rem;line-height:1.7;color:var(--mute)}
+.notes li{margin:.35rem 0;padding-left:.2rem;position:static;counter-increment:none}
+.notes li::before{content:none;display:none}
+.notes li::marker{color:var(--fn,#e0a526);font-weight:700}
+.notes li:target{background:rgba(var(--acc-rgb),.14)}
+.fn-back{margin-left:.3rem;color:var(--accent);text-decoration:none}

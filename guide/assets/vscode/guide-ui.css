@@ -6,7 +6,7 @@
 .toc-more:hover{color:var(--accent)}
 
 /* 키워드 : 노란 색인 */
-.theme-keywords{--accent:#fbbf24;--acc-rgb:251,191,36}
+.theme-keywords{--accent:#fbbf24;--acc-rgb:251,191,36;--fn:#38bdf8}
 .theme-keywords header::before{background:#fbbf24;box-shadow:19px 0 #fb923c,38px 0 #f472b6}
 
 /* ───── 키워드 페이지 ───── */
@@ -46,3 +46,9 @@
 .toc-tagtg[aria-expanded="true"]::before{transform:rotate(90deg)}
 .toc-tagtg:hover{color:var(--accent)}
 .toc-tags[hidden]{display:none}
+
+/* 부(대분류) 구분 */
+.toc .part{display:block;margin:.9rem 0 .25rem;padding:0 .7rem;font:700 .7rem/1.4 var(--mono);letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+.part-head{margin:2.2rem 0 .9rem;padding:.6rem 1rem;border-left:4px solid var(--accent);background:rgba(var(--acc-rgb),.06)}
+.part-head b{display:block;font:700 1.05rem/1.4 var(--mono);color:var(--accent)}
+.part-head p{margin:.2rem 0 0;color:var(--mute);font-size:.88rem}

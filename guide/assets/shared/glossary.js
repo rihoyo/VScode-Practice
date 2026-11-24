@@ -11,7 +11,7 @@
   TERMS.forEach((e, i) => e.k.forEach((k) => map.set(k.toLowerCase(), i)));
   const alts = [...map.keys()].sort((a, b) => b.length - a.length).map(esc).join('|');
   const RE = new RegExp('(?<![A-Za-z0-9_])(' + alts + ')(?![A-Za-z0-9_])', 'gi');
-  const SKIP = 'script,style,pre,kbd,textarea,input,button,select,svg,canvas,nav,h1,summary,[data-no-gl],.gl,.topbar,.pm,.dsw,.tmux,.eyebrow,.vl,.cn,.kq,[data-toc],.idx,.mini,.rail,.pn-h,.tabs';
+  const SKIP = 'script,style,pre,kbd,textarea,input,button,select,svg,canvas,nav,h1,summary,[data-no-gl],.gl,.fn,.topbar,.pm,.dsw,.tmux,.eyebrow,.vl,.cn,.kq,[data-toc],.idx,.mini,.rail,.pn-h,.tabs';
 
   function annotate(root) {
     const seen = new Set(), nodes = [];
@@ -39,6 +39,33 @@
     });
   }
 
+  /* ── 주석 ──
+   * 본문에는 <sup class="fn" data-fn="이름"></sup>만 둔다. 페이지 맨 끝 <section class="notes"><ol>의 <li data-fn="이름">이 주석 내용이다.
+   * 번호는 본문에 나온 차례대로 여기서 매긴다(손으로 번호를 쓰지 않는다). 마우스를 올리면 용어와 같은 설명창으로 내용을 보여 준다.
+   * 본문에서 쓰이지 않은 주석은 숨긴다. */
+  const FN = new Map();
+  function footnotes() {
+    const list = document.querySelector('.notes ol');
+    if (!list) return;
+    const items = new Map([...list.children].map((li) => [li.dataset.fn, li]));
+    const order = [];
+    document.querySelectorAll('sup.fn[data-fn]').forEach((m) => {
+      const key = m.dataset.fn, li = items.get(key);
+      if (!li) return;
+      let f = FN.get(key);
+      if (!f) { f = { n: order.length + 1, html: li.innerHTML.replace(/<span class="gl"[^>]*>([^<]*)<\/span>/g, '$1'), li }; FN.set(key, f); order.push(li); m.id = 'fnr-' + key; }
+      m.textContent = f.n; m.tabIndex = 0; m.setAttribute('role', 'doc-noteref'); m.setAttribute('aria-label', '주석 ' + f.n);
+    });
+    order.forEach((li) => {
+      li.id = 'fn-' + li.dataset.fn;
+      const b = document.createElement('a');
+      b.className = 'fn-back'; b.href = '#fnr-' + li.dataset.fn; b.textContent = '↩'; b.setAttribute('aria-label', '본문으로 돌아가기');
+      li.append(' ', b); list.append(li);
+    });
+    items.forEach((li) => { if (!li.id) li.hidden = true; });
+    if (!order.length) { const s = list.closest('.notes'); if (s) s.hidden = true; }
+  }
+
   /* ── 설명창 ── */
   const tip = document.createElement('div');
   tip.className = 'gl-tip'; tip.id = 'gl-tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true;
@@ -46,11 +73,17 @@
   const row = (dt, dd) => (dd ? '<dt>' + dt + '</dt><dd>' + dd + '</dd>' : '');
   const safe = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   function show(el) {
-    const e = TERMS[el.dataset.g]; if (!e) return;
-    cur = el;
-    const showFull = e.full && e.full.toLowerCase() !== e.n.toLowerCase();
-    tip.innerHTML = '<div class="gl-h"><b>' + safe(e.n) + '</b></div><dl>'
-      + row('발음', safe(e.say)) + (showFull ? row('풀네임', safe(e.full)) : '') + row('직역', safe(e.lit)) + '</dl><p>' + safe(e.d) + '</p>';
+    if (el.classList.contains('fn')) {
+      const f = FN.get(el.dataset.fn); if (!f) return;
+      cur = el;
+      tip.innerHTML = '<div class="gl-h"><b>주석 ' + f.n + '</b></div><p class="gl-fn">' + f.html + '</p>';
+    } else {
+      const e = TERMS[el.dataset.g]; if (!e) return;
+      cur = el;
+      const showFull = e.full && e.full.toLowerCase() !== e.n.toLowerCase();
+      tip.innerHTML = '<div class="gl-h"><b>' + safe(e.n) + '</b></div><dl>'
+        + row('발음', safe(e.say)) + (showFull ? row('풀네임', safe(e.full)) : '') + row('직역', safe(e.lit)) + '</dl><p>' + safe(e.d) + '</p>';
+    }
     tip.hidden = false;
     el.setAttribute('aria-describedby', tip.id);
     const r = el.getClientRects()[0] || el.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
@@ -62,8 +95,9 @@
 
   function init() {
     document.body.append(tip);
+    footnotes();
     annotate(document.body);
-    const at = (e) => e.target.closest && e.target.closest('.gl');
+    const at = (e) => e.target.closest && e.target.closest('.gl, .fn');
     document.addEventListener('pointerover', (e) => { if (e.pointerType === 'touch') return; const g = at(e); if (g && g !== cur) show(g); });
     document.addEventListener('pointerout', (e) => { const g = at(e); if (g && !(e.relatedTarget && g.contains(e.relatedTarget))) hide(); });
     document.addEventListener('focusin', (e) => { const g = at(e); if (g) show(g); });

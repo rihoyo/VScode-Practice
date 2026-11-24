@@ -25,28 +25,62 @@
 </header>
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
+<span class="part">1부 · 기본 작업</span>
 <a href="#done" data-tags="GitHub 시작">1. GitHub에서 시작</a>
 <a href="#transfer" data-tags="Clone Push Pull">2. Clone · Push · Pull</a>
-<a href="#home" data-tags="Pull 집PC">3. 집에서 열고 이어가기</a>
+<a href="#home" data-tags="Pull 집PC 다른PC 폴더 이동">3. 다른 PC에서 이어가기</a>
+<a class="sub" href="#home-move" data-tags="폴더 이동 경로 Clone">clone한 폴더 옮기기</a>
+<span class="part">2부 · 공개</span>
 <a href="#publish" data-tags="공개 Pages">4. 홈페이지 공개하기</a>
 <a class="sub" href="#publish-steps" data-tags="공개 Pages">공개 순서</a>
 <a class="sub" href="#publish-source" data-tags="공개 Pages">/ (root)와 /docs</a>
 <a class="sub" href="#publish-stuck" data-tags="공개 문제해결">공개 전환이 안 될 때</a>
 <a class="sub" href="#publish-after" data-tags="공개 Pages">공개 후 알아둘 것</a>
-<a href="#owner" data-tags="소유권 이전 Transfer">5. 저장소 소유권 넘기기</a>
+<span class="part">3부 · 협업</span>
+<a href="#access" data-tags="협업 공동작업자 Collaborator 초대">5. 함께 작업하기</a>
+<a class="sub" href="#access-invite" data-tags="Collaborator 초대">공동 작업자로 초대하고 받기</a>
+<a class="sub" href="#access-pr" data-tags="Pull Request PR 풀리퀘스트 리뷰 병합">풀 리퀘스트로 합치기</a>
+<a class="sub" href="#access-protect" data-tags="브랜치 보호 Branch protection 승인 main">main 브랜치 보호하기</a>
+<a class="sub" href="#access-app" data-tags="Codex 외부앱 접근">외부 앱에서 저장소가 안 보일 때</a>
+<span class="part">4부 · 조직 운영</span>
+<a href="#org" data-tags="Organization 조직 권한 Read Write Admin">6. Organization으로 권한 나누기</a>
+<a class="sub" href="#org-what" data-tags="Organization 개념 저장소 묶음">저장소를 묶는 상자</a>
+<a class="sub" href="#org-settings" data-tags="Organization Settings 조직 저장소">Settings는 두 곳이다</a>
+<a class="sub" href="#org-make" data-tags="Organization 만들기">무료로 만들기</a>
+<a class="sub" href="#access-org" data-tags="Organization 권한 Read Write Admin">역할 나누기</a>
+<a class="sub" href="#org-free" data-tags="Organization 무료 기능">무료로 되는 것</a>
+<a class="sub" href="#org-paid" data-tags="Organization 유료 Team Enterprise 요금">유료 해금 기능</a>
+<span class="part">5부 · 저장소 관리</span>
+<a href="#owner" data-tags="소유권 이전 Transfer">7. 저장소 소유권 넘기기</a>
 <a class="sub" href="#owner-steps" data-tags="소유권 이전 Transfer">이전 순서</a>
 <a class="sub" href="#owner-after" data-tags="소유권 이전 Transfer Clone">이전 후 해야 할 일</a>
 <a class="sub" href="#owner-stuck" data-tags="소유권 이전 문제해결">이전이 안 될 때</a>
+<a href="#delete" data-tags="삭제 복구 Delete Archive 조직 저장소">8. 삭제하기와 되돌리기</a>
+<a class="sub" href="#delete-repo" data-tags="저장소 삭제 복구">저장소 삭제</a>
+<a class="sub" href="#delete-org" data-tags="Organization 조직 삭제">조직 삭제</a>
+<a class="sub" href="#delete-penalty" data-tags="삭제 패널티 부작용">계정에 패널티가 있나</a>
+<a href="#notes" data-tags="주석 기준 출처">주석</a>
 </nav></aside>
 <main>
+<div class="part-head"><b>1부 · 기본 작업</b><p>저장소를 만들고, PC와 GitHub 사이로 오가는 가장 기본 흐름이다. 이후 모든 부의 전제다.</p></div>
 <section id="done">
 <h2>1. GitHub에서 시작</h2>
 <p class="note"><b>확인 완료</b> · 비공개 연습 저장소 <code>vscode-practice</code>를 만들고, GitHub 웹에서 <code>README.md</code>에 메모를 남겼다. 회사에서는 VS Code를 열어 둔 상태다.</p>
 </section><section id="transfer"><h2>2. Clone · Push · Pull</h2><p>GitHub는 프로젝트 파일과 <a href="git.html#commit-example">Git 커밋</a>을 온라인에 보관한다.</p><ul><li><a href="vscode.html#clone-steps">Clone</a>은 저장소를 PC로 처음 복제한다.</li><li><a href="vscode.html#push">Push</a>는 PC의 커밋을 GitHub에 올린다.</li><li><a href="git.html#git-pull">Pull</a>은 GitHub의 새 커밋을 받아 현재 브랜치에 반영한다.</li></ul></section><section id="home">
-<h2>3. 집에서 열고 이어가기</h2>
-<p>집 PC의 VS Code에서는 처음 한 번 <a href="vscode.html#clone-steps">복제 단계</a>대로 같은 저장소를 복제한다. 이미 복제했다면 그 폴더를 열고 <code>Git: Pull</code>을 실행한다. Windows 파일 탐색기에서 저장소 최상단의 <code>index.html</code>을 더블클릭하면 브라우저에서 이 가이드가 열린다.</p>
+<h2>3. 다른 PC에서 이어가기</h2>
+<p>다른 PC(예: 집)의 VS Code에서는 처음 한 번 <a href="vscode.html#clone-steps">복제 단계</a>대로 같은 저장소를 복제한다. 이미 복제했다면 그 폴더를 열고 <code>Git: Pull</code>을 실행한다. Windows 파일 탐색기에서 저장소 최상단의 <code>index.html</code>을 더블클릭하면 브라우저에서 이 가이드가 열린다.</p>
 <p class="note"><kbd>Ctrl</kbd> + <kbd>S</kbd>는 파일 저장, Commit은 버전 기록, Push는 GitHub에 올리기, Pull은 GitHub의 변경 가져오기다.</p>
-</section><section id="publish">
+<h3 id="home-move">clone한 폴더를 다른 경로로 옮기기</h3>
+<p>다시 Clone할 필요 없이 폴더를 통째로 옮기면 된다. Git의 저장소 정보는 폴더 안의 숨김 폴더 <code>.git</code>에 모두 들어 있어서 이력과 원격 연결이 그대로 따라간다. 아직 Commit하지 않은 변경도 함께 옮겨진다.</p>
+<ol>
+<li>VS Code를 닫는다. 열려 있으면 폴더가 잠겨 옮겨지지 않는다.</li>
+<li>파일 탐색기에서 폴더를 잘라내기(<kbd>Ctrl</kbd> + <kbd>X</kbd>)해 새 위치에 붙여넣는다(<kbd>Ctrl</kbd> + <kbd>V</kbd>).</li>
+<li>VS Code에서 <b>파일 &gt; 폴더 열기</b>로 새 위치의 폴더를 연다. 소스 제어 화면의 변경 내용이 옮기기 전과 같으면 성공이다.</li>
+</ol>
+<p>옛 경로는 VS Code의 최근 폴더 목록에 남으므로 새 경로로 다시 연다. 다시 Clone하는 방법도 있지만 Commit하지 않은 변경과 Push하지 않은 Commit은 새 폴더에 오지 않는다. 모두 Push한 것이 확실할 때만 쓰고, 옛 폴더는 확인한 뒤에 지운다.</p>
+</section>
+<div class="part-head"><b>2부 · 공개</b><p>만든 결과물을 웹 주소로 올린다. 1부만 끝나 있으면 된다.</p></div>
+<section id="publish">
 <h2>4. 홈페이지 공개하기</h2>
 <p class="note"><b>진행 중</b> · 공개 전환과 Pages 설정까지 안내한 단계이며, 공개 주소로 접속해 확인하면 완료로 바꾼다.</p>
 <p>GitHub Pages는 저장소의 HTML 파일을 누구나 열 수 있는 웹 주소로 공개하는 기능이다. 이 저장소는 루트의 <code>index.html</code>이 <code>guide/vscode-guide.html</code>로 이동시키므로 파일을 옮기지 않고 그대로 공개할 수 있다.</p>
@@ -59,7 +93,7 @@
 <li><b>주소를 확인한다.</b> <b>Settings → Pages</b> 맨 위에 <b>Your site is live at …</b>와 함께 주소가 나온다. 형태는 <code>https://계정이름.github.io/저장소이름/</code>이다.</li>
 <li><b>로그인하지 않은 상태로 열어 본다.</b> 시크릿 창에 주소를 붙여넣어 「나의 개발 스텝」이 열리고 기술 연결 지도가 움직이면 성공이다. 404가 나오면 배포가 아직 끝나지 않았거나 푸시가 빠진 것이다.</li>
 </ol>
-<p>무료 계정은 비공개 저장소의 Pages를 쓸 수 없는 것으로 알려져 있다. 그래서 2번의 공개 전환이 필요하다. 결제 전에 Settings → Pages 화면의 안내를 직접 확인한다.</p>
+<p>무료 계정은 비공개 저장소의 Pages를 쓸 수 없으므로 2번의 공개 전환이 필요하다.<sup class="fn" data-fn="pages-private"></sup></p>
 <h3 id="publish-source">/ (root)와 /docs</h3>
 <p>Pages 설정의 폴더 선택은 사이트의 맨 위 폴더를 정한다.</p>
 <table>
@@ -92,14 +126,211 @@
 </ul>
 </details>
 </section>
+<div class="part-head"><b>3부 · 협업</b><p>다른 사람과 같은 저장소를 고치는 방법이다. 초대, 합치기 요청, 보호 규칙을 다룬다.</p></div>
+<section id="access">
+<h2>5. 함께 작업하기</h2>
+<p>혼자 쓰던 저장소에 다른 사람을 들이는 가장 간단한 방법은 Collaborator(공동 작업자)로 초대하는 것이다. 소유권은 기존 계정에 그대로 남고, 초대받은 계정에는 코드를 고치고 올릴 권한만 생긴다. 내 계정의 저장소 목록에는 <code>소유자/저장소이름</code> 형태로 보인다.</p>
+<h3 id="access-invite">공동 작업자로 초대하고 받기</h3>
+<ol class="plain">
+<li>소유자 계정으로 해당 저장소를 열고 <b>Settings</b> 탭의 <b>Collaborators</b>로 간다.</li>
+<li><b>Add people</b> 버튼을 누르고 상대의 GitHub 아이디를 검색해 초대한다.</li>
+<li>초대받은 사람은 자기 계정으로 이메일이나 GitHub 알림의 초대를 수락한다. 초대는 기간이 지나면 만료되므로 만료되면 소유자가 다시 보낸다.<sup class="fn" data-fn="invite-expire"></sup></li>
+<li>수락하면 저장소를 Clone하고 수정한 뒤 Push할 수 있다. 성공하면 초대받은 사람의 목록에 <code>소유자/저장소이름</code>이 나타난다.</li>
+</ol>
+<p class="note">개인 계정 소유 저장소의 공동 작업자는 읽기만 하는 권한으로 만들 수 없다. 초대받으면 코드를 올릴 수 있는 쓰기 권한이 생긴다. "이 사람은 보기만", "이 사람은 관리까지"처럼 권한을 나눠야 한다면 다음 장의 Organization이 필요하다.</p>
+<h3 id="access-pr">풀 리퀘스트로 합치기</h3>
+<p>Pull Request(PR, 풀 리퀘스트)는 "내가 고친 브랜치를 <code>main</code>에 합쳐 달라"고 GitHub에서 요청하는 기능이다. 합치기 전에 다른 사람이 바뀐 줄을 보고 의견을 달고 승인하는 자리이기도 하다. Git이 아니라 GitHub가 제공하는 기능이다. 공동 작업자가 생기면 <code>main</code>을 바로 고치지 않고 이 방식으로 합치는 것이 기본이다.</p>
+<ol class="plain">
+<li>내 컴퓨터에서 새 브랜치를 만들고 파일을 고친 뒤 Commit하고 Push한다.</li>
+<li>GitHub 저장소 화면에 노란 띠로 <b>Compare &amp; pull request</b> 버튼이 뜬다. 눌러서 PR 만들기 화면을 연다. 띠가 없으면 위쪽 <b>Pull requests</b> 탭의 <b>New pull request</b>를 쓴다.</li>
+<li>합칠 대상이 <code>main</code>, 내 브랜치가 비교 대상인지 확인하고 제목과 설명을 쓴 뒤 <b>Create pull request</b>를 누른다.</li>
+<li>리뷰어가 <b>Files changed</b>에서 바뀐 줄(<code>git diff</code>와 같은 모양)을 보고 승인(Approve)하거나 수정을 요청한다.</li>
+<li>승인되면 <b>Merge pull request</b>를 눌러 합친다. 성공하면 PR이 보라색 Merged 상태가 되고 <code>main</code>에 변경이 들어간다.</li>
+</ol>
+<p class="note">혼자 쓰는 연습 저장소에서는 PR 없이 <code>main</code>에 바로 Push해도 된다. 다른 사람의 저장소에 기여할 때는 먼저 Fork(내 계정으로 복사)하고, 거기서 고친 뒤 원본으로 PR을 보낸다.</p>
+<h3 id="access-protect">main 브랜치 보호하기</h3>
+<p>Branch protection(브랜치 보호)은 <code>main</code> 같은 중요한 브랜치에 "이 조건을 지켜야만 합쳐진다"는 문을 다는 기능이다. 조직 화면에서 "코드 리뷰를 강제하여 브랜치를 보호하세요"라고 안내하는 것이 이것이다. 보호가 없으면 Write 권한이 있는 사람은 누구나 <code>main</code>에 바로 Push할 수 있다. 보호를 켜면 모두가 PR을 거쳐야 한다.</p>
+<p>안내문의 두 용어는 이렇게 읽는다. <b>브랜치 이름 패턴</b>(Branch name pattern)은 어느 브랜치를 보호할지 정하는 이름 칸이고 <code>main</code>이라고 쓴다. <b>병합 전 풀 리퀘스트 필요</b>(Require a pull request before merging)는 직접 Push를 막고 PR로만 합치게 하는 체크 항목이다.</p>
+<ol class="plain">
+<li>저장소 화면 위쪽의 <b>Settings</b> → <b>Branches</b>를 연다. 새 화면에서는 <b>Rules</b> → <b>Rulesets</b>에 같은 기능이 있다.<sup class="fn" data-fn="menu-names"></sup></li>
+<li><b>Add branch protection rule</b>을 누르고 <b>Branch name pattern</b>에 <code>main</code>을 쓴다.</li>
+<li><b>Require a pull request before merging</b>를 체크한다. 팀이라면 <b>Require approvals</b>를 켜고 승인 인원을 1명 이상으로 정한다.</li>
+<li>자동 검사가 있으면 <b>Require status checks to pass</b>도 체크한다. 이 저장소의 <code>npm run check</code> 같은 검사를 Actions로 돌릴 때 쓴다.</li>
+<li>맨 아래 <b>Create</b>(또는 Save changes)를 누른다. 성공하면 <code>main</code>에 직접 Push했을 때 거부 메시지가 나오고, PR 화면에는 승인이 없으면 병합 버튼이 막힌다.</li>
+</ol>
+<table>
+<thead><tr><th>규칙</th><th>뜻</th><th>언제 켜나</th></tr></thead>
+<tbody>
+<tr><td>병합 전 PR 필요</td><td>직접 Push 금지, PR로만 합친다</td><td>사람이 둘 이상이면 가장 먼저</td></tr>
+<tr><td>승인 필요(Require approvals)</td><td>정한 인원이 승인해야 합쳐진다</td><td>리뷰를 강제하고 싶을 때</td></tr>
+<tr><td>상태 검사 통과(status checks)</td><td>테스트와 린트가 통과해야 합쳐진다</td><td>자동 검사가 있을 때</td></tr>
+<tr><td>대화 해결(conversation resolution)</td><td>리뷰 댓글을 모두 해결해야 합쳐진다</td><td>리뷰 의견이 흘러가지 않게 할 때</td></tr>
+<tr><td>강제 Push와 삭제 금지</td><td><code>git push --force</code>와 브랜치 삭제를 막는다</td><td>기록을 지키고 싶을 때</td></tr>
+</tbody>
+</table>
+<ul>
+<li>관리자(Admin)는 기본으로 규칙을 우회할 수 있다. 관리자도 막으려면 우회를 허용하지 않는 항목을 켠다.<sup class="fn" data-fn="protect-admin"></sup></li>
+<li>혼자 쓰는 연습 저장소에는 필요 없다. 규칙을 켜면 나도 PR을 거쳐야 해서 번거롭다.</li>
+<li>AI 에이전트에게 저장소를 맡길 때도 쓸모가 있다. 에이전트가 <code>main</code>에 바로 Push하지 못하고 PR로만 올리게 막는 안전장치다. <a href="ai.html#ai-harness">AI 페이지의 하네스</a>에서 말한 "사람이 확인하는 자리"를 GitHub 쪽에서 강제하는 방법이다.</li>
+<li>무료 조직의 비공개 저장소에서는 이 기능을 쓸 수 없다. 유료 플랜이 필요하다는 점은 <a href="#org-free">6장</a>에서 다룬다.<sup class="fn" data-fn="protect-plan"></sup></li>
+</ul>
+<details id="access-app">
+<summary>Codex 같은 외부 앱에서 저장소가 안 보일 때</summary>
+<p>초대를 수락했는데도 외부 앱의 저장소 선택 화면에 목록이 비어 있는 경우가 있다. 앱이 그 저장소에 접근할 권한을 받지 못해서다.</p>
+<ol class="plain">
+<li>저장소 소유자 계정으로 GitHub의 <b>Settings</b> → <b>Applications</b> → <b>Installed GitHub Apps</b>로 간다.</li>
+<li>해당 앱 옆의 <b>Configure</b>를 누른다.</li>
+<li><b>Repository access</b>에서 <b>Only select repositories</b>를 고르고 해당 저장소를 추가한 뒤 저장한다.</li>
+<li>앱이 아직 설치되어 있지 않으면 소유자 계정에 먼저 설치한다. 성공하면 앱을 새로 고쳤을 때 저장소가 목록에 보인다.</li>
+</ol>
+<p>저장소가 조직 소유이면 같은 설정이 조직의 Settings 안에 있다.<sup class="fn" data-fn="menu-names"></sup></p>
+</details>
+<details id="access-stuck">
+<summary>초대가 안 먹을 때</summary>
+<ol class="plain">
+<li>초대 메일이 없으면 스팸함과 GitHub 알림(종 모양)을 본다.</li>
+<li>Push가 거부되면 상대가 초대를 수락했는지, 저장소 주소가 맞는지 확인한다.</li>
+<li>조직 저장소라면 아래 6장의 역할과 SSO 항목도 함께 본다.</li>
+</ol>
+</details>
+</section>
+<div class="part-head"><b>4부 · 조직 운영</b><p>사람과 저장소가 많아질 때 쓰는 Organization이다. 3부의 초대보다 한 단계 큰 단위다.</p></div>
+<section id="org">
+<h2>6. Organization으로 권한 나누기</h2>
+<p>Organization(조직)은 여러 사람이 저장소를 함께 가지는 공용 계정이다. 개인 계정과 달리 사람이 아니라 조직이 저장소의 주인이 되고, 멤버마다 역할을 따로 줄 수 있다. 사람마다 할 수 있는 일을 다르게 정하려면 Organization이 사실상 필수다. 팀 프로젝트, 동아리, 회사 일처럼 주인이 바뀌어도 저장소가 남아야 할 때도 쓴다.<sup class="fn" data-fn="org-basis"></sup></p>
+<h3 id="org-what">저장소를 묶는 상자</h3>
+<p>Organization은 저장소의 한 종류가 아니다. <b>저장소를 담는 계정</b>이다. 내 개인 계정 아래에 저장소가 여러 개 있듯이, 조직 아래에도 저장소가 여러 개 들어간다. 저장소 자체는 그대로 파일과 커밋 기록이 있는 같은 저장소다. 달라지는 것은 주인과 관리 방식이다.</p>
+<table>
+<thead><tr><th></th><th>개인 계정의 저장소</th><th>조직의 저장소</th></tr></thead>
+<tbody>
+<tr><td>주소</td><td><code>github.com/내아이디/저장소</code></td><td><code>github.com/조직이름/저장소</code></td></tr>
+<tr><td>주인</td><td>나 한 사람</td><td>조직(사람이 바뀌어도 저장소는 그대로)</td></tr>
+<tr><td>권한 주는 법</td><td>저장소마다 공동 작업자를 하나씩 초대, 쓰기 권한뿐</td><td>조직에 멤버를 두고 Read, Write, Admin 같은 역할로 나눔. 팀 단위로 한 번에 줄 수 있음</td></tr>
+<tr><td>결제와 요금제</td><td>내 계정</td><td>조직 단위(저장소가 몇 개든 한곳에서 관리)</td></tr>
+<tr><td>사람이 떠나면</td><td>저장소와 권한 정리를 직접 해야 함</td><td>멤버만 빼면 되고 저장소는 조직에 남음</td></tr>
+</tbody>
+</table>
+<p>구조는 이렇다. 조직 <code>my-team</code> 아래에 <code>web</code>, <code>api</code>, <code>docs</code> 저장소가 있고, 멤버 a, A, b, c가 조직에 속한다. 멤버마다 저장소별로 역할이 다를 수 있다. 예를 들어 b는 <code>web</code>에서는 Write이고 <code>api</code>에서는 Read다.</p>
+<h3 id="org-settings">Settings는 두 곳이다</h3>
+<p>헷갈리기 쉬운 부분이다. 조직을 쓰면 Settings가 두 단계로 나뉜다.</p>
+<table>
+<thead><tr><th>위치</th><th>들어가는 법</th><th>여기서 하는 일</th></tr></thead>
+<tbody>
+<tr><td>조직 Settings</td><td>조직 화면(<code>github.com/조직이름</code>) 위쪽의 <b>Settings</b></td><td>멤버 초대와 제거, 팀 만들기, 멤버 기본 권한, 2단계 인증 필수, 결제와 요금제. 조직 전체에 적용된다</td></tr>
+<tr><td>저장소 Settings</td><td>조직 안의 저장소 화면 위쪽의 <b>Settings</b></td><td>그 저장소 하나의 공개 여부, 브랜치 규칙, 누구에게 어떤 역할을 줄지(Collaborators and teams)</td></tr>
+</tbody>
+</table>
+<p>이 장의 "조직 소유 저장소의 Settings"는 아래쪽, 즉 저장소 Settings를 뜻한다. 사람을 조직에 들이는 일은 조직 Settings, 그 사람이 이 저장소에서 할 수 있는 일을 정하는 일은 저장소 Settings에서 한다. 순서는 조직에 초대하고, 저장소에서 역할을 주는 것이다.</p>
+<p class="note">저장소를 조직 안에 만든다고 코드 작성 방법이 바뀌지는 않는다. Clone, Commit, Push, Pull은 개인 저장소와 똑같다. 바뀌는 것은 주소, 주인, 권한과 결제다.</p>
+<table>
+<thead><tr><th>상황</th><th>알맞은 방법</th></tr></thead>
+<tbody>
+<tr><td>친구 한두 명이 같이 고친다</td><td>5장의 공동 작업자 초대면 충분하다</td></tr>
+<tr><td>누구는 읽기만, 누구는 쓰기, 누구는 관리까지 나눈다</td><td>Organization 소유로 두고 역할을 준다</td></tr>
+<tr><td>사람이 바뀌어도 저장소가 남아야 한다</td><td>Organization 소유로 두고 Owner를 여러 명 둔다</td></tr>
+</tbody>
+</table>
+<h3 id="org-make">무료로 만들기</h3>
+<ol class="plain">
+<li>GitHub 오른쪽 위의 <b>+</b> 버튼에서 <b>New organization</b>을 고른다.</li>
+<li>요금제 선택 화면에서 <b>Free</b>를 고른다.</li>
+<li>조직 이름(계정 이름처럼 주소가 되므로 이미 쓰는 이름은 안 된다)과 연락용 이메일을 넣고, 이 조직이 <b>My personal account</b>인지 <b>A business or institution</b>인지 고른다.</li>
+<li>멤버를 초대하는 화면에서 아이디나 이메일로 사람을 추가한다. 나중에 해도 된다. 성공하면 <code>github.com/조직이름</code> 화면이 열리고 내가 Owner(소유자)로 보인다.</li>
+<li>저장소는 조직 화면의 <b>New repository</b>로 새로 만들거나, 아래 방법으로 기존 개인 저장소를 옮겨 온다.</li>
+</ol>
+<details id="access-move">
+<summary>지금 저장소가 개인 계정 소유일 때</summary>
+<ol class="plain">
+<li>개인 계정 저장소에서는 공동 작업자에게 Read만 따로 줄 수 없다.</li>
+<li>위 순서로 Organization을 만든다.</li>
+<li>7장의 <a href="#owner">저장소 소유권 넘기기</a> 순서로 저장소를 그 조직에 이전한다.</li>
+<li>이전한 뒤 조직 저장소에서 역할을 지정한다. 이 일은 되돌리기 어려우니 조직 이름과 사람 목록을 먼저 정해 둔다.</li>
+</ol>
+</details>
+<h3 id="access-org">역할 나누기</h3>
+<p>비공개 저장소를 조직 소유로 두면 사람마다 권한을 따로 줄 수 있다. 예를 들어 소유자 a, 관리자 역할의 A, 읽기만 하는 직원 b와 c가 있는 구성이다.</p>
+<table>
+<thead><tr><th>계정</th><th>역할</th><th>할 수 있는 일</th></tr></thead>
+<tbody>
+<tr><td>a</td><td>Organization Owner</td><td>조직과 저장소 전체 관리</td></tr>
+<tr><td>A</td><td>저장소 Write 또는 Admin</td><td>Write는 Pull과 Push, Admin은 여기에 초대와 권한 관리까지</td></tr>
+<tr><td>b, c</td><td>저장소 Read</td><td>열람, Clone, Pull. 원격 저장소에 Push는 못 한다</td></tr>
+</tbody>
+</table>
+<ol class="plain">
+<li>먼저 사람이 조직에 들어와 있어야 한다. 조직 Settings에서 멤버로 초대한다.</li>
+<li>조직 안의 해당 <b>저장소 Settings</b>에서 <b>Collaborators and teams</b>를 연다.<sup class="fn" data-fn="menu-names"></sup></li>
+<li><b>Add people</b>으로 사람을 찾아 초대하고 역할을 고른다. a가 A에게 Admin을 주면 A가 직접 b와 c를 Read로 초대할 수 있다.</li>
+<li>이미 조직 멤버라면 팀이나 조직 기본 권한으로 Write가 이미 주어져 있는지 먼저 확인한다. 같은 사람이 여러 경로로 권한을 받으면 더 높은 쪽이 적용된다.</li>
+</ol>
+<p>성공하면 Collaborators and teams 목록에 사람과 역할이 나란히 보인다. Read인 b가 Push를 시도하면 거부 메시지가 나오는 것이 정상이다.</p>
+<details id="org-start">
+<summary>처음 정해 두면 좋은 것</summary>
+<ol class="plain">
+<li>Owner는 두 명 이상으로 둔다. 한 명뿐일 때 계정을 잃으면 조직을 관리할 사람이 없다.</li>
+<li>멤버 기본 권한(Base permissions)을 Read로 시작하고 필요한 사람에게만 Write를 준다.</li>
+<li>조직 설정에서 2단계 인증 필수를 켠다. Free에서도 쓸 수 있다.</li>
+<li>사람마다 따로 주기 번거로우면 Team(그룹)을 만들어 팀 단위로 역할을 준다.</li>
+</ol>
+</details>
+<h3 id="org-free">무료로 되는 것</h3>
+<table>
+<thead><tr><th>항목</th><th>Free 조직</th></tr></thead>
+<tbody>
+<tr><td>저장소</td><td>공개·비공개 모두 개수 제한 없음</td></tr>
+<tr><td>멤버와 협업자</td><td>비공개 저장소 협업자도 제한 없음</td></tr>
+<tr><td>팀과 역할</td><td>조직·팀 관리, 역할 기반 접근 제어, 2단계 인증 필수 설정, 감사 기록(웹에서 보기)</td></tr>
+<tr><td>Issues와 Projects</td><td>포함</td></tr>
+<tr><td>Actions(자동 실행)</td><td>월 2,000분 정도. 공개 저장소는 무료</td></tr>
+<tr><td>Packages</td><td>500MB</td></tr>
+<tr><td>Dependabot</td><td>보안·버전 업데이트 포함</td></tr>
+<tr><td>지원</td><td>커뮤니티 지원만</td></tr>
+</tbody>
+</table>
+<p>무료에서 제한되는 대표적인 것은 <b>비공개 저장소의 고급 관리 기능</b>이다. 저장소 규칙(Repository rules), Code owners(파일마다 담당 리뷰어 지정), Required reviewers(승인이 있어야 합치기), 초안 PR, Pages와 Wiki는 무료 조직에서 공개 저장소에만 쓸 수 있다. 비공개 저장소에서 "승인 없이는 main에 합치지 못하게" 막으려면 유료가 필요하다. 이 규칙이 5장의 <a href="#access-protect">브랜치 보호</a>다.</p>
+<details id="org-paid">
+<summary>유료로 올리면 해금되는 것</summary>
+<table>
+<thead><tr><th>기능</th><th>Free</th><th>Team</th><th>Enterprise</th></tr></thead>
+<tbody>
+<tr><td>가격(사용자 1명, 월)<sup class="fn" data-fn="price-change"></sup></td><td>$0</td><td>$4</td><td>$21</td></tr>
+<tr><td>비공개 저장소의 저장소 규칙, Code owners, Required reviewers</td><td>x</td><td>o</td><td>o</td></tr>
+<tr><td>비공개 저장소의 초안 PR, 여러 명 리뷰어</td><td>x</td><td>o</td><td>o</td></tr>
+<tr><td>비공개 저장소의 Pages와 Wiki</td><td>x</td><td>o</td><td>o</td></tr>
+<tr><td>Codespaces(클라우드 개발 환경) 사용</td><td>제한</td><td>o</td><td>o</td></tr>
+<tr><td>Actions 월 포함량<sup class="fn" data-fn="actions-unit"></sup></td><td>2,000분</td><td>3,000분</td><td>50,000분</td></tr>
+<tr><td>Packages</td><td>500MB</td><td>2GB</td><td>50GB</td></tr>
+<tr><td>지원</td><td>커뮤니티</td><td>웹 문의</td><td>Enterprise 지원, 프리미엄 지원은 추가 구매</td></tr>
+<tr><td>비밀값 검사 고급 기능(유효성 확인, 사용자 지정 패턴)</td><td>x</td><td>o</td><td>o</td></tr>
+<tr><td>SAML 로그인(SSO), 사용자 자동 연결(SCIM)</td><td>x</td><td>x</td><td>o</td></tr>
+<tr><td>감사 기록 API, 여러 조직을 묶는 Enterprise 계정</td><td>x</td><td>x</td><td>o</td></tr>
+<tr><td>환경 보호 규칙(비공개 저장소 배포 승인)</td><td>x</td><td>x</td><td>o</td></tr>
+<tr><td>Copilot 포함, 데이터 저장 지역 지정, 관리형 사용자(EMU)</td><td>x</td><td>x</td><td>o</td></tr>
+</tbody>
+</table>
+<ul>
+<li>소규모 팀이 비공개 저장소에서 리뷰 승인을 강제하고 싶다면 Team이면 충분하다. 사람 수가 적으면 월 비용도 작다.</li>
+<li>회사 계정으로만 로그인하게 묶거나 사람 계정을 한 번에 만들고 지우려면 Enterprise가 필요하다.</li>
+</ul>
+</details>
+<details id="org-stuck">
+<summary>권한이 안 먹을 때</summary>
+<ol class="plain">
+<li>Push가 거부되면 내 역할이 Read나 Triage인지 Owner나 Admin에게 확인한다.</li>
+<li>Admin 메뉴가 안 보이면 Admin 권한이 없는 것이다. 역할 상향을 부탁한다.</li>
+<li>조직이 SSO(회사 로그인으로 묶는 인증)를 켜 둔 경우, 내 토큰과 로그인을 조직에 승인해야 접근된다.</li>
+</ol>
+</details>
+</section>
+<div class="part-head"><b>5부 · 저장소 관리</b><p>드물게 하지만 되돌리기 어려운 작업이다. 소유권을 넘기고, 지우고, 되살린다.</p></div>
 <section id="owner">
-<h2>5. 저장소 소유권 넘기기</h2>
+<h2>7. 저장소 소유권 넘기기</h2>
 <p>저장소의 주인을 다른 계정이나 조직으로 옮기는 기능이 Transfer ownership(소유권 이전)이다. 파일과 커밋 기록, 이슈, PR, 스타, 협업자는 그대로 함께 간다. 복사본을 만드는 Fork와 달리 원본이 통째로 옮겨 간다.</p>
 <table>
 <thead><tr><th>하고 싶은 일</th><th>쓰는 방법</th></tr></thead>
 <tbody>
-<tr><td>다른 사람이 같이 고치게 한다</td><td>Settings의 Collaborators에서 초대한다(소유권은 그대로)</td></tr>
-<tr><td>내 계정에서 조직으로 옮긴다</td><td>소유권 이전, 받는 곳에 조직 이름을 입력한다</td></tr>
+<tr><td>다른 사람이 같이 고치게 한다</td><td><a href="#access">공동 작업자로 초대한다</a>(소유권은 그대로)</td></tr>
+<tr><td>내 계정에서 <a href="#org">조직</a>으로 옮긴다</td><td>소유권 이전, 받는 곳에 조직 이름을 입력한다</td></tr>
 <tr><td>저장소를 완전히 다른 사람에게 준다</td><td>소유권 이전, 받는 곳에 상대 계정 이름을 입력한다</td></tr>
 </tbody>
 </table>
@@ -133,6 +364,90 @@
 <li>이전은 돌이키기 어렵다. 잘못 보냈다면 새 주인에게 같은 방식으로 다시 이전해 달라고 부탁해야 한다. 보내기 전에 계정 이름의 철자를 한 번 더 확인한다.</li>
 </ol>
 </details>
+</section>
+<section id="delete">
+<h2>8. 삭제하기와 되돌리기</h2>
+<p>저장소와 Organization은 지울 수 있다. 지우기 전에 더 가벼운 대안이 있는지 먼저 본다.<sup class="fn" data-fn="delete-basis"></sup> 여기서 말하는 조직은 5장과 6장의 Organization이다. 여러 조직을 묶는 Enterprise 계정은 다루지 않는다.</p>
+<table>
+<thead><tr><th>하고 싶은 일</th><th>알맞은 방법</th><th>되돌리기</th></tr></thead>
+<tbody>
+<tr><td>더 이상 안 쓰지만 기록은 남기고 싶다</td><td>저장소 Settings → General의 <b>Archive this repository</b>(읽기 전용으로 보관)</td><td>쉬움(보관 해제)</td></tr>
+<tr><td>다른 사람이나 조직에 넘기고 싶다</td><td>7장의 소유권 이전</td><td>어려움(상대가 다시 이전해야 함)</td></tr>
+<tr><td>저장소 하나를 없애고 싶다</td><td>저장소 삭제</td><td>90일 안에 일부 가능</td></tr>
+<tr><td>조직을 없애고 싶다</td><td>조직 삭제</td><td>GitHub가 내용을 복구하지 못한다고 안내</td></tr>
+</tbody>
+</table>
+<h3 id="delete-repo">저장소 삭제</h3>
+<p>조직 Owner이거나 그 저장소의 Admin 권한이 있으면 지울 수 있다. 조직이나 Enterprise 정책이 삭제를 막아 두었으면 Admin이어도 버튼이 동작하지 않을 수 있다.</p>
+<ol class="plain">
+<li>저장소 화면 위쪽의 <b>Settings</b> → <b>General</b>을 열고 맨 아래 <b>Danger Zone</b>으로 내려간다.</li>
+<li><b>Delete this repository</b>를 누르고, 이어지는 창에서 <b>I want to delete this repository</b>와 <b>I have read and understand these effects</b>를 차례로 누른다.</li>
+<li>저장소 이름을 정확히 입력하고 <b>Delete this repository</b>를 누른다. 성공하면 저장소 주소가 열리지 않고 내 저장소 목록에서 사라진다.</li>
+</ol>
+<h3 id="delete-effect">저장소를 지우면 생기는 일</h3>
+<ul>
+<li><b>Fork</b>: 공개 저장소를 지워도 그 Fork는 남는다. 비공개 저장소를 지우면 Fork도 모두 함께 지워진다.</li>
+<li><b>팀 권한</b>: 팀에 준 저장소 권한이 영구히 지워지고 되돌릴 수 없다. 저장소를 복구해도 팀 권한은 돌아오지 않으므로 다시 줘야 한다.</li>
+<li><b>내 컴퓨터의 Clone</b>: 문서에는 적혀 있지 않다. Git은 폴더 안에 기록을 통째로 갖고 있어서, 이미 받은 폴더는 보통 그대로 남는다. 그래서 지우기 전에 Pull로 최신으로 받아 두면 백업이 된다.</li>
+<li>공개한 Pages 주소, 이슈, PR, 별, Wiki, Actions, 연결된 앱이 어떻게 되는지는 이 문서에 적혀 있지 않다. 저장소 자체가 사라지므로 함께 쓸 수 없게 된다고 보고, 필요하면 미리 내려받는다.</li>
+</ul>
+<details id="delete-restore">
+<summary>지운 저장소 되살리기</summary>
+<ol class="plain">
+<li>삭제 후 90일 안이면 일부 저장소는 되살릴 수 있다. 삭제 직후에는 최대 한 시간 정도 지나야 복구 목록에 나타난다.</li>
+<li>개인 계정은 <b>Settings</b> → <b>Repositories</b> → <b>Deleted repositories</b>에서, 조직은 조직 Settings의 <b>Deleted repositories</b>에서 <b>Restore</b>를 누른다.</li>
+<li><b>I understand, restore this repository</b>를 누른다. 성공하면 저장소가 다시 목록에 보인다.</li>
+<li>Fork 묶음(원본과 Fork들의 연결)이 비어 있지 않으면 복구되지 않는다. 다른 Fork를 모두 지우거나 떼어 내야 하고, 그래도 안 되면 유료 요금제에서만 GitHub Support에 요청할 수 있다.</li>
+<li>첨부 파일과 릴리스 같은 세부 항목이 복구되는지는 문서에 적혀 있지 않다.</li>
+</ol>
+</details>
+<h3 id="delete-org">조직 삭제</h3>
+<ol class="plain">
+<li>오른쪽 위 프로필 사진 → <b>Your organizations</b>에서 지울 조직을 고른다.</li>
+<li>조직 화면의 <b>Settings</b> → <b>Danger zone</b>의 <b>Delete this organization</b>을 누른다.</li>
+<li>조직 이름을 입력하고 <b>Cancel plan and delete the organization</b>을 누른다. 문서에는 어느 역할이 지울 수 있는지가 적혀 있지 않으니, 보통 Owner가 한다고 보고 Owner에게 확인한다.</li>
+</ol>
+<h3 id="delete-org-effect">조직을 지우면 생기는 일</h3>
+<ul>
+<li>조직의 <b>모든 저장소</b>, 비공개 저장소의 Fork, Wiki, 이슈, PR, 프로젝트와 조직 페이지가 영구히 지워진다. 문서는 이 일이 되돌릴 수 없고 GitHub도 내용을 복구하지 못한다고 안내한다. 저장소 삭제와 달리 90일 복구에 기댈 수 없다.<sup class="fn" data-fn="org-restore"></sup></li>
+<li>조직의 <b>결제가 끝난다</b>. 환불이나 일할 계산이 어떻게 되는지는 문서에 적혀 있지 않다.</li>
+<li><b>Packages와 컨테이너 이미지</b>가 함께 지워진다. 그 패키지에 기대는 다른 프로젝트가 깨질 수 있다고 문서가 경고한다.</li>
+<li><b>이름이 90일 동안 잠긴다</b>. 그 기간에는 다른 조직이나 개인 계정이 같은 이름을 쓸 수 없고, 지나면 자동으로 풀린다. 이름을 바로 쓰고 싶다면 지우는 대신 이름을 바꾼다.</li>
+<li><b>영구히 쓸 수 없는 이름</b>이 생길 수 있다. 공개 저장소가 Marketplace 액션이거나 지난 한 주 동안 복제 100회 또는 Actions 사용 100회를 넘었으면 "소유자 이름과 저장소 이름" 조합이 영구히 폐기된다. 공개 컨테이너 이미지가 다운로드 5,000회를 넘었으면 전체 이미지 이름이 폐기된다.</li>
+</ul>
+<h3 id="delete-penalty">계정에 패널티가 있나</h3>
+<p>공식 문서 세 쪽에는 저장소나 조직을 지웠다고 내 계정에 주어지는 불이익(경고, 제한, 신용 감소 같은 것)이 적혀 있지 않다. 그래서 정해진 패널티는 확인하지 못했다. 다만 실제로 따라오는 불이익은 있다.</p>
+<ul>
+<li>되돌릴 수 없는 데이터 손실(조직은 특히 그렇다)</li>
+<li>이름이 90일간 잠기거나, 일부는 영구히 못 쓰게 됨</li>
+<li>내 저장소나 패키지에 기대던 다른 사람의 프로젝트가 깨지는 일</li>
+<li>결제를 끝낸 뒤 환불이 안 될 수 있음. 정확한 규정은 결제 화면과 GitHub 지원에서 확인한다.</li>
+</ul>
+<details id="delete-before">
+<summary>지우기 전에 확인할 것</summary>
+<ol class="plain">
+<li>저장소는 <code>git pull</code>로 최신을 받은 폴더를 따로 복사해 둔다. 이슈와 PR은 Clone에 들어 있지 않으니 필요한 글은 따로 저장한다.</li>
+<li>5장의 협업자와 6장의 팀에게 지운다고 알리고, 이 저장소를 가리키는 주소(README, 배포 설정, 다른 프로젝트의 의존)를 찾아 둔다.</li>
+<li>조직이면 Packages와 Actions가 다른 곳에서 쓰이고 있는지 확인한다.</li>
+<li>정말 없애는 것이 목적인지, 보관(Archive)이면 충분한지 다시 묻는다.</li>
+<li>비밀값이 저장소에 들어간 적이 있다면 지우는 것으로 끝내지 말고 그 키를 발급받은 서비스에서 폐기한다.</li>
+</ol>
+</details>
+</section>
+<section class="notes" id="notes">
+<h2>주석</h2>
+<ol>
+<li data-fn="pages-private">무료 계정의 비공개 저장소는 Pages를 쓸 수 없는 것으로 알려져 있다. 정책은 바뀔 수 있으니 결제 전에 Settings → Pages 화면의 안내를 직접 확인한다.</li>
+<li data-fn="invite-expire">초대가 만료되는 기간의 정확한 일수는 문서에서 확인하지 못했다. 메일이나 알림에 만료 안내가 있으면 그것을 따른다.</li>
+<li data-fn="menu-names">메뉴 이름은 GitHub 화면 개편으로 달라질 수 있다. 예를 들어 Collaborators and teams가 Collaborators &amp; teams로 보이는 화면도 있다. 안 보이면 비슷한 이름(Applications 등)을 찾는다. 이 장의 메뉴 경로는 마스터가 실제 화면에서 확인하기 전까지 확인 전이다.</li>
+<li data-fn="org-basis">2026-11-24에 GitHub 요금 페이지와 공식 문서 두 쪽(요금제, 조직 소개)을 읽어 정리했다. 두 곳 모두 화면에 "마지막 갱신일"이 없다. 요금과 포함량은 바뀔 수 있다.</li>
+<li data-fn="protect-admin">관리자 우회 항목의 이름은 화면 버전에 따라 다르다(예전에는 Include administrators, 지금은 우회를 허용하지 않는다는 뜻의 항목). 이 장의 이름과 위치는 마스터가 실제 화면에서 확인하기 전까지 확인 전이다.</li>
+<li data-fn="protect-plan">공개 저장소는 무료로 쓸 수 있고, 비공개 저장소는 유료 플랜(6장의 Team 이상)에서 열리는 것으로 요금 문서에 적혀 있다. 무료 개인 계정의 비공개 저장소 조건은 확인하지 못했다. 조직 화면의 "코드 리뷰를 강제하여 브랜치를 보호하세요" 안내가 이 기능이다.</li>
+<li data-fn="price-change">가격은 사용자 1명당 월 기준이며 요금 페이지에 적힌 값이다. 결제하기 전에 GitHub 요금 페이지를 다시 확인한다.</li>
+<li data-fn="actions-unit">요금 페이지는 Actions를 분 단위(Free 2,000분, Team 3,000분, Enterprise 50,000분)로, 공식 문서는 포함 사용액(Free $12, Team $18, Enterprise Cloud $300)으로 적어 두 곳이 서로 다르게 보인다. 두 쪽이 어떻게 이어지는지는 문서에 적혀 있지 않다. 실제 청구는 결제 화면에서 확인한다.</li>
+<li data-fn="delete-basis">2026-11-24에 GitHub 공식 문서 세 쪽(저장소 삭제, 저장소 복구, 조직 삭제)을 읽어 정리했다. 문서에 적혀 있지 않은 항목은 "적혀 있지 않다"고 밝혔고, 추측으로 채우지 않았다.</li>
+<li data-fn="org-restore">조직 복구 문서는 열리지 않아서 복구 가능 여부와 기간을 확인하지 못했다. 확인 전이므로 복구되지 않는다고 보고, 지우기 전에 반드시 백업한다.</li>
+</ol>
 </section>
 </main>
 </div>
