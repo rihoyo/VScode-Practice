@@ -76,7 +76,7 @@
     if (el.classList.contains('fn')) {
       const f = FN.get(el.dataset.fn); if (!f) return;
       cur = el;
-      tip.innerHTML = '<div class="gl-h"><b>주석 ' + f.n + '</b></div><p class="gl-fn">' + f.html + '</p>';
+      tip.innerHTML = '<p class="gl-fn">' + f.html + '</p>';
     } else {
       const e = TERMS[el.dataset.g]; if (!e) return;
       cur = el;

@@ -173,7 +173,7 @@
     const b = e.target.closest('.kw[data-kw]');
     if (!b) return;
     run(b.dataset.kw, true);
-    $('#kw-find').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('#kw-find').scrollIntoView({ block: 'start' });
   });
   $('#kw-form').addEventListener('submit', (e) => { e.preventDefault(); run(input.value, true); });
   input.addEventListener('input', () => { renderResult(input.value); suggest(); });

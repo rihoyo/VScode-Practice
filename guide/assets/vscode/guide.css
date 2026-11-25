@@ -13,7 +13,7 @@
   --kbd-bg:#16202b;--link-hover:#8ad8ff;--shadow:rgba(0,0,0,.4);--th:#101923;--ink-strong:#fff;--bar:rgba(10,15,22,.92);--on-accent:#080c11;
 }
 *,*::before,*::after{box-sizing:border-box;border-radius:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{margin:0;color:var(--ink);font:16px/1.75 var(--sans);background:var(--bg);
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:32px 32px;background-attachment:fixed}

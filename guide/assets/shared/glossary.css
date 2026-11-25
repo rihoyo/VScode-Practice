@@ -14,8 +14,10 @@
 
 /* 주석 (glossary.js): 본문에는 문장 우측 상단의 작은 번호 n(색만 다름), 맨 끝에 주석 목록, 번호에 마우스를 올리면 같은 설명창 */
 sup.fn{display:inline;margin:0 .05em 0 .12em;padding:0;font:inherit;font-weight:700;font-size:.66em;line-height:0;vertical-align:super;color:var(--fn,#e0a526);cursor:help;border:0;transition:color .15s}
+sup.fn{position:relative}
+sup.fn::after{content:"";position:absolute;inset:-9px -10px;z-index:1} /* 보이지 않는 마우스 감지 범위. 숫자 크기는 그대로다 */
 sup.fn:hover,sup.fn:focus-visible{color:var(--accent);outline:none;text-decoration:underline dotted}
-.gl-fn{font-size:.82rem}
+.gl-fn{margin:0;font-size:.82rem}
 .gl-fn code{font-size:.78rem}
 .notes{margin-top:2.4rem;padding-top:1rem;border-top:1px solid var(--line2)}
 .notes h2{font-size:1rem}

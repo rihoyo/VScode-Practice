@@ -10,7 +10,7 @@
   --sans:"Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;border-radius:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{margin:0;color:var(--ink);font:16px/1.85 var(--sans);background:var(--bg);
   position:relative}
 a{color:var(--accent);text-underline-offset:.2em}

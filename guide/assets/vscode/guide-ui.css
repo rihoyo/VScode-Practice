@@ -52,3 +52,8 @@
 .part-head{margin:2.2rem 0 .9rem;padding:.6rem 1rem;border-left:4px solid var(--accent);background:rgba(var(--acc-rgb),.06)}
 .part-head b{display:block;font:700 1.05rem/1.4 var(--mono);color:var(--accent)}
 .part-head p{margin:.2rem 0 0;color:var(--mute);font-size:.88rem}
+
+/* 주석은 어느 부에도 속하지 않는 별도 항목 */
+.toc-group:has(a[href="#notes"]){margin-top:1.1rem;padding-top:.7rem;border-top:1px solid var(--line2)}
+.toc-row>a[href="#notes"]:first-child{margin-left:0;border-left:0;font:700 .7rem/1.4 var(--mono);letter-spacing:.12em;color:var(--accent)}
+main>section.notes{margin-top:3.2rem}
