@@ -50,6 +50,7 @@ window.GLOSSARY_DATA = [
   {"match":["git diff","diff"],"name":"git diff","say":"깃 디프","full":"git diff","literal":"차이 보기","desc":"마지막 커밋 이후 파일이 어디서 어떻게 바뀌었는지 줄 단위로 보여 주는 명령이다. 빨간 줄(-)은 지워진 내용이고 초록 줄(+)은 추가된 내용이다."},
   {"match":["라이선스","License"],"name":"라이선스","say":"라이선스","full":"License","literal":"허가","desc":"만든 사람이 어떤 조건에서 써도 되는지 적어 둔 허락 문서다. 저장소에서는 보통 LICENSE 파일이다."},
   {"match":["오픈 소스","Open source"],"name":"오픈 소스","say":"오픈 소스","full":"Open source","literal":"열린 원본","desc":"라이선스로 사용, 수정, 배포를 허용한 소스 코드다. 단순히 공개되어 보이는 것과는 다르다."},
+  {"match":["자동 메모리","Auto memory"],"name":"자동 메모리","say":"자동 메모리","full":"Auto memory","literal":"저절로 쌓이는 기억","desc":"AI 도구가 작업 중 알게 된 사실을 내 PC의 파일에 적어 두고 다음 채팅을 시작할 때 다시 읽는 기능이다."},
   {"match":["리눅스"],"name":"리눅스","say":"리눅스","full":"Linux","literal":"리누스(Linus)와 유닉스(Unix)를 합친 이름","desc":"1991년 리누스 토르발스가 만든 커널에서 시작된 오픈 소스 운영체제 계열이다."},
   {"match":["OS"],"name":"OS","say":"오에스","full":"Operating System","literal":"운영체제","desc":"하드웨어와 프로그램을 관리하는 기본 소프트웨어다."},
   {"match":["커널","Kernel"],"name":"커널","say":"커널","full":"Kernel","literal":"알맹이, 핵심","desc":"하드웨어와 프로그램 사이를 조정하는 운영체제의 핵심이다."},

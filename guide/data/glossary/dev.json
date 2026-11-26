@@ -48,5 +48,6 @@
   {"match":["Branch protection","브랜치 보호"],"name":"브랜치 보호","say":"브랜치 프로텍션","full":"Branch protection","literal":"가지 보호","desc":"main 같은 중요한 브랜치에 승인이나 검사 통과 같은 조건을 걸어 직접 Push를 막는 규칙이다."},
   {"match":["git diff","diff"],"name":"git diff","say":"깃 디프","full":"git diff","literal":"차이 보기","desc":"마지막 커밋 이후 파일이 어디서 어떻게 바뀌었는지 줄 단위로 보여 주는 명령이다. 빨간 줄(-)은 지워진 내용이고 초록 줄(+)은 추가된 내용이다."},
   {"match":["라이선스","License"],"name":"라이선스","say":"라이선스","full":"License","literal":"허가","desc":"만든 사람이 어떤 조건에서 써도 되는지 적어 둔 허락 문서다. 저장소에서는 보통 LICENSE 파일이다."},
-  {"match":["오픈 소스","Open source"],"name":"오픈 소스","say":"오픈 소스","full":"Open source","literal":"열린 원본","desc":"라이선스로 사용, 수정, 배포를 허용한 소스 코드다. 단순히 공개되어 보이는 것과는 다르다."}
+  {"match":["오픈 소스","Open source"],"name":"오픈 소스","say":"오픈 소스","full":"Open source","literal":"열린 원본","desc":"라이선스로 사용, 수정, 배포를 허용한 소스 코드다. 단순히 공개되어 보이는 것과는 다르다."},
+  {"match":["자동 메모리","Auto memory"],"name":"자동 메모리","say":"자동 메모리","full":"Auto memory","literal":"저절로 쌓이는 기억","desc":"AI 도구가 작업 중 알게 된 사실을 내 PC의 파일에 적어 두고 다음 채팅을 시작할 때 다시 읽는 기능이다."}
 ]

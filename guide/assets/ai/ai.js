@@ -211,3 +211,26 @@
   $$('[data-ui]').forEach((el) => { const f = LABS[el.dataset.ui]; if (f) f(el); });
   if (window.GLOSSARY && window.GLOSSARY.annotate) window.GLOSSARY.annotate(document.querySelector('main'));
 })();
+
+// 2장 설치: 운영체제 버튼으로 명령을 바꾸고, 명령마다 복사 버튼을 붙인다
+(() => {
+  const box = document.getElementById('inst');
+  if (!box) return;
+  box.dataset.os = 'win';
+  box.querySelectorAll('.inst-os button').forEach((b) => b.addEventListener('click', () => {
+    box.dataset.os = b.dataset.os;
+    box.querySelectorAll('.inst-os button').forEach((x) => x.classList.toggle('on', x === b));
+  }));
+  box.querySelectorAll('.inst-steps li>code').forEach((c) => {
+    const text = c.textContent;
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'cp'; btn.textContent = '복사';
+    btn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(text); }
+      catch (e) { const r = document.createRange(); r.selectNodeContents(c.firstChild); const s = getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand('copy'); s.removeAllRanges(); }
+      btn.textContent = '복사됨'; btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('ok'); }, 1400);
+    });
+    c.appendChild(btn);
+  });
+})();

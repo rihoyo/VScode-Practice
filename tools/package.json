@@ -2,7 +2,7 @@
   "name": "vscode-practice-tools",
   "version": "1.0.0",
   "private": true,
-  "description": "VS Code 실습 가이드의 개발 도구. 지도 물리 엔진(d3) 관리와 가이드 검사를 맡는다.",
+  "description": "VS Code 실습 가이드의 개발 도구. 지도 물리 엔진(d3)과 토큰 계산기(gpt-tokenizer) 관리, 가이드 검사를 맡는다.",
   "scripts": {
     "build": "node sync-vendor.js && node build-index.js && node build-glossary.js",
     "index": "node build-index.js",
@@ -10,6 +10,7 @@
     "check": "node check.js"
   },
   "dependencies": {
-    "d3": "7.9.0"
+    "d3": "7.9.0",
+    "gpt-tokenizer": "3.0.1"
   }
 }

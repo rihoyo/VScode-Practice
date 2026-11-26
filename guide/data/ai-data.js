@@ -12,6 +12,10 @@ window.AI_DATA = {
     ['Claude Code 변경 기록', 'https://code.claude.com/docs/en/changelog'],
     ['Codex 요금제(ChatGPT 요금 페이지)', 'https://learn.chatgpt.com/docs/pricing'],
     ['Codex 변경 기록', 'https://learn.chatgpt.com/docs/changelog'],
+    ['Claude Code GitHub 저장소', 'https://github.com/anthropics/claude-code'],
+    ['Claude Code 설치 문서', 'https://code.claude.com/docs/en/setup'],
+    ['Codex GitHub 저장소(빠른 시작)', 'https://github.com/openai/codex#quickstart'],
+    ['Codex 설치 문서', 'https://github.com/openai/codex/blob/main/docs/install.md'],
   ],
   plans: {
     claude: {

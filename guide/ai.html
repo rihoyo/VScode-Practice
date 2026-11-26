@@ -15,6 +15,9 @@
 <script src="assets/shared/glossary.js" defer></script>
 <script src="data/ai-data.js" defer></script>
 <script src="assets/ai/ai.js" defer></script>
+<script src="assets/ai/ai-memory.js" defer></script>
+<script src="assets/ai/ai-where.js" defer></script>
+<script src="assets/ai/ai-token.js" defer></script>
 </head>
 <body class="ai">
 <header class="hero">
@@ -28,23 +31,31 @@
 <div class="layout">
 <aside class="toc"><b>이 페이지의 목차</b><nav aria-label="이 페이지의 목차">
 <a href="#ai-intro" data-tags="AI Claude Codex 읽는순서">1. 한눈에 보기</a>
-<a href="#ai-basics" data-tags="AI 기초 에이전트 프롬프트 토큰">2. 기초로 알아둘 것</a>
+<a href="#ai-install" data-tags="설치 시작 로그인 업데이트 Claude Codex">2. 설치와 첫 실행</a>
+<a href="#ai-basics" data-tags="AI 기초 에이전트 프롬프트 토큰">3. 기초로 알아둘 것</a>
 <a class="sub" href="#ai-loop" data-tags="에이전트 루프 동작">에이전트 루프</a>
+<a class="sub" href="#ai-token" data-tags="토큰 계산기 tokenizer 컨텍스트">토큰 계산기</a>
 <a class="sub" href="#ai-ask" data-tags="프롬프트 요청 작성">좋은 요청의 네 요소</a>
-<a href="#ai-how" data-tags="Claude Codex 동작방식 비교 권한">3. 두 도구의 동작 방식</a>
-<a href="#ai-work" data-tags="실무 워크플로 리뷰 CI">4. 실무에서 쓰는 법</a>
-<a href="#ai-context" data-tags="컨텍스트 압축 심화">5. 심화: 컨텍스트</a>
-<a href="#ai-harness" data-tags="하네스 훅 스킬 MCP 서브에이전트 심화">6. 심화: 하네스</a>
-<a href="#ai-labs" data-tags="실습 시연 AI">7. 실습</a>
+<a href="#ai-how" data-tags="Claude Codex 동작방식 비교 권한">4. 두 도구의 동작 방식</a>
+<a href="#ai-work" data-tags="실무 워크플로 리뷰 CI">5. 실무에서 쓰는 법</a>
+<a href="#ai-context" data-tags="컨텍스트 압축 심화">6. 심화: 컨텍스트</a>
+<a href="#ai-memory" data-tags="기억 메모리 CLAUDE.md AGENTS.md 자동메모리 심화">7. 심화: 기억</a>
+<a class="sub" href="#mem-where" data-tags="기억 로컬 클라우드 브라우저 채팅 환경">어디서 도느냐</a>
+<a class="sub" href="#mem-sim-h" data-tags="기억 새채팅 시뮬레이터 읽는순서">새 채팅이 읽는 것</a>
+<a class="sub" href="#mem-table" data-tags="기억 저장위치 범위 유지">어디에 얼마나 남나</a>
+<a class="sub" href="#mem-use" data-tags="기억 사용자 경로 이름 개인설정">사람마다 다른 값</a>
+<a class="sub" href="#mem-arch" data-tags="기억 설계 아키텍처 멀티 md 원본">여러 환경용 md 설계</a>
+<a href="#ai-harness" data-tags="하네스 훅 스킬 MCP 서브에이전트 심화">8. 심화: 하네스</a>
+<a href="#ai-labs" data-tags="실습 시연 AI">9. 실습</a>
 <a class="sub" href="#lab-rules" data-tags="실습 지시문 CLAUDE.md AGENTS.md">실습 1 지시문</a>
 <a class="sub" href="#lab-context" data-tags="실습 컨텍스트 compact clear">실습 2 컨텍스트</a>
 <a class="sub" href="#lab-perm" data-tags="실습 권한 샌드박스 승인">실습 3 권한</a>
 <a class="sub" href="#lab-hook" data-tags="실습 훅 검증">실습 4 훅과 검증</a>
 <a class="sub" href="#lab-sub" data-tags="실습 서브에이전트 컨텍스트">실습 5 서브에이전트</a>
 <a class="sub" href="#lab-exec" data-tags="실습 자동화 CI headless">실습 6 자동 실행</a>
-<a href="#ai-plans" data-tags="요금제 플랜 Pro Max Plus Business">8. 플랜별 기능</a>
-<a href="#ai-updates" data-tags="업데이트 변경기록 2026-11-24">9. 2026-11-24 업데이트</a>
-<a href="#ai-sources" data-tags="출처 확인">10. 출처와 확인 방법</a>
+<a href="#ai-plans" data-tags="요금제 플랜 Pro Max Plus Business">10. 플랜별 기능</a>
+<a href="#ai-updates" data-tags="업데이트 변경기록 2026-11-24">11. 2026-11-24 업데이트</a>
+<a href="#ai-sources" data-tags="출처 확인">12. 출처와 확인 방법</a>
 <a href="#notes" data-tags="주석 기준 출처">주석</a>
 </nav></aside>
 <main>
@@ -61,11 +72,40 @@
 <tr><th>돈 내는 방식</th><td>Claude 구독(Pro 이상)이나 API</td><td>ChatGPT 구독(무료~Enterprise)이나 API 키</td></tr>
 </tbody>
 </table>
-<p class="note">읽는 순서는 <b>기초 → 동작 방식 → 실무 → 심화(컨텍스트·하네스) → 실습 → 플랜 → 업데이트</b>다. 실습은 서버나 계정 없이 이 페이지 안에서 시뮬레이션으로 돌아가고, 새로고침하면 처음으로 돌아간다. 시뮬레이터에서 본 동작은 실제 도구에서 마스터가 직접 확인하기 전에는 확인 완료로 보지 않는다.</p>
+<p class="note">읽는 순서는 <b>설치 → 기초 → 동작 방식 → 실무 → 심화(컨텍스트·기억·하네스) → 실습 → 플랜 → 업데이트</b>다. 실습은 서버나 계정 없이 이 페이지 안에서 시뮬레이션으로 돌아가고, 새로고침하면 처음으로 돌아간다. 시뮬레이터에서 본 동작은 실제 도구에서 마스터가 직접 확인하기 전에는 확인 완료로 보지 않는다.</p>
+</section>
+
+<section id="ai-install" class="ch">
+<h2>2. 설치와 첫 실행</h2>
+<p>두 도구 모두 만든 회사의 공식 GitHub 저장소에 설치 방법이 있다. 설치는 명령 한 줄이고, 끝나면 버전을 확인한 뒤 프로젝트 폴더에서 실행해 로그인한다. 아래에서 운영체제를 고르면 그에 맞는 명령으로 바뀌고, <b>복사</b>를 누르면 명령이 복사된다.<sup class="fn" data-fn="install-basis"></sup></p>
+<div class="inst" id="inst">
+<div class="inst-os"><button type="button" data-os="win" class="on">Windows (PowerShell)</button><button type="button" data-os="mac">macOS · Linux</button></div>
+<div class="inst-cols">
+<div class="inst-card cl">
+<div class="inst-head" data-no-gl><b>Claude Code</b><span>Anthropic</span><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">GitHub 저장소</a><a href="https://code.claude.com/docs/en/setup" target="_blank" rel="noopener">설치 문서</a></div>
+<ol class="inst-steps">
+<li><b>설치</b><code data-no-gl data-os="win">irm https://claude.ai/install.ps1 | iex</code><code data-no-gl data-os="mac">curl -fsSL https://claude.ai/install.sh | bash</code><small>공식 권장 방식이다. 관리자 권한은 필요 없다. Windows에서는 <b>Git for Windows</b>를 함께 깔아 두는 것이 권장된다. 없으면 Bash 대신 PowerShell로 명령을 돌린다.</small></li>
+<li><b>확인</b><code data-no-gl>claude --version</code><small>터미널을 새로 연 뒤 실행한다. 성공하면 <code>2.1.331</code> 같은 버전 번호가 나온다. 문제가 있으면 <code>claude doctor</code>로 진단한다.</small></li>
+<li><b>첫 실행</b><code data-no-gl>claude</code><small>프로젝트 폴더로 이동해서 실행하면 브라우저가 열리고 로그인을 요청한다. <b>Pro 이상 구독이나 Console(API) 계정</b>이 필요하고, 무료 플랜으로는 쓸 수 없다.</small></li>
+<li><b>업데이트</b><code data-no-gl>claude update</code><small>권장 방식으로 설치했다면 백그라운드에서 자동으로 업데이트된다. 이 명령은 바로 올리고 싶을 때 쓴다.</small></li>
+</ol>
+</div>
+<div class="inst-card cx">
+<div class="inst-head" data-no-gl><b>Codex CLI</b><span>OpenAI</span><a href="https://github.com/openai/codex#quickstart" target="_blank" rel="noopener">GitHub 저장소</a><a href="https://github.com/openai/codex/blob/main/docs/install.md" target="_blank" rel="noopener">설치 문서</a></div>
+<ol class="inst-steps">
+<li><b>설치</b><code data-no-gl data-os="win">powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</code><code data-no-gl data-os="mac">curl -fsSL https://chatgpt.com/codex/install.sh | sh</code><small>Node.js가 있다면 <code>npm install -g @openai/codex</code>로도 설치할 수 있다. 설치 문서의 지원 목록에는 Windows가 <b>Windows 11 + WSL2</b>로만 적혀 있다.<sup class="fn" data-fn="codex-win"></sup></small></li>
+<li><b>확인</b><code data-no-gl>codex --version</code><small>터미널을 새로 연 뒤 실행한다. 성공하면 <code>0.172.0</code> 같은 버전 번호가 나온다.</small></li>
+<li><b>첫 실행</b><code data-no-gl>codex</code><small>프로젝트 폴더에서 실행하고 <b>Sign in with ChatGPT</b>를 고른다. Plus, Pro, Business, Edu, Enterprise 구독으로 쓰는 것이 권장되고, API 키로도 쓸 수 있다.</small></li>
+<li><b>업데이트</b><span class="inst-q">확인 전</span><small>README와 설치 문서에 업데이트 명령이 적혀 있지 않다. 공식 문서에서 확인한 뒤 채운다.</small></li>
+</ol>
+</div>
+</div>
+</div>
+<p class="note">설치 명령은 인터넷에서 받은 스크립트를 바로 실행한다. 주소가 <code>claude.ai</code>, <code>chatgpt.com</code>인지 확인하고, 블로그 등에 적힌 명령보다 위 공식 페이지의 명령을 복사한다.</p>
 </section>
 
 <section id="ai-basics" class="ch">
-<h2>2. 기초로 알아둘 것</h2>
+<h2>3. 기초로 알아둘 것</h2>
 <h3 id="ai-loop">에이전트 루프</h3>
 <p>에이전트는 한 번 답하고 끝나지 않고 <b>목표 → 읽기 → 계획 → 실행 → 확인</b>을 목표가 달성될 때까지 되풀이한다. 실행은 도구(파일 읽기, 파일 수정, 명령 실행, 검색, MCP로 붙인 외부 서비스)를 부르는 일이다.</p>
 <div class="loopfig" aria-label="에이전트 루프">
@@ -77,6 +117,19 @@
 <li><b>권한을 안다.</b> 파일 수정과 명령 실행은 기본적으로 허락을 받고 한다. 허락을 줄수록 빠르지만 위험도 커진다.</li>
 <li><b>검증은 사람의 몫이다.</b> 에이전트가 "됐다"고 말하는 것과 실제로 되는 것은 다르다. 테스트, 린트, <code>git diff</code>로 직접 확인한다.</li>
 </ol>
+<h3 id="ai-token">토큰 계산기</h3>
+<p>모델은 글을 글자 단위가 아니라 <b>토큰</b>이라는 조각으로 나눠 읽는다. 아래 칸에 글을 넣으면 OpenAI 모델이 쓰는 규칙으로 몇 토큰인지 세고, 조각마다 색을 칠해 어디서 끊기는지 보여 준다. 영어는 단어 하나가 대개 한 토큰이고, 한국어와 코드는 더 잘게 나뉘는 경우가 많다.<sup class="fn" data-fn="tok-basis"></sup></p>
+<div class="tok" id="tok" data-no-gl>
+<div class="tok-bar">
+<div class="tok-enc"><button type="button" data-enc="o200k" class="on">GPT-4o 이후 <small>o200k</small></button><button type="button" data-enc="cl100k">GPT-4·3.5 <small>cl100k</small></button></div>
+<div class="tok-ex"><span>예시</span><button type="button" data-ex="ko">한국어</button><button type="button" data-ex="en">영어</button><button type="button" data-ex="code">코드</button><button type="button" data-ex="clear">지우기</button></div>
+</div>
+<textarea id="tok-in" rows="5" spellcheck="false" placeholder="여기에 글을 붙여 넣는다."></textarea>
+<div class="tok-stat"><div><b id="tok-n">0</b><span>토큰</span></div><div><b id="tok-c">0</b><span>글자</span></div><div><b id="tok-r">-</b><span>글자당 토큰</span></div><p id="tok-msg">칸에 글을 넣으면 계산을 시작한다.</p></div>
+<div class="tok-view"><button type="button" data-view="text" class="on">조각 보기</button><button type="button" data-view="ids">토큰 번호</button></div>
+<div class="tok-out" id="tok-out" aria-live="polite"></div>
+</div>
+<p class="note">이 계산기는 OpenAI 모델 기준이다. Claude는 토큰을 나누는 규칙이 달라서 같은 글도 숫자가 다르게 나온다. 정확한 값은 공식 <a href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener">OpenAI 토크나이저</a>에서 확인한다. 계산은 이 PC의 브라우저 안에서만 하고, 넣은 글은 어디로도 보내지 않는다.</p>
 <h3>먼저 익혀 두면 좋은 개발 기초</h3>
 <ul>
 <li><b>터미널</b>: <code>cd</code>, <code>ls</code>, 경로 읽기. <a href="linux.html">리눅스</a>에서 연습한다.</li>
@@ -102,7 +155,7 @@
 </section>
 
 <section id="ai-how" class="ch">
-<h2>3. 두 도구의 동작 방식</h2>
+<h2>4. 두 도구의 동작 방식</h2>
 <p>핵심 구조는 같다. 사용자의 요청과 <b>지시문 파일</b>을 읽고, 도구를 불러 작업하고, 권한 규칙에 따라 허락을 받거나 막힌다. 달라지는 곳은 설정 파일의 모양, 권한을 나누는 방식, 확장 수단의 이름이다.</p>
 <table class="cmp">
 <thead><tr><th></th><th class="cl">Claude Code</th><th class="cx">Codex</th></tr></thead>
@@ -120,7 +173,7 @@
 </section>
 
 <section id="ai-work" class="ch">
-<h2>4. 실무에서 쓰는 법</h2>
+<h2>5. 실무에서 쓰는 법</h2>
 <p>실무의 기본 흐름은 <b>탐색 → 계획 → 구현 → 검증 → 리뷰 → 정리</b>다. 처음부터 구현을 시키지 않고, 먼저 읽고 계획만 내게 한 뒤 사람이 방향을 고친다. 이때 Claude Code의 plan 모드나 Codex의 읽기 전용 샌드박스를 쓰면 코드가 바뀔 걱정 없이 탐색할 수 있다.</p>
 <table>
 <thead><tr><th>상황</th><th>이렇게 시킨다</th><th>사람이 확인할 것</th></tr></thead>
@@ -143,7 +196,7 @@
 </section>
 
 <section id="ai-context" class="ch deep">
-<h2>5. 심화: 컨텍스트</h2>
+<h2>6. 심화: 컨텍스트</h2>
 <p><b>컨텍스트</b>는 모델이 지금 이 순간 눈앞에 두고 있는 글 전체다. 시스템 지시, 도구 설명, 지시문 파일(<code>CLAUDE.md</code>, <code>AGENTS.md</code>), 대화, 읽은 파일, 명령 출력이 모두 들어간다. 창은 유한해서 가득 차면 오래된 내용이 밀리거나 요약된다.</p>
 <table>
 <thead><tr><th>무엇이 쌓이나</th><th>특징</th><th>줄이는 법</th></tr></thead>
@@ -164,8 +217,63 @@
 <p class="note">컨텍스트가 80%를 넘기면 지시를 놓치거나 같은 실수를 되풀이하기 쉽다. 이 신호가 보이면 압축하거나 새로 시작한다. 실습 2에서 직접 채워 본다.</p>
 </section>
 
+<section id="ai-memory" class="ch deep">
+<h2>7. 심화: 기억</h2>
+<p>모델은 채팅이 끝나면 아무것도 기억하지 못한다. 새 채팅이 이전 일을 "아는" 것처럼 보이는 이유는 <b>시작할 때 디스크의 파일을 다시 읽어 컨텍스트에 넣기</b> 때문이다. 그래서 기억을 다룬다는 것은 <b>어느 파일에 두고, 누가 그 파일을 볼 수 있게 하느냐</b>를 정하는 일이다.<sup class="fn" data-fn="mem-basis"></sup></p>
+<ol class="plain">
+<li><b>어디까지 기억하나</b>: 그 채팅 안의 대화는 컨텍스트에 남고, 길어지면 요약된다(6장). 채팅 밖으로 이어지는 것은 파일에 적힌 것뿐이다.</li>
+<li><b>어디까지 적용되나</b>: 파일이 놓인 범위만큼이다. 저장소 안 파일은 저장소를 받은 모두에게, 사용자 폴더의 파일은 그 PC의 그 사람에게만 적용된다.</li>
+<li><b>언제 읽나</b>: 대부분 시작할 때 읽는다. 일부는 그 폴더 파일을 열 때, 지난 대화는 채팅을 이어 갈 때만 읽는다.</li>
+</ol>
+<h3 id="mem-where">어디서 도느냐</h3>
+<p>같은 Claude, 같은 ChatGPT라도 <b>어느 컴퓨터에서 도느냐</b>에 따라 읽을 수 있는 기억이 완전히 달라진다. 브라우저냐 터미널이냐는 화면일 뿐이고, 기준은 파일을 읽고 명령을 실행하는 컴퓨터가 어디냐다. 아래에서 환경을 누르면 <b>기억 → 생각과 실행 → 결과</b>가 어느 컴퓨터를 거쳐 흘러가는지 차례로 보여 준다.<sup class="fn" data-fn="where-basis"></sup></p>
+<div class="where" id="where"><noscript>이 그림은 JavaScript가 켜져 있어야 움직인다. 아래 표에 같은 내용이 있다.</noscript></div>
+<p class="note">로컬에서도 <b>생각하는 모델은 회사 서버</b>에서 돈다. 내 PC에서 도는 것은 파일 읽기와 명령 실행 같은 도구뿐이다. 그래서 로컬에서도 읽은 파일 내용은 모델에게 보내진다.</p>
+<h3 id="mem-sim-h">새 채팅이 읽는 것</h3>
+<p>도구와 상황을 고르고 <b>▶ 새 채팅 시작</b>을 누르면, 디스크의 파일이 읽히는 차례대로 컨텍스트 창으로 들어간다. 왼쪽 상자는 바깥일수록 넓은 범위다. 흐려진 파일은 그 상황에서 읽지 않고, 빗금 친 파일은 찾지 못한다.</p>
+<div class="mem-sim" id="mem-sim"><noscript>이 그림은 JavaScript가 켜져 있어야 움직인다. 아래 표에 같은 내용이 있다.</noscript></div>
+<p class="note">클라우드 두 도구는 내 PC가 아니라 <b>GitHub 저장소를 새로 클론한 컴퓨터</b>에서 돈다. 그래서 저장소에 Push된 규칙 파일만 읽고, 내 PC의 사용자 폴더(<code>~/.claude</code>, <code>~/.codex</code>)는 보지 못한다. 규칙을 고쳤다면 Push한 뒤 클라우드 작업을 시작한다.</p>
+<p class="note">Claude Code는 자동 메모리 폴더를 <b>Git 저장소 단위</b>로 정해서 하위 폴더와 worktree가 같은 메모리를 쓴다. 이 PC에서는 폴더 이름이 저장소 경로(<code>c--Users-PC-Documents-GitHub-VScode-Practice</code>)로 되어 있어서, 저장소 폴더를 옮기면 다른 메모리 폴더를 찾는다.<sup class="fn" data-fn="mem-key"></sup></p>
+<h3 id="mem-table">어디에 얼마나 남나</h3>
+<table>
+<thead><tr><th>무엇</th><th>Claude Code 로컬</th><th>Claude Code 클라우드</th><th>Codex 로컬</th><th>Codex Cloud</th></tr></thead>
+<tbody>
+<tr><td>모두가 같이 쓰는 규칙</td><td>저장소의 <code>CLAUDE.md</code>(시작 폴더와 그 위). 하위 폴더 것은 그 폴더 파일을 열 때</td><td>GitHub에서 새로 클론한 저장소의 <code>CLAUDE.md</code>와 <code>.claude/rules/</code>. Push한 내용만</td><td>저장소의 <code>AGENTS.md</code>(Git 루트부터 시작 폴더까지)</td><td>선택한 브랜치에 Push된 <code>AGENTS.md</code></td></tr>
+<tr><td>나만의 규칙</td><td><code>~/.claude/CLAUDE.md</code>, 이 프로젝트만이면 <code>CLAUDE.local.md</code></td><td>내 PC 파일은 가지 않는다. 내 환경의 설정 스크립트로 <code>~/.claude/CLAUDE.md</code>를 만들어 넣을 수 있다</td><td><code>~/.codex/AGENTS.md</code></td><td>내 PC 파일은 가지 않는다</td></tr>
+<tr><td>자동으로 쌓이는 기억</td><td><code>~/.claude/projects/&lt;저장소&gt;/memory/</code>. 목차 <code>MEMORY.md</code>의 앞 200줄(25KB)을 시작 때 읽는다</td><td>내 PC의 자동 메모리는 다른 PC나 클라우드와 공유되지 않는다</td><td><code>~/.codex/memories_v2/</code>. 기본 꺼짐</td><td>문서에서 확인하지 못했다</td></tr>
+<tr><td>지난 대화</td><td><code>~/.claude/projects/</code>의 <code>.jsonl</code>. <code>--continue</code>, <code>--resume</code>으로 이어 갈 때만</td><td>그 클라우드 세션을 이어 갈 때만. <code>claude --teleport</code>로 터미널에 가져오면 따로 갈라진다</td><td><code>~/.codex/sessions/</code>.<sup class="fn" data-fn="codex-sessions"></sup> 재개할 때만</td><td>그 Cloud 채팅을 이어 갈 때만</td></tr>
+<tr><td>충돌하면</td><td>모두 이어 붙인다. 넓은 범위 → 좁은 범위 순이라 가까운 파일이 뒤에 온다</td><td>로컬과 같다</td><td>가까운 폴더의 파일이 뒤에 와서 이긴다</td><td>로컬과 같다</td></tr>
+</tbody>
+</table>
+<p><code>~</code>는 Windows에서 <code>C:\Users\사용자이름</code>이다. 파일 탐색기 주소창에 <code>%USERPROFILE%\.claude</code>나 <code>%USERPROFILE%\.codex</code>를 넣으면 바로 열린다. 이 저장소처럼 <code>CLAUDE.md</code>가 <code>@AGENTS.md</code> 한 줄만 가지면, Claude Code도 Codex와 같은 규칙 파일을 읽는다.</p>
+<h3 id="mem-use">사람마다 다른 값</h3>
+<p>예를 들어 읽기 권한만 받은 사람들이 저장소를 내려받아 쓰는데, 이름과 경로를 첫 채팅에서 물어보게 했다고 하자. 그 답을 어디에 두느냐로 다음 채팅의 결과가 갈린다.</p>
+<div class="mem-route">
+<div class="mr-q">새 채팅에서도<br>알아야 하는 값</div>
+<div class="mr-arrows" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="mr-list">
+<div class="mr-a ok"><b>PC마다 다른 값(이름, 경로)</b><p>묻지 말고 명령으로 알아내게 한다. 공용 <code>AGENTS.md</code>에 "<code>git config user.name</code>과 현재 작업 폴더에서 알아낸다"고 적으면 사람마다 자기 값이 나온다.</p></div>
+<div class="mr-a ok"><b>그 사람만 아는 값(역할, 호칭)</b><p>그 사람 PC의 <code>~/.claude/CLAUDE.md</code>나 <code>~/.codex/AGENTS.md</code>에 둔다. Cloud라면 채팅을 시작할 때 직접 넘긴다.</p></div>
+<div class="mr-a bad"><b>공용 저장소의 규칙 파일</b><p>읽기 권한이라 Push할 수 없고, 고쳐도 모두가 같은 값을 보게 된다. 개인 값을 두는 곳이 아니다.</p></div>
+</div>
+</div>
+<p class="note">저장소를 OneDrive 폴더에 두면 동기화와 Git이 같은 <code>.git</code> 파일을 함께 건드려 저장소가 깨질 수 있다. OneDrive 공유는 GitHub 권한과 별개라서, 공유받은 사람이 파일을 직접 고칠 수도 있다. 저장소는 OneDrive 밖에 두고 GitHub으로만 주고받는 편이 안전하다.</p>
+<h3 id="mem-arch">여러 환경을 위한 md 설계</h3>
+<p>사람마다 로컬, 클라우드, 일반 채팅을 섞어 쓰면 규칙 파일이 환경마다 흩어지기 쉽다. 아래 표는 기억이 놓인 곳마다 <b>어느 환경에 닿는지</b>를 보여 준다. 줄에 마우스를 올리면 그 기억이 닿는 환경만 밝아진다.</p>
+<div class="reach" id="reach"></div>
+<p>표에서 세 환경 모두에 닿는 칸은 <b>채팅에 직접 넣은 글</b> 하나뿐이다. 나머지는 환경마다 따로 이어 줘야 한다. 그래서 이 가이드는 <b>원본 하나에서 환경마다 이어 붙이는 구조</b>를 권한다.<sup class="fn" data-fn="arch-own"></sup></p>
+<div class="hub" id="hub"></div>
+<ol class="plain">
+<li><b>원본은 저장소의 <code>AGENTS.md</code> 하나다.</b> <code>CLAUDE.md</code>는 <code>@AGENTS.md</code> 한 줄만 둔다. 이렇게 하면 Claude Code와 Codex가 로컬과 클라우드에서 같은 규칙을 읽는다.</li>
+<li><b>클라우드는 Push된 것만 읽는다.</b> 규칙을 고쳤으면 Push한 뒤 클라우드 작업을 시작한다.</li>
+<li><b>일반 채팅은 md를 스스로 읽지 않는다.</b> 프로젝트 파일로 <code>AGENTS.md</code>를 올리고, 원본이 바뀌면 다시 올린다. 자동으로 맞춰지지 않는다.</li>
+<li><b>개인 값은 저장소 밖에 둔다.</b> 로컬은 <code>~/.claude/CLAUDE.md</code>나 <code>CLAUDE.local.md</code>, 클라우드는 내 환경의 설정 스크립트, 일반 채팅은 계정 메모리나 맞춤 지침이다.</li>
+<li><b>환경마다 다른 값은 규칙에 적지 않는다.</b> 경로와 사용자 이름은 "명령으로 알아내라"고 적는다. 그러면 어느 환경에서 읽어도 맞는다.</li>
+</ol>
+</section>
+
 <section id="ai-harness" class="ch deep">
-<h2>6. 심화: 하네스</h2>
+<h2>8. 심화: 하네스</h2>
 <p><b>하네스</b>는 모델을 둘러싼 모든 것이다. 모델에게 무엇을 보여 주고(컨텍스트), 무엇을 할 수 있게 하고(도구), 어디까지 허락하고(권한·샌드박스), 어떻게 확인하게 할지(검증)를 정한다. 같은 모델이라도 하네스가 좋으면 잘 쓰고, 나쁘면 같은 실수를 되풀이한다.</p>
 <table>
 <thead><tr><th>부품</th><th>하는 일</th><th>Claude Code</th><th>Codex</th></tr></thead>
@@ -205,7 +313,7 @@ sandbox_mode    = "workspace-write"</pre>
 </section>
 
 <section id="ai-labs" class="ch labs">
-<h2>7. 실습</h2>
+<h2>9. 실습</h2>
 <p>명령어만 외우면 "개발자 노트에 왜 이런 게 적혀 있는지"를 알 수 없다. 아래 여섯 실습은 같은 요청을 설정 하나만 바꿔 돌려 보고, <b>무슨 일이 일어났는지, 무엇이 달라졌는지, 왜 해야 하는지</b>를 보여 준다. 모두 이 페이지 안의 시뮬레이션이라 새로고침하면 처음으로 돌아가고 아무것도 저장되지 않는다.</p>
 
 <article class="lab" id="lab-rules" data-lab="rules">
@@ -252,20 +360,20 @@ sandbox_mode    = "workspace-write"</pre>
 </section>
 
 <section id="ai-plans" class="ch">
-<h2>8. 플랜별 기능</h2>
+<h2>10. 플랜별 기능</h2>
 <p>Claude는 구독에 Claude Code가 들어 있고, Codex는 ChatGPT 구독에 들어 있다. 플랜을 올릴수록 <b>사용량, 모델, 속도, 협업·보안 기능</b>이 열린다. 아래에서 도구와 플랜을 골라 무엇이 열리는지 본다.<sup class="fn" data-fn="ai-plan-basis"></sup></p>
 <div class="plans" id="plans"></div>
 </section>
 
 <section id="ai-updates" class="ch">
-<h2>9. 2026-11-24 업데이트</h2>
+<h2>11. 2026-11-24 업데이트</h2>
 <p>2026-11-24 기준으로 Claude Code는 <b>2.1.331</b>(11-23), Codex CLI는 <b>0.172.0</b>(11-24)까지 나왔다. 각 줄의 오른쪽에 "그래서 무엇이 달라지나"를 붙였다.<sup class="fn" data-fn="ai-asof"></sup></p>
 <div class="upd" id="upd"></div>
 <p>곧 바뀔 일도 있다. 관리형 플러그인 마켓플레이스는 2026-11-30 이후 기본으로 자동 갱신된다.<sup class="fn" data-fn="ai-future"></sup></p>
 </section>
 
 <section id="ai-sources" class="ch">
-<h2>10. 출처와 확인 방법</h2>
+<h2>12. 출처와 확인 방법</h2>
 <ul id="src"></ul>
 <p>이 페이지는 위 공식 페이지를 읽고 정리했다.<sup class="fn" data-fn="ai-asof"></sup> 도구는 빠르게 바뀌므로 다음 순서로 직접 확인한다.</p>
 <ol class="plain">
@@ -278,6 +386,14 @@ sandbox_mode    = "workspace-write"</pre>
 <section class="notes" id="notes">
 <h2>주석</h2>
 <ol>
+<li data-fn="tok-basis">gpt-tokenizer 3.0.1(MIT 라이선스)을 <code>tools/</code>에서 npm으로 받아 <code>guide/vendor/</code>에 복사해 쓴다. o200k는 GPT-4o 이후 모델, cl100k는 GPT-4와 GPT-3.5가 쓰는 규칙이다. 한 글자가 여러 토큰으로 나뉘면 한 조각으로 묶고 오른쪽 위에 토큰 수를 적었다.</li>
+<li data-fn="install-basis">2026-11-26에 두 도구의 공식 GitHub 저장소(anthropics/claude-code, openai/codex의 README와 docs/install.md)와 Claude Code 설치 문서(code.claude.com/docs/en/setup)를 읽고 정리했다. Claude Code README에는 npm 설치가 더 이상 권장되지 않는다고 적혀 있다.</li>
+<li data-fn="codex-win">README에는 Windows PowerShell 설치 명령이 있지만 docs/install.md의 지원 목록에는 Windows 11 + WSL2만 있다. WSL 없이 Windows에서 바로 돌릴 때 정식 지원인지는 확인 전이다.</li>
+<li data-fn="where-basis">2026-11-26에 Claude 도움말(Projects, 채팅 검색과 메모리), ChatGPT 도움말(Projects, Memory, 맞춤 지침), Claude Code 문서(on the web, desktop, cloud environments, settings), Codex Cloud 문서를 직접 읽고 정리했다. Claude 데스크톱 앱의 Code 탭은 세션마다 내 PC(로컬)와 클라우드 중에서 고른다. Codex Cloud는 저장소 없이도 시작할 수 있고, GitHub나 GitLab 저장소를 가져올 수 있다.</li>
+<li data-fn="arch-own">공식 문서의 권장안이 아니라, 위 표의 사실을 바탕으로 이 가이드가 정리한 구성이다.</li>
+<li data-fn="mem-basis">2026-11-26에 Claude Code 문서(memory, how Claude Code works, Claude Code on the web, cloud environments, settings)와 Codex 문서(AGENTS.md, Memories, Cloud environments)를 직접 읽고 정리했다. Codex 문서 주소는 learn.chatgpt.com으로 옮겨져 있었다.</li>
+<li data-fn="mem-key">공식 문서는 "저장소 단위, worktree 공유"라고만 적었다. 폴더를 옮기면 새 메모리로 시작한다는 것은 이 PC의 폴더 이름에서 미루어 본 동작이며 확인 전이다. 문서에 따르면 <code>autoMemoryDirectory</code> 설정으로 위치를 고정할 수 있다.</li>
+<li data-fn="codex-sessions">읽은 Codex 문서에는 대화 기록의 저장 위치가 적혀 있지 않았다. <code>~/.codex/sessions/</code>는 확인 전이다.</li>
 <li data-fn="ai-asof">이 페이지의 요금, 한도, 버전, 변경 기록은 2026-11-24에 공식 페이지(Claude 요금제, Claude Code 변경 기록, Codex 요금제와 변경 기록)를 읽고 정리했다. 일부 페이지는 길어서 일부만 읽었고, 읽히지 않은 값은 <b>?</b>로 표시했다.</li>
 <li data-fn="ai-slash">표의 슬래시 명령은 2026-11-24 점검 기준으로 정리했다. 마스터가 실제 화면에서 직접 확인하기 전까지는 확인 전이다.</li>
 <li data-fn="ai-plan-basis">요금과 한도는 2026-11-24에 공식 페이지를 읽고 정리한 값이다. 페이지에서 읽히지 않은 칸은 <b>?</b>로 두었고, 한도는 고정 수치가 아니라 추정치다. 결제 전에 공식 요금 페이지에서 다시 확인한다.</li>
