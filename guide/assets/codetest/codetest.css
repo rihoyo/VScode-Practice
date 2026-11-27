@@ -29,3 +29,8 @@ body.codetest{margin:0;background:var(--bg);color:var(--fg);overflow:hidden}
 @keyframes blink{50%{opacity:0}}
 #kbd{position:fixed;left:-200px;top:0;width:10px;height:10px;opacity:0}
 .nojs{padding:6rem 2rem;color:#fff;font:16px var(--sans)}
+/* 줄이 화면보다 많아도 눌려서 겹치지 않게 한다(세로 flex의 기본 줄어듦을 끈다). 창이 좁아 줄이 접히면 그만큼 높이가 늘어난다 */
+#screen>.l,#ed-body>.el{flex:none}
+/* 변주와 경보 줄 */
+#screen .l.v{background:rgba(249,241,165,.07)}
+#screen .l.al{background:rgba(231,72,86,.12)}
